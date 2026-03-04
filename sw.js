@@ -3,8 +3,8 @@
 // Bump CACHE_VERSION every deployment to force fresh content
 const CACHE_VERSION = 'v3';
 const CACHE_NAME = `waikato-prayer-${CACHE_VERSION}`;
-const ICON = '/prayer-times/icon-192.png';
-const APP_URL = '/prayer-times/';
+const ICON = '/waikato-prayer-times/icon-192.png';
+const APP_URL = '/waikato-prayer-times/';
 
 const STATIC_ASSETS = [
     APP_URL + 'manifest.json',
@@ -140,7 +140,7 @@ self.addEventListener('notificationclick', e => {
     e.waitUntil(
         clients.matchAll({ type: 'window', includeUncontrolled: true }).then(list => {
             for (const client of list) {
-                if (client.url.includes('/prayer-times/') && 'focus' in client)
+                if (client.url.includes('/waikato-prayer-times/') && 'focus' in client)
                     return client.focus();
             }
             return clients.openWindow(APP_URL);
