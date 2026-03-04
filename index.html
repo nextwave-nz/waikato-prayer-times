@@ -8,9 +8,9 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Waikato Prayer Times">
-    <link rel="manifest" href="/prayer-times/manifest.json">
-    <link rel="apple-touch-icon" href="/prayer-times/icon-192.png">
-    <link rel="icon" type="image/png" sizes="192x192" href="/prayer-times/icon-192.png">
+    <link rel="manifest" href="/waikato-prayer-times/manifest.json">
+    <link rel="apple-touch-icon" href="/waikato-prayer-times/icon-192.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/waikato-prayer-times/icon-192.png">
     <title>Waikato Prayer Times</title>
     <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <style>
@@ -1244,8 +1244,8 @@ async function scheduleNotifications() {
             // Also schedule via setTimeout + SW showNotification (belt-and-suspenders)
             setTimeout(() => {
                 const opts = {
-                    body, icon: '/prayer-times/icon-192.png',
-                    badge: '/prayer-times/icon-192.png',
+                    body, icon: '/waikato-prayer-times/icon-192.png',
+                    badge: '/waikato-prayer-times/icon-192.png',
                     tag: p.name, renotify: true, vibrate: [200, 100, 200]
                 };
                 if (swReg) {
@@ -1271,8 +1271,8 @@ async function scheduleNotifications() {
                 swNotifications.push({ title, body, tag: 'iftar', delayMs: delay });
                 setTimeout(() => {
                     const opts = {
-                        body, icon: '/prayer-times/icon-192.png',
-                        badge: '/prayer-times/icon-192.png',
+                        body, icon: '/waikato-prayer-times/icon-192.png',
+                        badge: '/waikato-prayer-times/icon-192.png',
                         tag: 'iftar', renotify: true, vibrate: [300, 100, 300]
                     };
                     if (swReg) {
@@ -1773,7 +1773,7 @@ function updateMosqueUI() {
 // ═══════════════════════════════════════
 if('serviceWorker' in navigator){
     window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/prayer-times/sw.js')
+        navigator.serviceWorker.register('/waikato-prayer-times/sw.js')
             .then(reg => {
                 // Check for updates every time the app opens
                 reg.update();
