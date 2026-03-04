@@ -6,13 +6,21 @@
   "start_url": "/waikato-prayer-times/?source=pwa",
   "scope": "/waikato-prayer-times/",
   "display": "standalone",
-  "display_override": ["window-controls-overlay", "standalone", "minimal-ui"],
+  "display_override": [
+    "window-controls-overlay",
+    "standalone",
+    "minimal-ui"
+  ],
   "background_color": "#080e1a",
   "theme_color": "#080e1a",
   "orientation": "portrait-primary",
   "lang": "en-NZ",
   "dir": "ltr",
-  "categories": ["lifestyle", "religion", "utilities"],
+  "categories": [
+    "lifestyle",
+    "religion",
+    "utilities"
+  ],
   "prefer_related_applications": false,
   "icons": [
     {
@@ -63,5 +71,35 @@
       "text": "text",
       "url": "url"
     }
-  }
+  },
+  "screenshots": [
+    {
+      "src": "/waikato-prayer-times/screenshots/screenshot-home.png",
+      "sizes": "390x844",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Home \u2014 live prayer times and countdown"
+    },
+    {
+      "src": "/waikato-prayer-times/screenshots/screenshot-calendar.png",
+      "sizes": "390x844",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Ramadan calendar with Suhoor and Iftar times"
+    },
+    {
+      "src": "/waikato-prayer-times/screenshots/screenshot-notifications.png",
+      "sizes": "390x844",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Prayer time notifications setup"
+    },
+    {
+      "src": "/waikato-prayer-times/screenshots/screenshot-tracker.png",
+      "sizes": "390x844",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Prayer tracker \u2014 mark each prayer completed"
+    }
+  ]
 }
