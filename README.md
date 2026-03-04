@@ -2,7 +2,7 @@
 
 Official prayer times Progressive Web App for **Hamilton Jamia Mosque** and the Waikato Muslim community, New Zealand.
 
-**Live app:** https://[your-username].github.io/waikato-prayer-times/
+**Live app:** https://nextwave-nz.github.io/waikato-prayer-times/
 
 ---
 
