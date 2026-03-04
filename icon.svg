@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <!-- Background -->
+  <rect width="512" height="512" rx="96" fill="#0d0d1a"/>
+  
+  <!-- Stars background -->
+  <circle cx="60" cy="80" r="3" fill="#c9a84c" opacity="0.6"/>
+  <circle cx="420" cy="60" r="2.5" fill="#c9a84c" opacity="0.5"/>
+  <circle cx="460" cy="120" r="2" fill="#c9a84c" opacity="0.4"/>
+  <circle cx="90" cy="150" r="2" fill="#c9a84c" opacity="0.4"/>
+  <circle cx="380" cy="100" r="3" fill="#c9a84c" opacity="0.5"/>
+  <circle cx="140" cy="60" r="2" fill="#c9a84c" opacity="0.4"/>
+  
+  <!-- Crescent moon top right -->
+  <circle cx="400" cy="100" r="45" fill="#c9a84c" opacity="0.9"/>
+  <circle cx="425" cy="85" r="38" fill="#0d0d1a"/>
+  
+  <!-- Main dome -->
+  <ellipse cx="256" cy="220" rx="90" ry="85" fill="#1a1a35"/>
+  <path d="M 166 220 Q 256 110 346 220" fill="#c9a84c"/>
+  
+  <!-- Dome highlight -->
+  <path d="M 186 210 Q 256 130 326 210" fill="none" stroke="#f0d080" stroke-width="3" opacity="0.4"/>
+  
+  <!-- Dome finial -->
+  <rect x="248" y="120" width="16" height="25" rx="3" fill="#c9a84c"/>
+  <circle cx="256" cy="112" r="10" fill="#c9a84c"/>
+  <!-- Small crescent on finial -->
+  <circle cx="256" cy="108" r="7" fill="#c9a84c"/>
+  <circle cx="260" cy="105" r="5.5" fill="#0d0d1a"/>
+
+  <!-- Main building body -->
+  <rect x="150" y="220" width="212" height="160" rx="4" fill="#1a1a35"/>
+  <rect x="152" y="222" width="208" height="156" rx="3" fill="#1e1e3a"/>
+  
+  <!-- Main door arch -->
+  <path d="M 218 380 L 218 300 Q 256 265 294 300 L 294 380 Z" fill="#0d0d1a"/>
+  <path d="M 222 380 L 222 302 Q 256 270 290 302 L 290 380 Z" fill="#111128"/>
+  <!-- Door details -->
+  <line x1="256" y1="270" x2="256" y2="380" stroke="#c9a84c" stroke-width="1.5" opacity="0.3"/>
+  
+  <!-- Windows left -->
+  <path d="M 172 270 L 172 310 Q 192 285 212 310 L 212 270 Z" fill="#0d0d1a"/>
+  <path d="M 175 270 L 175 308 Q 192 288 209 308 L 209 270 Z" fill="#0a0a1f"/>
+  
+  <!-- Windows right -->
+  <path d="M 300 270 L 300 310 Q 320 285 340 310 L 340 270 Z" fill="#0d0d1a"/>
+  <path d="M 303 270 L 303 308 Q 320 288 337 308 L 337 270 Z" fill="#0a0a1f"/>
+  
+  <!-- Left minaret -->
+  <rect x="148" y="200" width="28" height="190" rx="4" fill="#1a1a35"/>
+  <path d="M 148 200 Q 162 160 176 200" fill="#c9a84c"/>
+  <rect x="154" y="154" width="16" height="20" rx="3" fill="#c9a84c"/>
+  <circle cx="162" cy="146" r="8" fill="#c9a84c"/>
+  <circle cx="165" cy="143" r="6" fill="#0d0d1a"/>
+  <!-- Minaret windows -->
+  <rect x="154" y="250" width="16" height="20" rx="3" fill="#0d0d1a"/>
+  <rect x="154" y="310" width="16" height="20" rx="3" fill="#0d0d1a"/>
+  
+  <!-- Right minaret -->
+  <rect x="336" y="200" width="28" height="190" rx="4" fill="#1a1a35"/>
+  <path d="M 336 200 Q 350 160 364 200" fill="#c9a84c"/>
+  <rect x="342" y="154" width="16" height="20" rx="3" fill="#c9a84c"/>
+  <circle cx="350" cy="146" r="8" fill="#c9a84c"/>
+  <circle cx="353" cy="143" r="6" fill="#0d0d1a"/>
+  <!-- Minaret windows -->
+  <rect x="342" y="250" width="16" height="20" rx="3" fill="#0d0d1a"/>
+  <rect x="342" y="310" width="16" height="20" rx="3" fill="#0d0d1a"/>
+  
+  <!-- Ground / base -->
+  <rect x="130" y="378" width="252" height="12" rx="4" fill="#c9a84c" opacity="0.6"/>
+  
+  <!-- Arabic text area at bottom -->
+  <rect x="140" y="400" width="232" height="44" rx="8" fill="rgba(201,168,76,0.1)"/>
+  <text x="256" y="428" font-family="serif" font-size="22" fill="#c9a84c" text-anchor="middle" font-weight="bold">مسجد هاميلتون</text>
+</svg>

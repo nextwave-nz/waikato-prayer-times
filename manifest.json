@@ -1,0 +1,139 @@
+{
+  "name": "Waikato Prayer Times",
+  "short_name": "Prayer Times",
+  "description": "Official prayer times, Ramadan calendar & Iqama schedule for Hamilton Jamia Mosque and the Waikato Muslim community in New Zealand.",
+  "start_url": "/prayer-times/?source=pwa",
+  "scope": "/prayer-times/",
+  "display": "standalone",
+  "display_override": ["window-controls-overlay", "standalone", "minimal-ui"],
+  "background_color": "#080e1a",
+  "theme_color": "#080e1a",
+  "orientation": "portrait-primary",
+  "lang": "en-NZ",
+  "dir": "ltr",
+  "categories": ["lifestyle", "religion", "utilities"],
+  "iarc_rating_id": "",
+  "prefer_related_applications": false,
+
+  "icons": [
+    {
+      "src": "/prayer-times/icons/icon-48.png",
+      "sizes": "48x48",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/prayer-times/icons/icon-72.png",
+      "sizes": "72x72",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/prayer-times/icons/icon-96.png",
+      "sizes": "96x96",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/prayer-times/icons/icon-128.png",
+      "sizes": "128x128",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/prayer-times/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/prayer-times/icons/icon-192-maskable.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/prayer-times/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/prayer-times/icons/icon-512-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/prayer-times/icons/icon-1024.png",
+      "sizes": "1024x1024",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ],
+
+  "screenshots": [
+    {
+      "src": "/prayer-times/screenshots/screenshot-home.png",
+      "sizes": "390x844",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Home — today's prayer times and countdown"
+    },
+    {
+      "src": "/prayer-times/screenshots/screenshot-calendar.png",
+      "sizes": "390x844",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Ramadan calendar with Suhoor and Iftar times"
+    },
+    {
+      "src": "/prayer-times/screenshots/screenshot-tracker.png",
+      "sizes": "390x844",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Prayer tracker — mark each prayer as completed"
+    }
+  ],
+
+  "shortcuts": [
+    {
+      "name": "Today's Prayer Times",
+      "short_name": "Prayers",
+      "description": "Jump straight to today's Iqama schedule",
+      "url": "/prayer-times/?shortcut=home",
+      "icons": [
+        {
+          "src": "/prayer-times/icons/icon-96.png",
+          "sizes": "96x96",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "Ramadan Calendar",
+      "short_name": "Ramadan",
+      "description": "View the full Ramadan Suhoor and Iftar timetable",
+      "url": "/prayer-times/?shortcut=calendar",
+      "icons": [
+        {
+          "src": "/prayer-times/icons/icon-96.png",
+          "sizes": "96x96",
+          "type": "image/png"
+        }
+      ]
+    }
+  ],
+
+  "related_applications": [],
+
+  "share_target": {
+    "action": "/prayer-times/",
+    "method": "GET",
+    "params": {
+      "title": "title",
+      "text": "text",
+      "url": "url"
+    }
+  }
+}

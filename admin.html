@@ -1,0 +1,936 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Waikato Prayer Times — Admin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root{--midnight:#0d0d1a;--navy:#111128;--navy2:#161630;--gold:#c9a84c;--gold-light:#f0d080;--gold-dim:rgba(201,168,76,.12);--gold-border:rgba(201,168,76,.28);--teal:#0f9b8e;--red:#e74c3c;--text:#e8e8f0;--text-dim:rgba(232,232,240,.6);--text-muted:rgba(232,232,240,.3);--glass:rgba(255,255,255,.04);--glass-border:rgba(255,255,255,.08);--radius:16px;--radius-sm:10px;}
+        *{margin:0;padding:0;box-sizing:border-box;}
+        body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--midnight);color:var(--text);min-height:100vh;}
+        body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 60% 40% at 50% -10%,rgba(201,168,76,.06) 0%,transparent 60%),radial-gradient(1.5px 1.5px at 15% 10%,rgba(255,255,255,.3) 0%,transparent 100%),radial-gradient(1px 1px at 72% 8%,rgba(255,255,255,.35) 0%,transparent 100%);pointer-events:none;z-index:0;}
+        .wrap{position:relative;z-index:1;max-width:980px;margin:0 auto;padding:28px 18px 60px;}
+
+        /* HEADER */
+        .hdr{text-align:center;margin-bottom:32px;padding-bottom:22px;border-bottom:1px solid var(--glass-border);}
+        .hdr-icon{font-size:2.4em;display:block;margin-bottom:8px;filter:drop-shadow(0 0 14px rgba(201,168,76,.5));}
+        .hdr h1{font-family:'Amiri',serif;font-size:1.85em;color:var(--gold);margin-bottom:3px;}
+        .hdr p{color:var(--text-dim);font-size:.84em;font-weight:300;}
+        .hdr-badge{display:inline-block;margin-top:8px;background:var(--gold-dim);border:1px solid var(--gold-border);color:var(--gold);font-size:.63em;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;padding:3px 13px;border-radius:20px;}
+
+        /* MAIN TABS */
+        .tabs{display:flex;gap:4px;margin-bottom:22px;background:var(--glass);border:1px solid var(--glass-border);border-radius:var(--radius-sm);padding:4px;}
+        .tab{flex:1;padding:10px 6px;border:none;background:transparent;color:var(--text-muted);border-radius:8px;font-family:'Plus Jakarta Sans',sans-serif;font-size:.8em;font-weight:500;cursor:pointer;transition:all .2s;text-align:center;}
+        .tab.active{background:linear-gradient(135deg,var(--gold),#8B6914);color:#1a1100;font-weight:700;}
+        .tab:hover:not(.active){color:var(--text-dim);}
+        .tab-pane{display:none;} .tab-pane.active{display:block;}
+
+        /* CARDS */
+        .card{background:var(--navy);border:1px solid var(--glass-border);border-radius:var(--radius);margin-bottom:18px;overflow:hidden;}
+        .card-hdr{padding:14px 18px;border-bottom:1px solid var(--glass-border);display:flex;align-items:center;gap:11px;}
+        .card-num{width:27px;height:27px;border-radius:50%;background:linear-gradient(135deg,var(--gold),#8B6914);color:#1a1100;font-weight:700;font-size:.78em;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+        .card-title{font-weight:600;font-size:.92em;}
+        .card-sub{font-size:.72em;color:var(--text-dim);margin-top:1px;}
+        .card-body{padding:18px;}
+        .hidden{display:none!important;}
+
+        /* STEPS BAR */
+        .steps{display:flex;background:var(--glass);border:1px solid var(--glass-border);border-radius:var(--radius-sm);overflow:hidden;margin-bottom:20px;}
+        .step{flex:1;padding:11px 6px;text-align:center;position:relative;}
+        .step:not(:last-child)::after{content:'›';position:absolute;right:-5px;top:50%;transform:translateY(-50%);color:var(--text-muted);font-size:1em;z-index:2;}
+        .step.active{background:var(--gold-dim);}
+        .step.done{background:rgba(15,155,142,.07);}
+        .snum{width:21px;height:21px;border-radius:50%;background:var(--glass);border:1px solid var(--glass-border);color:var(--text-muted);font-size:.67em;font-weight:700;display:flex;align-items:center;justify-content:center;margin:0 auto 4px;}
+        .step.active .snum{background:var(--gold);color:#1a1100;border-color:var(--gold);}
+        .step.done .snum{background:var(--teal);color:white;border-color:var(--teal);}
+        .slbl{font-size:.65em;color:var(--text-muted);font-weight:500;}
+        .step.active .slbl{color:var(--gold);} .step.done .slbl{color:var(--teal);}
+
+        /* FORM ELEMENTS */
+        .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-bottom:13px;}
+        .form-grid.full{grid-template-columns:1fr;}
+        .fg{display:flex;flex-direction:column;gap:5px;}
+        .flbl{font-size:.71em;color:var(--text-dim);font-weight:500;letter-spacing:.3px;}
+        .finput{background:var(--glass);border:1px solid var(--glass-border);border-radius:8px;color:var(--text);font-family:'Plus Jakarta Sans',sans-serif;font-size:.84em;padding:9px 11px;transition:border-color .2s;}
+        .finput:focus{outline:none;border-color:var(--gold-border);}
+        .finput::placeholder{color:var(--text-muted);}
+        select.finput option{background:#1a1a2e;}
+
+        /* MONTH CHIPS */
+        .month-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:13px;}
+        .mchip{padding:6px 13px;border-radius:20px;border:1px solid var(--glass-border);background:transparent;color:var(--text-dim);font-family:'Plus Jakarta Sans',sans-serif;font-size:.75em;cursor:pointer;transition:all .18s;font-weight:500;}
+        .mchip.sel{background:var(--gold-dim);border-color:var(--gold-border);color:var(--gold);}
+        .year-row{display:flex;align-items:center;gap:11px;margin-bottom:13px;}
+        .yr-lbl{font-size:.77em;color:var(--text-dim);font-weight:500;}
+        .yr-inp{background:var(--glass);border:1px solid var(--glass-border);border-radius:8px;color:var(--text);font-family:'JetBrains Mono',monospace;font-size:.85em;padding:7px 11px;width:85px;}
+        .yr-inp:focus{outline:none;border-color:var(--gold-border);}
+
+        /* TOGGLE */
+        .toggle-row{display:flex;align-items:center;gap:10px;padding:10px 13px;background:var(--glass);border:1px solid var(--glass-border);border-radius:var(--radius-sm);cursor:pointer;margin-bottom:13px;user-select:none;}
+        .tsw{width:37px;height:20px;background:rgba(255,255,255,.1);border-radius:10px;position:relative;transition:background .2s;flex-shrink:0;}
+        .tsw.on{background:linear-gradient(135deg,var(--gold),#8B6914);}
+        .tkn{width:14px;height:14px;background:white;border-radius:50%;position:absolute;top:3px;left:3px;transition:left .2s;box-shadow:0 1px 4px rgba(0,0,0,.3);}
+        .tsw.on .tkn{left:19px;}
+
+        /* UPLOAD ZONES */
+        .upg{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-bottom:13px;}
+        .upz{border:2px dashed var(--glass-border);border-radius:var(--radius-sm);padding:20px 13px;text-align:center;cursor:pointer;transition:all .22s;position:relative;}
+        .upz:hover,.upz:focus-within{border-color:var(--gold-border);background:var(--gold-dim);}
+        .upz.has{border-color:rgba(15,155,142,.5);background:rgba(15,155,142,.06);border-style:solid;}
+        .upz input[type="file"]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
+        .up-icon{font-size:1.8em;margin-bottom:6px;display:block;}
+        .up-title{font-weight:600;font-size:.83em;color:var(--text);margin-bottom:3px;}
+        .up-desc{font-size:.69em;color:var(--text-dim);line-height:1.5;}
+        .up-types{font-size:.63em;color:var(--text-muted);margin-top:5px;}
+        .up-badge{display:none;margin-top:6px;background:rgba(15,155,142,.15);border:1px solid rgba(15,155,142,.3);border-radius:6px;padding:3px 10px;font-size:.67em;color:var(--teal);font-weight:500;}
+        .upz.has .up-badge{display:inline-block;}
+
+        /* BUTTONS */
+        .btn{padding:11px 20px;border:none;border-radius:var(--radius-sm);font-family:'Plus Jakarta Sans',sans-serif;font-size:.84em;font-weight:700;cursor:pointer;transition:all .2s;display:inline-flex;align-items:center;gap:8px;}
+        .btn-gold{background:linear-gradient(135deg,var(--gold),#8B6914);color:#1a1100;}
+        .btn-gold:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(201,168,76,.3);}
+        .btn-gold:disabled{opacity:.5;cursor:not-allowed;transform:none;}
+        .btn-ghost{background:var(--glass);border:1px solid var(--glass-border);color:var(--text-dim);}
+        .btn-ghost:hover{border-color:var(--gold-border);color:var(--gold);}
+        .btn-full{width:100%;justify-content:center;}
+        .btn-sm{padding:6px 13px;font-size:.74em;}
+        .btn-danger:hover{border-color:rgba(231,76,60,.4)!important;color:var(--red)!important;}
+
+        /* PROGRESS / LOG */
+        .prog-wrap{background:var(--glass);border-radius:4px;height:4px;margin:11px 0;overflow:hidden;display:none;}
+        .prog-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--gold-light));border-radius:4px;width:0%;transition:width .4s ease;}
+        .prog-lbl{font-size:.72em;color:var(--text-dim);text-align:center;display:none;margin-bottom:6px;}
+        .ai-log{background:rgba(0,0,0,.3);border:1px solid var(--glass-border);border-radius:var(--radius-sm);padding:10px 13px;font-family:'JetBrains Mono',monospace;font-size:.69em;color:var(--text-dim);max-height:100px;overflow-y:auto;margin-bottom:13px;display:none;line-height:1.7;}
+        .ai-log .lok{color:var(--teal);} .ai-log .lerr{color:var(--red);} .ai-log .linf{color:var(--gold);}
+        .err-box{background:rgba(231,76,60,.08);border:1px solid rgba(231,76,60,.3);border-radius:var(--radius-sm);padding:10px 13px;font-size:.78em;color:#ff9999;display:none;margin-bottom:11px;}
+
+        /* PREVIEW TABLE */
+        .tscroll{overflow-x:auto;border-radius:var(--radius-sm);border:1px solid var(--glass-border);}
+        table.prev{width:100%;border-collapse:collapse;font-size:.69em;min-width:680px;}
+        table.prev thead{background:linear-gradient(135deg,rgba(201,168,76,.15),rgba(201,168,76,.05));}
+        table.prev th{padding:9px 5px;text-align:center;color:var(--gold);font-weight:600;font-size:.79em;letter-spacing:.3px;text-transform:uppercase;border-bottom:1px solid var(--glass-border);white-space:nowrap;}
+        table.prev td{padding:0;text-align:center;border-bottom:1px solid rgba(255,255,255,.04);}
+        table.prev td input{width:100%;background:transparent;border:none;color:var(--text-dim);font-family:'JetBrains Mono',monospace;font-size:.92em;text-align:center;padding:7px 3px;min-width:48px;}
+        table.prev td input:focus{background:rgba(201,168,76,.08);color:var(--gold-light);outline:none;}
+        table.prev td.iq input{color:var(--gold);font-weight:600;}
+        table.prev td.ft input{color:var(--red);font-weight:600;}
+        table.prev td.sh input{color:var(--teal);}
+        table.prev td.dt{padding:7px 8px;font-family:'Plus Jakarta Sans',sans-serif;font-size:.85em;color:var(--text);font-weight:500;white-space:nowrap;}
+        table.prev tr:hover td{background:rgba(255,255,255,.02);}
+        .iq-legend{font-size:.66em;color:var(--text-muted);margin-bottom:8px;padding:6px 11px;background:var(--glass);border-radius:8px;border:1px solid var(--glass-border);}
+        .iq-legend span{color:var(--gold);}
+
+        /* CODE OUTPUT */
+        .code-bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;gap:10px;}
+        .code-ttl{font-size:.77em;color:var(--text-dim);font-weight:500;}
+        .copy-btn{padding:6px 15px;background:linear-gradient(135deg,var(--gold),#8B6914);color:#1a1100;border:none;border-radius:8px;font-family:'Plus Jakarta Sans',sans-serif;font-size:.75em;font-weight:700;cursor:pointer;transition:all .18s;white-space:nowrap;}
+        .copy-btn:hover{transform:translateY(-1px);}
+        .copy-btn.copied{background:linear-gradient(135deg,var(--teal),#0a7a70);color:white;}
+        .code-blk{background:rgba(0,0,0,.4);border:1px solid var(--glass-border);border-radius:var(--radius-sm);padding:14px;font-family:'JetBrains Mono',monospace;font-size:.69em;color:#a8d8a8;max-height:290px;overflow-y:auto;white-space:pre;line-height:1.6;}
+        .code-blk::-webkit-scrollbar{width:5px;} .code-blk::-webkit-scrollbar-thumb{background:var(--glass-border);border-radius:3px;}
+        .paste-hint{margin-top:11px;padding:11px 13px;background:linear-gradient(135deg,rgba(201,168,76,.07),var(--glass));border:1px solid var(--gold-border);border-radius:var(--radius-sm);font-size:.72em;color:var(--text-dim);line-height:1.7;}
+        .paste-hint strong{color:var(--text);}
+        code{background:rgba(0,0,0,.3);border:1px solid var(--glass-border);border-radius:4px;padding:1px 5px;font-family:'JetBrains Mono',monospace;font-size:.9em;color:var(--gold-light);}
+
+        /* MOSQUE LIST */
+        .mq-item{background:var(--glass);border:1px solid var(--glass-border);border-radius:var(--radius-sm);padding:13px 15px;margin-bottom:9px;display:flex;align-items:center;gap:13px;transition:all .2s;}
+        .mq-item.mq-active{border-color:var(--gold-border);background:var(--gold-dim);}
+        .mq-dot{width:9px;height:9px;border-radius:50%;background:var(--glass-border);flex-shrink:0;}
+        .mq-dot.on{background:var(--gold);}
+        .mq-info{flex:1;}
+        .mq-name{font-weight:600;font-size:.87em;}
+        .mq-addr{font-size:.7em;color:var(--text-dim);margin-top:2px;}
+        .mq-acts{display:flex;gap:7px;align-items:center;}
+
+        /* INSTRUCTIONS */
+        .inst-card{background:linear-gradient(135deg,rgba(201,168,76,.06),var(--glass));border:1px solid var(--gold-border);border-radius:var(--radius);padding:18px;}
+        .inst-card h3{color:var(--gold);font-size:.82em;margin-bottom:12px;text-transform:uppercase;letter-spacing:1px;}
+        .istep{display:flex;gap:10px;margin-bottom:10px;align-items:flex-start;}
+        .inum{width:20px;height:20px;min-width:20px;border-radius:50%;background:var(--gold-dim);border:1px solid var(--gold-border);color:var(--gold);font-size:.67em;font-weight:700;display:flex;align-items:center;justify-content:center;margin-top:1px;}
+        .itxt{font-size:.77em;color:var(--text-dim);line-height:1.6;}
+        .itxt strong{color:var(--text);}
+
+        /* TOAST */
+        .toast{position:fixed;bottom:26px;left:50%;transform:translateX(-50%) translateY(16px);background:var(--navy2);border:1px solid var(--gold-border);color:var(--text);padding:8px 20px;border-radius:24px;font-size:.79em;font-weight:500;z-index:1000;opacity:0;transition:all .27s;white-space:nowrap;}
+        .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+        @media(max-width:600px){.upg,.form-grid{grid-template-columns:1fr;} .steps{display:none;}}
+    </style>
+</head>
+<body>
+<div class="wrap">
+<div class="toast" id="toast"></div>
+
+<!-- HEADER -->
+<div class="hdr">
+    <span class="hdr-icon">🕌</span>
+    <h1>Waikato Prayer Times — Admin</h1>
+    <p>Manage mosques · Extract prayer times · Generate app-ready code</p>
+    <div class="hdr-badge">🔒 Runs Locally · No External Data Storage</div>
+</div>
+
+<!-- MAIN TABS -->
+<div class="tabs">
+    <button class="tab active" onclick="switchTab('extract',this)">📤 Extract Data</button>
+    <button class="tab" onclick="switchTab('mosques',this)">🕌 Manage Mosques</button>
+    <button class="tab" onclick="switchTab('guide',this)">📖 How To Use</button>
+</div>
+
+<!-- ══════════════════════════════════════════ -->
+<!-- TAB: EXTRACT DATA                          -->
+<!-- ══════════════════════════════════════════ -->
+<div class="tab-pane active" id="tab-extract">
+
+    <!-- RAMADAN SETTINGS CARD -->
+    <div class="card" id="ramadanSettingsCard">
+        <div class="card-hdr">
+            <div class="card-num">🌙</div>
+            <div>
+                <div class="card-title">Ramadan Duration — 29 or 30 Days?</div>
+                <div class="card-sub">Set this after moon sighting confirmation. The calendar updates instantly — no code change needed.</div>
+            </div>
+        </div>
+        <div class="card-body">
+            <!-- Status banner -->
+            <div id="ramSettingsBanner" style="padding:12px 14px;border-radius:10px;margin-bottom:16px;font-size:.84em;font-weight:600;text-align:center;background:var(--gold-dim);border:1px solid var(--gold-border);color:var(--gold)">
+                Loading...
+            </div>
+
+            <!-- 29 / 30 toggle -->
+            <div style="display:flex;gap:10px;margin-bottom:16px;">
+                <button id="btn29" onclick="setRamadanDays(29)" style="flex:1;padding:14px;border-radius:var(--radius-sm);border:2px solid var(--glass-border);background:transparent;color:var(--text-dim);font-family:'Plus Jakarta Sans',sans-serif;font-size:.9em;font-weight:600;cursor:pointer;transition:all .2s">
+                    🌙 29 Days
+                </button>
+                <button id="btn30" onclick="setRamadanDays(30)" style="flex:1;padding:14px;border-radius:var(--radius-sm);border:2px solid var(--glass-border);background:transparent;color:var(--text-dim);font-family:'Plus Jakarta Sans',sans-serif;font-size:.9em;font-weight:600;cursor:pointer;transition:all .2s">
+                    🌙 30 Days
+                </button>
+            </div>
+
+            <!-- Day 30 fields — shown only when 30 days selected -->
+            <div id="day30Fields" style="display:none;background:var(--glass);border:1px solid var(--glass-border);border-radius:var(--radius-sm);padding:14px;margin-bottom:16px;">
+                <div style="font-size:.72em;color:var(--gold);font-weight:600;text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;">📅 Day 30 — Saturday Mar 21</div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+                    <div class="fg">
+                        <label class="flbl">Suhoor Ends (AM)</label>
+                        <input class="finput" id="day30Suhoor" placeholder="e.g. 5:49" type="text" value="5:49">
+                    </div>
+                    <div class="fg">
+                        <label class="flbl">Iftar Time (PM)</label>
+                        <input class="finput" id="day30Iftar" placeholder="e.g. 7:33" type="text" value="7:33">
+                    </div>
+                </div>
+                <div style="margin-top:10px;font-size:.7em;color:var(--text-muted);line-height:1.6;">
+                    💡 Iftar = Maghrib time for Mar 21 from FIANZ calendar. Suhoor = ~1 min later than Mar 20 (5:48 + 1).
+                </div>
+            </div>
+
+            <button class="btn btn-gold btn-full" onclick="saveRamadanConfig()" id="saveRamBtn">
+                💾 Save &amp; Apply to Live App
+            </button>
+            <div style="margin-top:10px;font-size:.7em;color:var(--text-muted);text-align:center;line-height:1.6;">
+                Settings are saved to this browser's storage and apply immediately to the app on the same device.<br>
+                For other users, paste the generated code snippet into <code>index.html</code>.
+            </div>
+
+            <!-- Code output -->
+            <div id="ramCodeWrap" style="display:none;margin-top:14px;">
+                <div class="code-bar">
+                    <div class="code-ttl" id="ramCodeTitle"></div>
+                    <button class="copy-btn" id="ramCopyBtn" onclick="copyRamCode()">📋 Copy Code</button>
+                </div>
+                <div class="code-blk" id="ramCodeBlk"></div>
+                <div class="paste-hint">
+                    In <strong>index.html</strong>, find <code>getRamadanConfig()</code> and update the <code>return{totalDays:</code> line to match. This makes it the permanent default for all users instead of relying on localStorage.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="steps">
+        <div class="step active" id="s1"><div class="snum">1</div><div class="slbl">Configure</div></div>
+        <div class="step" id="s2"><div class="snum">2</div><div class="slbl">Extract</div></div>
+        <div class="step" id="s3"><div class="snum">3</div><div class="slbl">Review</div></div>
+        <div class="step" id="s4"><div class="snum">4</div><div class="slbl">Generate</div></div>
+        <div class="step" id="s5"><div class="snum">5</div><div class="slbl">Copy</div></div>
+    </div>
+
+    <div class="card">
+        <div class="card-hdr">
+            <div class="card-num">1</div>
+            <div>
+                <div class="card-title">Configure & Upload Files</div>
+                <div class="card-sub">Select mosque, month, year — upload one or both source files</div>
+            </div>
+        </div>
+        <div class="card-body">
+
+            <!-- Mosque selector -->
+            <div style="display:flex;gap:8px;align-items:flex-end;margin-bottom:13px;">
+                <div class="fg" style="flex:1">
+                    <label class="flbl">Target Mosque</label>
+                    <select class="finput" id="targetMosque" onchange="state.activeMosqueId=this.value"></select>
+                </div>
+                <button class="btn btn-ghost btn-sm" onclick="switchTab('mosques',document.querySelectorAll('.tab')[1])">+ Add Mosque</button>
+            </div>
+
+            <!-- Year + Month -->
+            <div class="year-row">
+                <span class="yr-lbl">Year:</span>
+                <input type="number" class="yr-inp" id="yearInput" value="2026" min="2025" max="2035" oninput="checkExtractBtn()">
+                <span class="yr-lbl" style="margin-left:8px">Month:</span>
+            </div>
+            <div class="month-row">
+                <button class="mchip" onclick="selMonth('January',this)">Jan</button>
+                <button class="mchip" onclick="selMonth('February',this)">Feb</button>
+                <button class="mchip" onclick="selMonth('March',this)">Mar</button>
+                <button class="mchip" onclick="selMonth('April',this)">Apr</button>
+                <button class="mchip" onclick="selMonth('May',this)">May</button>
+                <button class="mchip" onclick="selMonth('June',this)">Jun</button>
+                <button class="mchip" onclick="selMonth('July',this)">Jul</button>
+                <button class="mchip" onclick="selMonth('August',this)">Aug</button>
+                <button class="mchip" onclick="selMonth('September',this)">Sep</button>
+                <button class="mchip" onclick="selMonth('October',this)">Oct</button>
+                <button class="mchip" onclick="selMonth('November',this)">Nov</button>
+                <button class="mchip" onclick="selMonth('December',this)">Dec</button>
+            </div>
+
+            <div class="toggle-row" onclick="toggleRamadan()">
+                <div class="tsw" id="ramTog"><div class="tkn"></div></div>
+                <div>
+                    <div style="font-size:.82em;font-weight:500">🌙 This month includes Ramadan</div>
+                    <div style="font-size:.68em;color:var(--text-dim)">Enable to extract Suhoor ends & Iftar times from FIANZ</div>
+                </div>
+            </div>
+
+            <div class="upg">
+                <div class="upz" id="wmaZone">
+                    <input type="file" id="wmaFile" accept=".pdf,image/*,.jpg,.jpeg,.png" onchange="handleFile('wma',this)">
+                    <span class="up-icon">📄</span>
+                    <div class="up-title">WMA Timetable</div>
+                    <div class="up-desc">Waikato Muslim Association monthly schedule</div>
+                    <div class="up-types">PDF or image · Contains Iqama times</div>
+                    <div class="up-badge" id="wmaBadge">✓ Ready</div>
+                </div>
+                <div class="upz" id="fianzZone">
+                    <input type="file" id="fianzFile" accept=".pdf,image/*,.jpg,.jpeg,.png" onchange="handleFile('fianz',this)">
+                    <span class="up-icon">🖼️</span>
+                    <div class="up-title">FIANZ Calendar</div>
+                    <div class="up-desc">Hamilton Suhoor &amp; Iftar times</div>
+                    <div class="up-types">PDF or image · Contains Suhoor &amp; Iftar</div>
+                    <div class="up-badge" id="fianzBadge">✓ Ready</div>
+                </div>
+            </div>
+
+            <div class="err-box" id="errBox"></div>
+            <button class="btn btn-gold btn-full" id="extractBtn" onclick="runExtract()" disabled>
+                <span id="extIco">✨</span><span id="extTxt">Select month and upload a file first</span>
+            </button>
+            <div class="prog-wrap" id="progWrap"><div class="prog-fill" id="progFill"></div></div>
+            <div class="prog-lbl" id="progLbl"></div>
+            <div class="ai-log" id="aiLog"></div>
+        </div>
+    </div>
+
+    <!-- PREVIEW TABLE — hidden until data extracted -->
+    <div class="card hidden" id="previewCard">
+        <div class="card-hdr">
+            <div class="card-num">2</div>
+            <div>
+                <div class="card-title">Review & Edit Extracted Data</div>
+                <div class="card-sub">Click any cell to correct · Empty iqama = carries forward from previous row</div>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="iq-legend"><span>Gold</span> = Iqama &nbsp;|&nbsp; <span style="color:var(--red)">Red</span> = Iftar &nbsp;|&nbsp; <span style="color:var(--teal)">Teal</span> = Suhoor &nbsp;|&nbsp; Blank iqama = carry forward (intentional)</div>
+            <div class="tscroll"><table class="prev"><thead id="prevHead"></thead><tbody id="prevBody"></tbody></table></div>
+            <div style="display:flex;gap:9px;margin-top:12px;flex-wrap:wrap">
+                <button class="btn btn-ghost" onclick="resetExtract()">↺ Start Over</button>
+                <button class="btn btn-gold" onclick="generateCode()" style="flex:1;max-width:210px;justify-content:center">⚡ Generate Code →</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- OUTPUT CODE — hidden until generated -->
+    <div class="card hidden" id="outputCard">
+        <div class="card-hdr">
+            <div class="card-num">3</div>
+            <div>
+                <div class="card-title">Generated Code — Ready to Paste</div>
+                <div class="card-sub" id="outSub"></div>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="code-bar">
+                <div class="code-ttl" id="codeTtl"></div>
+                <div style="display:flex;gap:7px">
+                    <button class="btn btn-ghost btn-sm" onclick="backToPreview()">← Edit</button>
+                    <button class="copy-btn" id="copyBtn" onclick="copyCode()">📋 Copy Code</button>
+                </div>
+            </div>
+            <div class="code-blk" id="codeBlk"></div>
+            <div class="paste-hint" id="pasteHint"></div>
+        </div>
+    </div>
+</div>
+
+<!-- ══════════════════════════════════════════ -->
+<!-- TAB: MANAGE MOSQUES                        -->
+<!-- ══════════════════════════════════════════ -->
+<div class="tab-pane hidden" id="tab-mosques">
+
+    <div class="card">
+        <div class="card-hdr">
+            <div class="card-num">🕌</div>
+            <div>
+                <div class="card-title">Registered Mosques</div>
+                <div class="card-sub">App shows a mosque selector in the header automatically when 2+ mosques are registered</div>
+            </div>
+        </div>
+        <div class="card-body">
+            <div id="mosqueList"></div>
+            <div style="margin-top:9px;padding:9px 12px;background:var(--glass);border:1px solid var(--glass-border);border-radius:8px;font-size:.71em;color:var(--text-muted)">
+                💡 Once a second mosque is added here, users will see a mosque switcher at the top of the prayer times app. Their selection is saved on their device.
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-hdr">
+            <div class="card-num">+</div>
+            <div>
+                <div class="card-title">Add New Mosque</div>
+                <div class="card-sub">Fill in the details — then extract its prayer times in the Extract tab</div>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="form-grid">
+                <div class="fg">
+                    <label class="flbl">Full Name *</label>
+                    <input class="finput" id="mName" placeholder="e.g. Cambridge Mosque" type="text">
+                </div>
+                <div class="fg">
+                    <label class="flbl">Short Name (button label) *</label>
+                    <input class="finput" id="mShort" placeholder="e.g. Cambridge" type="text">
+                </div>
+                <div class="fg">
+                    <label class="flbl">Address</label>
+                    <input class="finput" id="mAddr" placeholder="e.g. 12 Main St, Cambridge" type="text">
+                </div>
+                <div class="fg">
+                    <label class="flbl">Friday Khutbah Time</label>
+                    <input class="finput" id="mJummah" placeholder="e.g. 1:30 PM" type="text">
+                </div>
+            </div>
+            <div class="form-grid full" style="margin-bottom:14px">
+                <div class="fg">
+                    <label class="flbl">Unique ID (auto-generated)</label>
+                    <input class="finput" id="mId" placeholder="e.g. cambridge-mosque" type="text">
+                </div>
+            </div>
+            <button class="btn btn-gold" onclick="addMosque()">➕ Add Mosque</button>
+        </div>
+    </div>
+
+    <!-- Generated mosque config code -->
+    <div class="card hidden" id="mqCodeCard">
+        <div class="card-hdr">
+            <div class="card-num">📋</div>
+            <div>
+                <div class="card-title">Mosque Config Snippet</div>
+                <div class="card-sub">Add this to index.html so the app knows about this mosque</div>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="code-bar">
+                <div class="code-ttl">Mosque object for index.html</div>
+                <button class="copy-btn" id="mqCopyBtn" onclick="copyMqCode()">📋 Copy</button>
+            </div>
+            <div class="code-blk" id="mqCodeBlk"></div>
+            <div class="paste-hint">
+                In <strong>index.html</strong>, find <code>const DEFAULT_MOSQUE = {</code>. Below it, create or update an array: <code>const ALL_MOSQUES = [DEFAULT_MOSQUE, YOUR_NEW_MOSQUE];</code> and update <code>getMosques()</code> to return <code>ALL_MOSQUES</code> instead of <code>[DEFAULT_MOSQUE]</code>. Save and push to GitHub — the mosque selector appears automatically.
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ══════════════════════════════════════════ -->
+<!-- TAB: HOW TO USE                            -->
+<!-- ══════════════════════════════════════════ -->
+<div class="tab-pane hidden" id="tab-guide">
+    <div class="card">
+        <div class="card-hdr"><div class="card-num">📅</div><div><div class="card-title">Adding a New Month (Each Month Workflow)</div></div></div>
+        <div class="card-body">
+            <div class="inst-card">
+                <h3>Monthly Data Update</h3>
+                <div class="istep"><div class="inum">1</div><div class="itxt">Download the <strong>WMA monthly PDF</strong> from the masjid and the <strong>FIANZ regional calendar</strong> (image or PDF) for the upcoming month.</div></div>
+                <div class="istep"><div class="inum">2</div><div class="itxt">In the <strong>Extract Data</strong> tab: select the mosque, year and month. Turn on the Ramadan toggle if needed.</div></div>
+                <div class="istep"><div class="inum">3</div><div class="itxt">Upload one or both files. Click <strong>Extract Data</strong> — AI reads the documents and builds the table automatically in seconds.</div></div>
+                <div class="istep"><div class="inum">4</div><div class="itxt">Review the table — every cell is editable. Correct any times if needed. Empty iqama cells are fine (carry-forward logic handles them).</div></div>
+                <div class="istep"><div class="inum">5</div><div class="itxt">Click <strong>Generate Code</strong> → <strong>Copy Code</strong>.</div></div>
+                <div class="istep"><div class="inum">6</div><div class="itxt">Open <code>index.html</code>. Find <code>const FEB_DATA=[</code> (or MAR etc). Replace that entire array with your new one. Then add the variable name to the <code>resolveIqamas([...FEB_DATA, ...MAR_DATA])</code> line.</div></div>
+                <div class="istep"><div class="inum">7</div><div class="itxt">Save and push to GitHub. Done — the live app updates immediately. 🎉</div></div>
+            </div>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-hdr"><div class="card-num">🕌</div><div><div class="card-title">Adding a Second Mosque</div></div></div>
+        <div class="card-body">
+            <div class="inst-card">
+                <h3>Multi-Mosque Setup</h3>
+                <div class="istep"><div class="inum">1</div><div class="itxt">Go to <strong>Manage Mosques</strong> tab → fill in the new mosque's details → click <strong>Add Mosque</strong>.</div></div>
+                <div class="istep"><div class="inum">2</div><div class="itxt">Copy the generated config snippet and add it to <code>index.html</code> as shown in the instructions below the code.</div></div>
+                <div class="istep"><div class="inum">3</div><div class="itxt">Come back to <strong>Extract Data</strong>, select the new mosque from the dropdown, upload its timetable, extract and generate code as normal.</div></div>
+                <div class="istep"><div class="inum">4</div><div class="itxt">Each mosque gets its own data array (e.g. <code>CAMBRIDGE_MAR_DATA</code>). In <code>index.html</code>, route each mosque ID to the correct data array in the <code>getDataForMosque()</code> function.</div></div>
+                <div class="istep"><div class="inum">5</div><div class="itxt">Once 2+ mosques exist, the app automatically shows a <strong>mosque selector bar</strong> in the header. Users tap to switch — all times update instantly. Their selection is saved on their device.</div></div>
+            </div>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-hdr"><div class="card-num">❓</div><div><div class="card-title">About the Hadith — Does It Update Automatically?</div></div></div>
+        <div class="card-body">
+            <div style="font-size:.84em;color:var(--text-dim);line-height:1.8;padding:4px 0">
+                <p style="margin-bottom:10px"><strong style="color:var(--text)">Yes — it rotates automatically every day.</strong> The app has a built-in bank of 30 authentic hadith. Each day, it calculates the day-of-year number, takes that mod 30, and shows the corresponding hadith. No internet connection or server needed — it works offline.</p>
+                <p style="margin-bottom:10px"><strong style="color:var(--text)">Sources:</strong> All 30 hadith come from the six major authentic collections — Sahih al-Bukhari, Sahih Muslim, Abu Dawud, Tirmidhi, Ibn Majah, and Musnad Ahmad. Each hadith displays its source reference (e.g. "Sahih al-Bukhari 38").</p>
+                <p><strong style="color:var(--text)">Browse mode:</strong> Users can also tap Previous / Next to browse all 30 hadith at any time.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+</div><!-- .wrap -->
+
+<script>
+// ══════════════════════════════════════════
+// CONSTANTS
+// ══════════════════════════════════════════
+const MONTHS=['January','February','March','April','May','June','July','August','September','October','November','December'];
+const MSHORT=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const DAYS_IN_MONTH=[31,28,31,30,31,30,31,31,30,31,30,31];
+const RAMADAN_2026=['February','March'];
+
+const DEFAULT_MOSQUE={id:'hamilton-jamia',name:'Hamilton Jamia Mosque',shortName:'Hamilton Jamia',address:'921 Heaphy Terrace, Hamilton',jummahTime:'1:40 PM'};
+
+// ══════════════════════════════════════════
+// STATE
+// ══════════════════════════════════════════
+const state={
+    month:null, year:2026, isRamadan:false,
+    wmaFile:null, wmaType:null, fianzFile:null, fianzType:null,
+    rows:[], activeMosqueId:'hamilton-jamia'
+};
+
+// ══════════════════════════════════════════
+// MOSQUE MANAGEMENT
+// ══════════════════════════════════════════
+function getMosques(){
+    try{const s=localStorage.getItem('wpt_mosques');if(s)return JSON.parse(s);}catch(e){}
+    return[DEFAULT_MOSQUE];
+}
+function saveMosques(m){localStorage.setItem('wpt_mosques',JSON.stringify(m));}
+
+function renderMosqueList(){
+    const mosques=getMosques();
+    const list=document.getElementById('mosqueList');
+    list.innerHTML='';
+    mosques.forEach((m,i)=>{
+        const isDefault=m.id===DEFAULT_MOSQUE.id;
+        list.innerHTML+=`<div class="mq-item ${i===0?'mq-active':''}">
+            <div class="mq-dot ${i===0?'on':''}"></div>
+            <div class="mq-info">
+                <div class="mq-name">${m.name}</div>
+                <div class="mq-addr">📍 ${m.address||'—'} &nbsp;·&nbsp; 🕌 Jummah ${m.jummahTime||'—'} &nbsp;·&nbsp; ID: <code>${m.id}</code></div>
+            </div>
+            <div class="mq-acts">
+                ${isDefault
+                    ? '<span style="font-size:.68em;color:var(--text-muted)">Default</span>'
+                    : `<button class="btn btn-ghost btn-sm btn-danger" onclick="delMosque('${m.id}')">🗑 Remove</button>`}
+            </div>
+        </div>`;
+    });
+    // Populate dropdown in extract tab
+    const sel=document.getElementById('targetMosque');
+    sel.innerHTML=mosques.map(m=>`<option value="${m.id}">${m.name}</option>`).join('');
+    state.activeMosqueId=sel.value;
+}
+
+function addMosque(){
+    const name=document.getElementById('mName').value.trim();
+    const shortName=document.getElementById('mShort').value.trim();
+    const address=document.getElementById('mAddr').value.trim();
+    const jummahTime=document.getElementById('mJummah').value.trim()||'1:30 PM';
+    let id=document.getElementById('mId').value.trim();
+    if(!name||!shortName){showToast('⚠️ Name and Short Name required');return;}
+    if(!id) id=name.toLowerCase().replace(/\s+/g,'-').replace(/[^a-z0-9-]/g,'');
+    const mosques=getMosques();
+    if(mosques.find(m=>m.id===id)){showToast('⚠️ ID already exists — change it');return;}
+    const newM={id,name,shortName,address,jummahTime};
+    mosques.push(newM);
+    saveMosques(mosques);
+    renderMosqueList();
+    // Show config code
+    const code=`// Add this to index.html — inside getMosques() return value\n${JSON.stringify(newM,null,2)}`;
+    document.getElementById('mqCodeBlk').textContent=code;
+    document.getElementById('mqCodeCard').classList.remove('hidden');
+    ['mName','mShort','mAddr','mJummah','mId'].forEach(id=>document.getElementById(id).value='');
+    showToast(`✅ ${name} added!`);
+}
+
+function delMosque(id){
+    if(!confirm('Remove this mosque?'))return;
+    saveMosques(getMosques().filter(m=>m.id!==id));
+    renderMosqueList();
+    showToast('🗑 Removed');
+}
+
+function copyMqCode(){
+    navigator.clipboard.writeText(document.getElementById('mqCodeBlk').textContent).then(()=>{
+        const b=document.getElementById('mqCopyBtn');
+        b.textContent='✅ Copied!';setTimeout(()=>b.textContent='📋 Copy',2200);
+    });
+}
+
+// Auto-fill ID
+document.addEventListener('DOMContentLoaded',()=>{
+    document.getElementById('mName').addEventListener('input',e=>{
+        document.getElementById('mId').value=e.target.value.toLowerCase().replace(/\s+/g,'-').replace(/[^a-z0-9-]/g,'');
+    });
+    renderMosqueList();
+    initRamadanSettings();
+});
+
+// ══════════════════════════════════════════
+// TAB SWITCHING
+// ══════════════════════════════════════════
+function switchTab(id,btn){
+    document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+    document.querySelectorAll('.tab-pane').forEach(p=>{p.classList.remove('active');p.classList.add('hidden');});
+    btn.classList.add('active');
+    const pane=document.getElementById('tab-'+id);
+    pane.classList.remove('hidden'); pane.classList.add('active');
+}
+
+// ══════════════════════════════════════════
+// EXTRACT — CONFIG
+// ══════════════════════════════════════════
+function selMonth(m,el){
+    state.month=m;
+    document.querySelectorAll('.mchip').forEach(c=>c.classList.remove('sel'));
+    el.classList.add('sel');
+    const yr=parseInt(document.getElementById('yearInput').value);
+    setRamadan(yr===2026&&RAMADAN_2026.includes(m));
+    checkExtractBtn();
+}
+function setRamadan(v){state.isRamadan=v;document.getElementById('ramTog').classList.toggle('on',v);}
+function toggleRamadan(){setRamadan(!state.isRamadan);}
+
+function handleFile(src,inp){
+    const f=inp.files[0];if(!f)return;
+    const isPDF=f.type==='application/pdf'||f.name.toLowerCase().endsWith('.pdf');
+    if(src==='wma'){state.wmaFile=f;state.wmaType=isPDF?'pdf':'image';document.getElementById('wmaZone').classList.add('has');document.getElementById('wmaBadge').textContent=`✓ ${f.name.substring(0,22)}`;}
+    else{state.fianzFile=f;state.fianzType=isPDF?'pdf':'image';document.getElementById('fianzZone').classList.add('has');document.getElementById('fianzBadge').textContent=`✓ ${f.name.substring(0,22)}`;}
+    checkExtractBtn();
+}
+
+function checkExtractBtn(){
+    const btn=document.getElementById('extractBtn');
+    const txt=document.getElementById('extTxt');
+    if(!state.month){txt.textContent='Select a month first';btn.disabled=true;return;}
+    if(!state.wmaFile&&!state.fianzFile){txt.textContent='Upload at least one file';btn.disabled=true;return;}
+    const sel=document.getElementById('targetMosque');
+    const mName=sel.options[sel.selectedIndex]?.text||'';
+    txt.textContent=`✨ Extract ${state.month} ${document.getElementById('yearInput').value} — ${mName}`;
+    btn.disabled=false;
+}
+
+// ══════════════════════════════════════════
+// EXTRACT — AI
+// ══════════════════════════════════════════
+function setStep(n){for(let i=1;i<=5;i++){const el=document.getElementById('s'+i);if(!el)continue;el.classList.remove('active','done');if(i<n)el.classList.add('done');else if(i===n)el.classList.add('active');}}
+function setProgress(pct,lbl){document.getElementById('progWrap').style.display='block';document.getElementById('progFill').style.width=pct+'%';document.getElementById('progLbl').style.display='block';document.getElementById('progLbl').textContent=lbl;}
+function addLog(msg,type='linf'){const log=document.getElementById('aiLog');log.style.display='block';const d=document.createElement('div');d.className=type;d.textContent=msg;log.appendChild(d);log.scrollTop=log.scrollHeight;}
+function clearLog(){const l=document.getElementById('aiLog');l.innerHTML='';l.style.display='none';}
+function showErr(msg){const b=document.getElementById('errBox');b.textContent='⚠️ '+msg;b.style.display='block';}
+function hideErr(){document.getElementById('errBox').style.display='none';}
+function fileToB64(f){return new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(r.result.split(',')[1]);r.onerror=rej;r.readAsDataURL(f);});}
+
+function buildPrompt(){
+    const mosques=getMosques();
+    const mosque=mosques.find(m=>m.id===state.activeMosqueId)||DEFAULT_MOSQUE;
+    const monthIdx=MONTHS.indexOf(state.month);
+    const days=DAYS_IN_MONTH[monthIdx];
+    return `You are an expert at extracting Islamic prayer times from WMA and FIANZ timetable documents for ${mosque.name}, Hamilton, New Zealand.
+
+Extract ALL prayer times for ${state.month} ${document.getElementById('yearInput').value} (${days} days).
+
+RULES:
+1. Extract all ${days} days — never skip any
+2. WMA: two values per prayer — adhan time and iqama (bold). Only record iqama when it appears; null = carry forward
+3. FIANZ: extract Suhoor Ends and Iftar/Maghrib times for Ramadan
+4. Times as h:mm no leading zero ("5:30" not "05:30")
+5. AM: Fajr, Suhoor, Sunrise. PM: Dhuhr, Asr, Maghrib, Isha, Iftar
+
+Return ONLY valid JSON (no markdown):
+{"month":"${state.month}","year":"${document.getElementById('yearInput').value}","mosqueId":"${mosque.id}","isRamadan":${state.isRamadan},"days":[{"date":1,"dayName":"Sun","fajrAdhan":"5:31","fajrIqama":"5:50","sunrise":"7:03","dhuhrAdhan":"1:32","dhuhrIqama":"1:50","asrAdhan":"5:10","asrIqama":"5:20","maghribAdhan":"8:02","maghribIqama":"8:15","ishaAdhan":"9:16","ishaIqama":"9:30","suhoorEnds":"5:26","iftar":"8:04","isRamadan":true,"ramadanDay":11}]}
+
+Use null for missing fields. Only non-null iqama when it changes. dayName: Mon Tue Wed Thu Fri Sat Sun.`;
+}
+
+async function runExtract(){
+    hideErr();clearLog();setStep(2);
+    const btn=document.getElementById('extractBtn');
+    btn.disabled=true;document.getElementById('extIco').textContent='⏳';document.getElementById('extTxt').textContent='Extracting...';
+    setProgress(10,'Reading files...');
+    try{
+        const parts=[];
+        if(state.wmaFile){
+            addLog(`📄 WMA: ${state.wmaFile.name}`,'linf');
+            const b64=await fileToB64(state.wmaFile);
+            parts.push(state.wmaType==='pdf'
+                ?{type:'document',source:{type:'base64',media_type:'application/pdf',data:b64}}
+                :{type:'image',source:{type:'base64',media_type:state.wmaFile.type||'image/jpeg',data:b64}});
+            addLog(`✓ WMA loaded (${Math.round(state.wmaFile.size/1024)}KB)`,'lok');
+        }
+        if(state.fianzFile){
+            addLog(`🖼️ FIANZ: ${state.fianzFile.name}`,'linf');
+            const b64=await fileToB64(state.fianzFile);
+            parts.push(state.fianzType==='pdf'
+                ?{type:'document',source:{type:'base64',media_type:'application/pdf',data:b64}}
+                :{type:'image',source:{type:'base64',media_type:state.fianzFile.type||'image/jpeg',data:b64}});
+            addLog(`✓ FIANZ loaded (${Math.round(state.fianzFile.size/1024)}KB)`,'lok');
+        }
+        parts.push({type:'text',text:`Extract all prayer times for ${state.month} ${document.getElementById('yearInput').value}. Return only JSON.`});
+        setProgress(35,'Calling AI...');
+        addLog('🤖 Sending to Claude AI...','linf');
+        const resp=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:4000,system:buildPrompt(),messages:[{role:'user',content:parts}]})});
+        if(!resp.ok){const e=await resp.json().catch(()=>({}));throw new Error(e.error?.message||`API ${resp.status}`);}
+        const data=await resp.json();
+        const raw=data.content.find(b=>b.type==='text')?.text||'';
+        setProgress(75,'Parsing...');
+        addLog('📊 Parsing response...','linf');
+        let jt=raw.replace(/```json\s*/g,'').replace(/```\s*/g,'').trim();
+        const si=jt.indexOf('{'),ei=jt.lastIndexOf('}');
+        if(si===-1||ei===-1)throw new Error('AI did not return valid JSON. Try again.');
+        const parsed=JSON.parse(jt.substring(si,ei+1));
+        if(!parsed.days?.length)throw new Error('No days found in response.');
+        state.rows=parsed.days;
+        state.year=parseInt(document.getElementById('yearInput').value);
+        addLog(`✅ ${parsed.days.length} days extracted`,'lok');
+        setProgress(100,`✅ ${parsed.days.length} days ready to review`);
+        setTimeout(()=>{
+            buildPreview();
+            document.getElementById('previewCard').classList.remove('hidden');
+            document.getElementById('outputCard').classList.add('hidden');
+            document.getElementById('previewCard').scrollIntoView({behavior:'smooth',block:'start'});
+            setStep(3);
+        },500);
+    }catch(err){
+        setProgress(0,'');document.getElementById('progWrap').style.display='none';
+        addLog(`❌ ${err.message}`,'lerr');showErr(err.message);setStep(1);
+    }finally{
+        btn.disabled=false;document.getElementById('extIco').textContent='✨';checkExtractBtn();
+    }
+}
+
+// ══════════════════════════════════════════
+// PREVIEW TABLE
+// ══════════════════════════════════════════
+function buildPreview(){
+    const hasRam=state.isRamadan||state.rows.some(r=>r.isRamadan);
+    const ms=MSHORT[MONTHS.indexOf(state.month)];
+    document.getElementById('prevHead').innerHTML=`<tr>
+        <th>Date</th>
+        <th>Fajr</th><th style="color:var(--gold)">Fajr Iq.</th>
+        <th>Dhuhr</th><th style="color:var(--gold)">Dhuhr Iq.</th>
+        <th>Asr</th><th style="color:var(--gold)">Asr Iq.</th>
+        <th>Maghrib</th><th style="color:var(--gold)">Maghr.Iq.</th>
+        <th>Isha</th><th style="color:var(--gold)">Isha Iq.</th>
+        ${hasRam?'<th style="color:var(--teal)">Suhoor</th><th style="color:var(--red)">Iftar</th>':''}
+    </tr>`;
+    const fields=[
+        {k:'fajrAdhan',c:''},{k:'fajrIqama',c:'iq'},
+        {k:'dhuhrAdhan',c:''},{k:'dhuhrIqama',c:'iq'},
+        {k:'asrAdhan',c:''},{k:'asrIqama',c:'iq'},
+        {k:'maghribAdhan',c:''},{k:'maghribIqama',c:'iq'},
+        {k:'ishaAdhan',c:''},{k:'ishaIqama',c:'iq'},
+        ...(hasRam?[{k:'suhoorEnds',c:'sh'},{k:'iftar',c:'ft'}]:[])
+    ];
+    const tbody=document.getElementById('prevBody');
+    tbody.innerHTML='';
+    state.rows.forEach((row,i)=>{
+        const tr=document.createElement('tr');
+        const lbl=`${row.dayName||''} ${ms} ${row.date}${row.ramadanDay?` R${row.ramadanDay}`:''}`;
+        let html=`<td class="dt">${lbl}</td>`;
+        fields.forEach(f=>{html+=`<td class="${f.c}"><input type="text" value="${row[f.k]||''}" data-r="${i}" data-f="${f.k}" oninput="updCell(this)"></td>`;});
+        tr.innerHTML=html;tbody.appendChild(tr);
+    });
+}
+function updCell(inp){state.rows[parseInt(inp.dataset.r)][inp.dataset.f]=inp.value.trim();}
+
+// ══════════════════════════════════════════
+// CODE GENERATION
+// ══════════════════════════════════════════
+function generateCode(){
+    setStep(4);
+    const ms=MSHORT[MONTHS.indexOf(state.month)];
+    const mosque=getMosques().find(m=>m.id===state.activeMosqueId)||DEFAULT_MOSQUE;
+    const prefix=mosque.id!==DEFAULT_MOSQUE.id?mosque.id.replace(/-/g,'_').toUpperCase()+'_':'';
+    const varName=`${prefix}${ms.toUpperCase()}_DATA`;
+    const f=v=>v?`"${v}"`:'null';
+    const lines=state.rows.map(row=>{
+        const ds=`${ms} ${row.date}`;
+        let l=` {date:"${ds}",day:"${row.dayName||'?'}",`;
+        if(row.ramadanDay) l+=`ramadanDay:${row.ramadanDay},`;
+        l+=` fajr:${f(row.fajrAdhan)},fajrIq:${f(row.fajrIqama)},shuruq:${f(row.sunrise)},`;
+        l+=` dhuhr:${f(row.dhuhrAdhan)},dhuhrIq:${f(row.dhuhrIqama)},`;
+        l+=` asr:${f(row.asrAdhan)},asrIq:${f(row.asrIqama)},`;
+        l+=` magh:${f(row.maghribAdhan)},maghIq:${f(row.maghribIqama)},`;
+        l+=` isha:${f(row.ishaAdhan)},ishaIq:${f(row.ishaIqama)},`;
+        l+=` ramadan:${row.isRamadan?'true':'false'},suhoor:${f(row.suhoorEnds)},iftar:${f(row.iftar)}},`;
+        return l;
+    });
+    if(lines.length) lines[lines.length-1]=lines[lines.length-1].replace(/,$/,'');
+    const isDefault=mosque.id===DEFAULT_MOSQUE.id;
+    const note=isDefault
+        ?`// Then add ...${varName} to resolveIqamas([...FEB_DATA, ...MAR_DATA, ...${varName}]) in index.html`
+        :`// For ${mosque.name} — add ...${varName} to that mosque's data resolver in index.html`;
+    const code=`// ${mosque.name} — ${state.month} ${state.year}\n// Sources: WMA (Iqama times) + FIANZ (Suhoor/Iftar)\nconst ${varName}=[\n${lines.join('\n')}\n];\n\n${note}`;
+    document.getElementById('codeBlk').textContent=code;
+    document.getElementById('codeTtl').textContent=`${varName} — ${lines.length} days`;
+    document.getElementById('outSub').textContent=`${mosque.name} · ${state.month} ${state.year}`;
+    document.getElementById('pasteHint').innerHTML=isDefault
+        ?`In <strong>index.html</strong>, find <code>const FEB_DATA=[</code> (or MAR, APR etc.) and replace that entire array. Then update <code>resolveIqamas([...FEB_DATA, ...MAR_DATA, ...])</code> to include <code>...${varName}</code>.`
+        :`This is data for <strong>${mosque.name}</strong>. Add to index.html and route it in your mosque data resolver function for mosque ID <code>${mosque.id}</code>.`;
+    document.getElementById('outputCard').classList.remove('hidden');
+    document.getElementById('outputCard').scrollIntoView({behavior:'smooth',block:'start'});
+    setStep(5);
+}
+
+function copyCode(){
+    navigator.clipboard.writeText(document.getElementById('codeBlk').textContent).then(()=>{
+        const b=document.getElementById('copyBtn');b.textContent='✅ Copied!';b.classList.add('copied');
+        showToast('✅ Code copied!');
+        setTimeout(()=>{b.textContent='📋 Copy Code';b.classList.remove('copied');},2500);
+    }).catch(()=>{
+        const ta=document.createElement('textarea');ta.value=document.getElementById('codeBlk').textContent;
+        document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove();showToast('✅ Copied!');
+    });
+}
+
+function backToPreview(){
+    document.getElementById('outputCard').classList.add('hidden');
+    document.getElementById('previewCard').scrollIntoView({behavior:'smooth',block:'start'});
+    setStep(3);
+}
+
+function resetExtract(){
+    state.rows=[];state.wmaFile=null;state.fianzFile=null;
+    document.getElementById('wmaFile').value='';document.getElementById('fianzFile').value='';
+    document.getElementById('wmaZone').classList.remove('has');document.getElementById('fianzZone').classList.remove('has');
+    document.getElementById('previewCard').classList.add('hidden');document.getElementById('outputCard').classList.add('hidden');
+    document.getElementById('progWrap').style.display='none';document.getElementById('progLbl').style.display='none';
+    clearLog();hideErr();checkExtractBtn();setStep(1);window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// ══════════════════════════════════════════
+// RAMADAN SETTINGS
+// ══════════════════════════════════════════
+let selectedDays = 29;
+
+function getRamadanConfig() {
+    try {
+        const s = localStorage.getItem('ramadanConfig');
+        if (s) return JSON.parse(s);
+    } catch(e) {}
+    return { totalDays: 29, day30Suhoor: '5:49', day30Iftar: '7:33' };
+}
+
+function initRamadanSettings() {
+    const cfg = getRamadanConfig();
+    selectedDays = cfg.totalDays;
+    document.getElementById('day30Suhoor').value = cfg.day30Suhoor || '5:49';
+    document.getElementById('day30Iftar').value = cfg.day30Iftar || '7:33';
+    updateRamadanUI();
+}
+
+function setRamadanDays(n) {
+    selectedDays = n;
+    updateRamadanUI();
+}
+
+function updateRamadanUI() {
+    const is30 = selectedDays === 30;
+    const gold = 'linear-gradient(135deg,var(--gold),#8B6914)';
+
+    // Buttons
+    document.getElementById('btn29').style.background = is30 ? 'transparent' : gold;
+    document.getElementById('btn29').style.color = is30 ? 'var(--text-dim)' : '#1a1100';
+    document.getElementById('btn29').style.borderColor = is30 ? 'var(--glass-border)' : 'var(--gold)';
+    document.getElementById('btn30').style.background = is30 ? gold : 'transparent';
+    document.getElementById('btn30').style.color = is30 ? '#1a1100' : 'var(--text-dim)';
+    document.getElementById('btn30').style.borderColor = is30 ? 'var(--gold)' : 'var(--glass-border)';
+
+    // Day 30 fields
+    document.getElementById('day30Fields').style.display = is30 ? 'block' : 'none';
+
+    // Banner
+    const banner = document.getElementById('ramSettingsBanner');
+    if (is30) {
+        banner.style.background = 'linear-gradient(135deg,rgba(201,168,76,.15),rgba(201,168,76,.05))';
+        banner.style.borderColor = 'rgba(201,168,76,.4)';
+        banner.style.color = 'var(--gold-light)';
+        banner.textContent = '🌙 30-Day Ramadan — Eid ul-Fitr on Sunday 22 March 2026';
+    } else {
+        banner.style.background = 'linear-gradient(135deg,rgba(15,155,142,.1),rgba(15,155,142,.04))';
+        banner.style.borderColor = 'rgba(15,155,142,.3)';
+        banner.style.color = 'var(--teal)';
+        banner.textContent = '🌙 29-Day Ramadan — Eid ul-Fitr on Saturday 21 March 2026';
+    }
+}
+
+function saveRamadanConfig() {
+    const suhoor = document.getElementById('day30Suhoor').value.trim() || '5:49';
+    const iftar = document.getElementById('day30Iftar').value.trim() || '7:33';
+    const cfg = { totalDays: selectedDays, day30Suhoor: suhoor, day30Iftar: iftar };
+
+    // Save to localStorage (applies immediately on this device)
+    localStorage.setItem('ramadanConfig', JSON.stringify(cfg));
+
+    // Generate code snippet for permanent change in index.html
+    const code = `// In index.html — update getRamadanConfig() return value:
+return {
+    totalDays: ${selectedDays},
+    day30Suhoor: '${suhoor}',
+    day30Iftar: '${iftar}'
+};
+
+// This makes ${selectedDays === 30 ? 'Day 30 (Mar 21) appear as Ramadan' : '29-day Ramadan (Mar 21 is Eid day)'} for ALL users.`;
+
+    document.getElementById('ramCodeBlk').textContent = code;
+    document.getElementById('ramCodeTitle').textContent = selectedDays === 30
+        ? '30-Day Ramadan config — paste into index.html'
+        : '29-Day Ramadan config — paste into index.html';
+    document.getElementById('ramCodeWrap').style.display = 'block';
+
+    showToast(`✅ Saved! App now shows ${selectedDays}-day Ramadan`);
+}
+
+function copyRamCode() {
+    const code = document.getElementById('ramCodeBlk').textContent;
+    navigator.clipboard.writeText(code).then(() => {
+        const b = document.getElementById('ramCopyBtn');
+        b.textContent = '✅ Copied!';
+        setTimeout(() => b.textContent = '📋 Copy Code', 2200);
+    });
+}
+
+// ══════════════════════════════════════════
+// TOAST
+// ══════════════════════════════════════════
+function showToast(msg,dur=3000){
+    const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');
+    setTimeout(()=>t.classList.remove('show'),dur);
+}
+</script>
+</body>
+</html>
