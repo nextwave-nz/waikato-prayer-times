@@ -10,157 +10,151 @@
         *{margin:0;padding:0;box-sizing:border-box;}
         body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--midnight);color:var(--text);min-height:100vh;}
         body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 60% 40% at 50% -10%,rgba(201,168,76,.06) 0%,transparent 60%);pointer-events:none;z-index:0;}
-        .wrap{position:relative;z-index:1;max-width:980px;margin:0 auto;padding:28px 18px 60px;}
-        .hdr{text-align:center;margin-bottom:32px;padding-bottom:22px;border-bottom:1px solid var(--glass-border);}
-        .hdr-icon{font-size:2.4em;display:block;margin-bottom:8px;filter:drop-shadow(0 0 14px rgba(201,168,76,.5));}
-        .hdr h1{font-family:'Amiri',serif;font-size:1.85em;color:var(--gold);margin-bottom:3px;}
-        .hdr p{color:var(--text-dim);font-size:.84em;font-weight:300;}
-        .hdr-badge{display:inline-block;margin-top:8px;background:var(--gold-dim);border:1px solid var(--gold-border);color:var(--gold);font-size:.63em;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;padding:3px 13px;border-radius:20px;}
+        .wrap{position:relative;z-index:1;max-width:860px;margin:0 auto;padding:28px 18px 60px;}
 
-        /* MODE SELECTOR */
-        .mode-card{background:var(--navy);border:1px solid var(--glass-border);border-radius:var(--radius);padding:18px;margin-bottom:22px;}
-        .mode-title{font-weight:700;font-size:.9em;margin-bottom:12px;color:var(--text);}
-        .mode-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
-        .mode-btn{padding:14px 16px;border-radius:var(--radius-sm);border:2px solid var(--glass-border);background:transparent;color:var(--text-dim);font-family:'Plus Jakarta Sans',sans-serif;font-size:.82em;font-weight:600;cursor:pointer;transition:all .2s;text-align:left;line-height:1.4;}
-        .mode-btn .mode-icon{font-size:1.4em;display:block;margin-bottom:6px;}
-        .mode-btn .mode-name{font-size:.9em;font-weight:700;color:var(--text);display:block;margin-bottom:3px;}
-        .mode-btn .mode-desc{font-size:.75em;color:var(--text-dim);font-weight:400;}
-        .mode-btn.active{background:var(--gold-dim);border-color:var(--gold-border);color:var(--gold);}
-        .mode-btn.active .mode-name{color:var(--gold);}
-        .mode-btn:hover:not(.active){border-color:var(--gold-border);}
+        .hdr{text-align:center;margin-bottom:28px;padding-bottom:20px;border-bottom:1px solid var(--glass-border);}
+        .hdr-icon{font-size:2.2em;display:block;margin-bottom:6px;filter:drop-shadow(0 0 14px rgba(201,168,76,.5));}
+        .hdr h1{font-family:'Amiri',serif;font-size:1.75em;color:var(--gold);margin-bottom:2px;}
+        .hdr p{color:var(--text-dim);font-size:.82em;}
+        .hdr-badge{display:inline-block;margin-top:7px;background:var(--gold-dim);border:1px solid var(--gold-border);color:var(--gold);font-size:.62em;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;padding:3px 13px;border-radius:20px;}
 
-        .tabs{display:flex;gap:4px;margin-bottom:22px;background:var(--glass);border:1px solid var(--glass-border);border-radius:var(--radius-sm);padding:4px;}
-        .tab{flex:1;padding:10px 6px;border:none;background:transparent;color:var(--text-muted);border-radius:8px;font-family:'Plus Jakarta Sans',sans-serif;font-size:.8em;font-weight:500;cursor:pointer;transition:all .2s;text-align:center;}
-        .tab.active{background:linear-gradient(135deg,var(--gold),#8B6914);color:#1a1100;font-weight:700;}
-        .tab:hover:not(.active){color:var(--text-dim);}
-        .tab-pane{display:none;}.tab-pane.active{display:block;}
-        .card{background:var(--navy);border:1px solid var(--glass-border);border-radius:var(--radius);margin-bottom:18px;overflow:hidden;}
-        .card-hdr{padding:14px 18px;border-bottom:1px solid var(--glass-border);display:flex;align-items:center;gap:11px;}
-        .card-num{width:27px;height:27px;border-radius:50%;background:linear-gradient(135deg,var(--gold),#8B6914);color:#1a1100;font-weight:700;font-size:.78em;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-        .card-title{font-weight:600;font-size:.92em;}
-        .card-sub{font-size:.72em;color:var(--text-dim);margin-top:1px;}
-        .card-body{padding:18px;}
+        /* ── WORKFLOW STEPS ── */
+        .workflow{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:24px;}
+        .wf-step{background:var(--navy);border:1px solid var(--glass-border);border-radius:var(--radius-sm);padding:14px 13px;text-align:center;position:relative;}
+        .wf-step::after{content:'→';position:absolute;right:-14px;top:50%;transform:translateY(-50%);color:var(--gold);font-size:1.1em;font-weight:700;}
+        .wf-step:last-child::after{display:none;}
+        .wf-num{width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,var(--gold),#8B6914);color:#1a1100;font-weight:700;font-size:.75em;display:flex;align-items:center;justify-content:center;margin:0 auto 7px;}
+        .wf-title{font-size:.8em;font-weight:600;color:var(--text);margin-bottom:3px;}
+        .wf-desc{font-size:.68em;color:var(--text-dim);line-height:1.4;}
+        .wf-step.done .wf-num{background:linear-gradient(135deg,var(--teal),#0a7a70);}
+        .wf-step.done .wf-title{color:var(--teal);}
+
+        .card{background:var(--navy);border:1px solid var(--glass-border);border-radius:var(--radius);margin-bottom:16px;overflow:hidden;}
+        .card-hdr{padding:13px 18px;border-bottom:1px solid var(--glass-border);display:flex;align-items:center;gap:10px;}
+        .card-num{width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,var(--gold),#8B6914);color:#1a1100;font-weight:700;font-size:.75em;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+        .card-num.done{background:linear-gradient(135deg,var(--teal),#0a7a70);}
+        .card-title{font-weight:600;font-size:.9em;}
+        .card-sub{font-size:.71em;color:var(--text-dim);margin-top:1px;}
+        .card-body{padding:16px;}
         .hidden{display:none!important;}
 
-        .steps{display:flex;background:var(--glass);border:1px solid var(--glass-border);border-radius:var(--radius-sm);overflow:hidden;margin-bottom:20px;}
-        .step{flex:1;padding:11px 6px;text-align:center;position:relative;}
-        .step:not(:last-child)::after{content:'›';position:absolute;right:-5px;top:50%;transform:translateY(-50%);color:var(--text-muted);font-size:1em;z-index:2;}
-        .step.active{background:var(--gold-dim);}
-        .step.done{background:rgba(15,155,142,.07);}
-        .snum{width:21px;height:21px;border-radius:50%;background:var(--glass);border:1px solid var(--glass-border);color:var(--text-muted);font-size:.67em;font-weight:700;display:flex;align-items:center;justify-content:center;margin:0 auto 4px;}
-        .step.active .snum{background:var(--gold);color:#1a1100;border-color:var(--gold);}
-        .step.done .snum{background:var(--teal);color:white;border-color:var(--teal);}
-        .slbl{font-size:.65em;color:var(--text-muted);font-weight:500;}
-        .step.active .slbl{color:var(--gold);}.step.done .slbl{color:var(--teal);}
+        .steps-bar{display:flex;background:var(--glass);border:1px solid var(--glass-border);border-radius:var(--radius-sm);overflow:hidden;margin-bottom:18px;}
+        .step-item{flex:1;padding:10px 6px;text-align:center;position:relative;}
+        .step-item:not(:last-child)::after{content:'›';position:absolute;right:-5px;top:50%;transform:translateY(-50%);color:var(--text-muted);font-size:1em;z-index:2;}
+        .step-item.active{background:var(--gold-dim);}
+        .step-item.done{background:rgba(15,155,142,.07);}
+        .snum{width:20px;height:20px;border-radius:50%;background:var(--glass);border:1px solid var(--glass-border);color:var(--text-muted);font-size:.65em;font-weight:700;display:flex;align-items:center;justify-content:center;margin:0 auto 3px;}
+        .step-item.active .snum{background:var(--gold);color:#1a1100;border-color:var(--gold);}
+        .step-item.done .snum{background:var(--teal);color:white;border-color:var(--teal);}
+        .slbl{font-size:.62em;color:var(--text-muted);font-weight:500;}
+        .step-item.active .slbl{color:var(--gold);}.step-item.done .slbl{color:var(--teal);}
 
-        .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-bottom:13px;}
-        .form-grid.full{grid-template-columns:1fr;}
-        .fg{display:flex;flex-direction:column;gap:5px;}
-        .flbl{font-size:.71em;color:var(--text-dim);font-weight:500;letter-spacing:.3px;}
-        .finput{background:var(--glass);border:1px solid var(--glass-border);border-radius:8px;color:var(--text);font-family:'Plus Jakarta Sans',sans-serif;font-size:.84em;padding:9px 11px;transition:border-color .2s;}
+        /* ── APP FILE UPLOAD ── */
+        .app-upz{border:2px dashed var(--glass-border);border-radius:var(--radius-sm);padding:22px 16px;text-align:center;cursor:pointer;transition:all .22s;position:relative;margin-bottom:13px;}
+        .app-upz:hover,.app-upz:focus-within{border-color:var(--gold-border);background:var(--gold-dim);}
+        .app-upz.has{border-color:rgba(15,155,142,.5);background:rgba(15,155,142,.06);border-style:solid;}
+        .app-upz input[type="file"]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
+        .app-upz-icon{font-size:1.7em;margin-bottom:5px;}
+        .app-upz-title{font-weight:600;font-size:.85em;margin-bottom:3px;}
+        .app-upz-desc{font-size:.71em;color:var(--text-dim);}
+        .app-upz-badge{display:none;margin-top:7px;background:rgba(15,155,142,.15);border:1px solid rgba(15,155,142,.3);border-radius:6px;padding:3px 12px;font-size:.68em;color:var(--teal);font-weight:500;}
+        .app-upz.has .app-upz-badge{display:inline-block;}
+
+        /* ── FORM ELEMENTS ── */
+        .month-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:13px;}
+        .mchip{padding:6px 12px;border-radius:20px;border:1px solid var(--glass-border);background:transparent;color:var(--text-dim);font-family:'Plus Jakarta Sans',sans-serif;font-size:.74em;cursor:pointer;transition:all .18s;font-weight:500;}
+        .mchip.sel{background:var(--gold-dim);border-color:var(--gold-border);color:var(--gold);}
+        .year-row{display:flex;align-items:center;gap:10px;margin-bottom:13px;}
+        .yr-lbl{font-size:.76em;color:var(--text-dim);}
+        .yr-inp{background:var(--glass);border:1px solid var(--glass-border);border-radius:8px;color:var(--text);font-family:'JetBrains Mono',monospace;font-size:.84em;padding:7px 11px;width:80px;}
+        .yr-inp:focus{outline:none;border-color:var(--gold-border);}
+        .finput{background:var(--glass);border:1px solid var(--glass-border);border-radius:8px;color:var(--text);font-family:'Plus Jakarta Sans',sans-serif;font-size:.83em;padding:9px 11px;transition:border-color .2s;width:100%;}
         .finput:focus{outline:none;border-color:var(--gold-border);}
         .finput::placeholder{color:var(--text-muted);}
-        select.finput option{background:#1a1a2e;}
-        .month-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:13px;}
-        .mchip{padding:6px 13px;border-radius:20px;border:1px solid var(--glass-border);background:transparent;color:var(--text-dim);font-family:'Plus Jakarta Sans',sans-serif;font-size:.75em;cursor:pointer;transition:all .18s;font-weight:500;}
-        .mchip.sel{background:var(--gold-dim);border-color:var(--gold-border);color:var(--gold);}
-        .year-row{display:flex;align-items:center;gap:11px;margin-bottom:13px;}
-        .yr-lbl{font-size:.77em;color:var(--text-dim);font-weight:500;}
-        .yr-inp{background:var(--glass);border:1px solid var(--glass-border);border-radius:8px;color:var(--text);font-family:'JetBrains Mono',monospace;font-size:.85em;padding:7px 11px;width:85px;}
-        .yr-inp:focus{outline:none;border-color:var(--gold-border);}
-        .toggle-row{display:flex;align-items:center;gap:10px;padding:10px 13px;background:var(--glass);border:1px solid var(--glass-border);border-radius:var(--radius-sm);cursor:pointer;margin-bottom:13px;user-select:none;}
-        .tsw{width:37px;height:20px;background:rgba(255,255,255,.1);border-radius:10px;position:relative;transition:background .2s;flex-shrink:0;}
-        .tsw.on{background:linear-gradient(135deg,var(--gold),#8B6914);}
-        .tkn{width:14px;height:14px;background:white;border-radius:50%;position:absolute;top:3px;left:3px;transition:left .2s;box-shadow:0 1px 4px rgba(0,0,0,.3);}
-        .tsw.on .tkn{left:19px;}
-        .upg{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-bottom:13px;}
-        .upz{border:2px dashed var(--glass-border);border-radius:var(--radius-sm);padding:20px 13px;text-align:center;cursor:pointer;transition:all .22s;position:relative;}
+        .fg{display:flex;flex-direction:column;gap:5px;margin-bottom:11px;}
+        .flbl{font-size:.7em;color:var(--text-dim);font-weight:500;}
+
+        /* ── UPLOAD ZONES ── */
+        .upg{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:13px;}
+        .upz{border:2px dashed var(--glass-border);border-radius:var(--radius-sm);padding:18px 12px;text-align:center;cursor:pointer;transition:all .22s;position:relative;}
         .upz:hover,.upz:focus-within{border-color:var(--gold-border);background:var(--gold-dim);}
         .upz.has{border-color:rgba(15,155,142,.5);background:rgba(15,155,142,.06);border-style:solid;}
         .upz input[type="file"]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
-        .up-icon{font-size:1.8em;margin-bottom:6px;display:block;}
-        .up-title{font-weight:600;font-size:.83em;color:var(--text);margin-bottom:3px;}
-        .up-desc{font-size:.69em;color:var(--text-dim);line-height:1.5;}
-        .up-types{font-size:.63em;color:var(--text-muted);margin-top:5px;}
-        .up-badge{display:none;margin-top:6px;background:rgba(15,155,142,.15);border:1px solid rgba(15,155,142,.3);border-radius:6px;padding:3px 10px;font-size:.67em;color:var(--teal);font-weight:500;}
+        .up-icon{font-size:1.6em;margin-bottom:5px;display:block;}
+        .up-title{font-weight:600;font-size:.82em;color:var(--text);margin-bottom:2px;}
+        .up-desc{font-size:.68em;color:var(--text-dim);}
+        .up-badge{display:none;margin-top:5px;background:rgba(15,155,142,.15);border:1px solid rgba(15,155,142,.3);border-radius:6px;padding:3px 10px;font-size:.66em;color:var(--teal);font-weight:500;}
         .upz.has .up-badge{display:inline-block;}
+
+        /* ── BUTTONS ── */
         .btn{padding:11px 20px;border:none;border-radius:var(--radius-sm);font-family:'Plus Jakarta Sans',sans-serif;font-size:.84em;font-weight:700;cursor:pointer;transition:all .2s;display:inline-flex;align-items:center;gap:8px;}
         .btn-gold{background:linear-gradient(135deg,var(--gold),#8B6914);color:#1a1100;}
         .btn-gold:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(201,168,76,.3);}
         .btn-gold:disabled{opacity:.5;cursor:not-allowed;transform:none;}
-        .btn-ghost{background:var(--glass);border:1px solid var(--glass-border);color:var(--text-dim);}
-        .btn-ghost:hover{border-color:var(--gold-border);color:var(--gold);}
         .btn-teal{background:linear-gradient(135deg,var(--teal),#0a7a70);color:white;}
         .btn-teal:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(15,155,142,.3);}
+        .btn-ghost{background:var(--glass);border:1px solid var(--glass-border);color:var(--text-dim);}
+        .btn-ghost:hover{border-color:var(--gold-border);color:var(--gold);}
         .btn-full{width:100%;justify-content:center;}
-        .btn-sm{padding:6px 13px;font-size:.74em;}
-        .btn-danger:hover{border-color:rgba(231,76,60,.4)!important;color:var(--red)!important;}
+        .btn-sm{padding:6px 13px;font-size:.73em;}
 
-        /* API KEY */
-        .api-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:10px;}
-        .api-inp{flex:1;min-width:180px;background:rgba(0,0,0,.35);border:1px solid var(--glass-border);border-radius:8px;color:var(--text);font-family:'JetBrains Mono',monospace;font-size:.78em;padding:9px 12px;}
-        .api-inp:focus{outline:none;border-color:var(--gold-border);}
-        .api-inp::placeholder{color:var(--text-muted);}
-
-        /* MANUAL MODE */
-        .manual-steps{display:flex;flex-direction:column;gap:12px;margin-bottom:16px;}
-        .manual-step{display:flex;gap:12px;align-items:flex-start;padding:14px;background:var(--glass);border:1px solid var(--glass-border);border-radius:var(--radius-sm);}
-        .manual-step-num{width:24px;height:24px;min-width:24px;border-radius:50%;background:linear-gradient(135deg,var(--gold),#8B6914);color:#1a1100;font-weight:700;font-size:.75em;display:flex;align-items:center;justify-content:center;}
-        .manual-step-content{flex:1;}
-        .manual-step-title{font-weight:600;font-size:.85em;margin-bottom:4px;}
-        .manual-step-desc{font-size:.74em;color:var(--text-dim);line-height:1.5;margin-bottom:8px;}
-
-        .prompt-box{background:rgba(0,0,0,.4);border:1px solid var(--gold-border);border-radius:var(--radius-sm);padding:13px;font-family:'JetBrains Mono',monospace;font-size:.68em;color:var(--gold-light);line-height:1.6;max-height:160px;overflow-y:auto;white-space:pre-wrap;margin-bottom:8px;}
-        .json-paste{width:100%;background:rgba(0,0,0,.3);border:1px solid var(--glass-border);border-radius:var(--radius-sm);color:var(--text);font-family:'JetBrains Mono',monospace;font-size:.72em;padding:12px;min-height:100px;resize:vertical;line-height:1.6;}
+        /* ── MANUAL PANEL ── */
+        .manual-step{display:flex;gap:11px;align-items:flex-start;padding:13px;background:var(--glass);border:1px solid var(--glass-border);border-radius:var(--radius-sm);margin-bottom:10px;}
+        .ms-num{width:23px;height:23px;min-width:23px;border-radius:50%;background:linear-gradient(135deg,var(--gold),#8B6914);color:#1a1100;font-weight:700;font-size:.72em;display:flex;align-items:center;justify-content:center;}
+        .ms-body{flex:1;}
+        .ms-title{font-weight:600;font-size:.83em;margin-bottom:3px;}
+        .ms-desc{font-size:.72em;color:var(--text-dim);line-height:1.5;margin-bottom:7px;}
+        .prompt-box{background:rgba(0,0,0,.4);border:1px solid var(--gold-border);border-radius:var(--radius-sm);padding:11px;font-family:'JetBrains Mono',monospace;font-size:.67em;color:var(--gold-light);line-height:1.6;max-height:150px;overflow-y:auto;white-space:pre-wrap;margin-bottom:7px;}
+        .json-paste{width:100%;background:rgba(0,0,0,.3);border:1px solid var(--glass-border);border-radius:var(--radius-sm);color:var(--text);font-family:'JetBrains Mono',monospace;font-size:.71em;padding:11px;min-height:90px;resize:vertical;line-height:1.6;}
         .json-paste:focus{outline:none;border-color:var(--gold-border);}
         .json-paste::placeholder{color:var(--text-muted);}
 
-        .prog-wrap{background:var(--glass);border-radius:4px;height:4px;margin:11px 0;overflow:hidden;display:none;}
+        /* ── PROGRESS ── */
+        .prog-wrap{background:var(--glass);border-radius:4px;height:4px;margin:10px 0;overflow:hidden;display:none;}
         .prog-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--gold-light));border-radius:4px;width:0%;transition:width .4s ease;}
-        .prog-lbl{font-size:.72em;color:var(--text-dim);text-align:center;display:none;margin-bottom:6px;}
-        .ai-log{background:rgba(0,0,0,.3);border:1px solid var(--glass-border);border-radius:var(--radius-sm);padding:10px 13px;font-family:'JetBrains Mono',monospace;font-size:.69em;color:var(--text-dim);max-height:80px;overflow-y:auto;margin-bottom:13px;display:none;line-height:1.7;}
+        .prog-lbl{font-size:.71em;color:var(--text-dim);text-align:center;display:none;margin-bottom:5px;}
+        .ai-log{background:rgba(0,0,0,.3);border:1px solid var(--glass-border);border-radius:var(--radius-sm);padding:9px 12px;font-family:'JetBrains Mono',monospace;font-size:.68em;color:var(--text-dim);max-height:80px;overflow-y:auto;margin-bottom:12px;display:none;line-height:1.7;}
         .ai-log .lok{color:var(--teal);}.ai-log .lerr{color:var(--red);}.ai-log .linf{color:var(--gold);}
-        .err-box{background:rgba(231,76,60,.08);border:1px solid rgba(231,76,60,.3);border-radius:var(--radius-sm);padding:10px 13px;font-size:.78em;color:#ff9999;display:none;margin-bottom:11px;}
+        .err-box{background:rgba(231,76,60,.08);border:1px solid rgba(231,76,60,.3);border-radius:var(--radius-sm);padding:9px 12px;font-size:.77em;color:#ff9999;display:none;margin-bottom:10px;}
+
+        /* ── PREVIEW TABLE ── */
         .tscroll{overflow-x:auto;border-radius:var(--radius-sm);border:1px solid var(--glass-border);}
-        table.prev{width:100%;border-collapse:collapse;font-size:.69em;min-width:680px;}
+        table.prev{width:100%;border-collapse:collapse;font-size:.68em;min-width:640px;}
         table.prev thead{background:linear-gradient(135deg,rgba(201,168,76,.15),rgba(201,168,76,.05));}
-        table.prev th{padding:9px 5px;text-align:center;color:var(--gold);font-weight:600;font-size:.79em;letter-spacing:.3px;text-transform:uppercase;border-bottom:1px solid var(--glass-border);white-space:nowrap;}
+        table.prev th{padding:8px 5px;text-align:center;color:var(--gold);font-weight:600;font-size:.78em;letter-spacing:.3px;text-transform:uppercase;border-bottom:1px solid var(--glass-border);white-space:nowrap;}
         table.prev td{padding:0;text-align:center;border-bottom:1px solid rgba(255,255,255,.04);}
-        table.prev td input{width:100%;background:transparent;border:none;color:var(--text-dim);font-family:'JetBrains Mono',monospace;font-size:.92em;text-align:center;padding:7px 3px;min-width:48px;}
+        table.prev td input{width:100%;background:transparent;border:none;color:var(--text-dim);font-family:'JetBrains Mono',monospace;font-size:.91em;text-align:center;padding:6px 3px;min-width:46px;}
         table.prev td input:focus{background:rgba(201,168,76,.08);color:var(--gold-light);outline:none;}
         table.prev td.iq input{color:var(--gold);font-weight:600;}
-        table.prev td.ft input{color:var(--red);font-weight:600;}
-        table.prev td.sh input{color:var(--teal);}
-        table.prev td.dt{padding:7px 8px;font-family:'Plus Jakarta Sans',sans-serif;font-size:.85em;color:var(--text);font-weight:500;white-space:nowrap;}
+        table.prev td.dt{padding:6px 7px;font-family:'Plus Jakarta Sans',sans-serif;font-size:.84em;color:var(--text);font-weight:500;white-space:nowrap;}
         table.prev tr:hover td{background:rgba(255,255,255,.02);}
-        .iq-legend{font-size:.66em;color:var(--text-muted);margin-bottom:8px;padding:6px 11px;background:var(--glass);border-radius:8px;border:1px solid var(--glass-border);}
+        .iq-legend{font-size:.65em;color:var(--text-muted);margin-bottom:7px;padding:5px 10px;background:var(--glass);border-radius:8px;border:1px solid var(--glass-border);}
         .iq-legend span{color:var(--gold);}
-        .code-bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;gap:10px;}
-        .code-ttl{font-size:.77em;color:var(--text-dim);font-weight:500;}
-        .copy-btn{padding:6px 15px;background:linear-gradient(135deg,var(--gold),#8B6914);color:#1a1100;border:none;border-radius:8px;font-family:'Plus Jakarta Sans',sans-serif;font-size:.75em;font-weight:700;cursor:pointer;transition:all .18s;white-space:nowrap;}
-        .copy-btn:hover{transform:translateY(-1px);}
-        .copy-btn.copied{background:linear-gradient(135deg,var(--teal),#0a7a70);color:white;}
-        .code-blk{background:rgba(0,0,0,.4);border:1px solid var(--glass-border);border-radius:var(--radius-sm);padding:14px;font-family:'JetBrains Mono',monospace;font-size:.69em;color:#a8d8a8;max-height:290px;overflow-y:auto;white-space:pre;line-height:1.6;}
-        .code-blk::-webkit-scrollbar{width:5px;}.code-blk::-webkit-scrollbar-thumb{background:var(--glass-border);border-radius:3px;}
-        .paste-hint{margin-top:11px;padding:11px 13px;background:linear-gradient(135deg,rgba(201,168,76,.07),var(--glass));border:1px solid var(--gold-border);border-radius:var(--radius-sm);font-size:.72em;color:var(--text-dim);line-height:1.7;}
-        .paste-hint strong{color:var(--text);}
-        code{background:rgba(0,0,0,.3);border:1px solid var(--glass-border);border-radius:4px;padding:1px 5px;font-family:'JetBrains Mono',monospace;font-size:.9em;color:var(--gold-light);}
-        .mq-item{background:var(--glass);border:1px solid var(--glass-border);border-radius:var(--radius-sm);padding:13px 15px;margin-bottom:9px;display:flex;align-items:center;gap:13px;}
-        .mq-dot{width:9px;height:9px;border-radius:50%;background:var(--glass-border);flex-shrink:0;}
-        .mq-dot.on{background:var(--gold);}
-        .mq-info{flex:1;}
-        .mq-name{font-weight:600;font-size:.87em;}
-        .mq-addr{font-size:.7em;color:var(--text-dim);margin-top:2px;}
-        .mq-acts{display:flex;gap:7px;align-items:center;}
-        .inst-card{background:linear-gradient(135deg,rgba(201,168,76,.06),var(--glass));border:1px solid var(--gold-border);border-radius:var(--radius);padding:18px;}
-        .inst-card h3{color:var(--gold);font-size:.82em;margin-bottom:12px;text-transform:uppercase;letter-spacing:1px;}
-        .istep{display:flex;gap:10px;margin-bottom:10px;align-items:flex-start;}
-        .inum{width:20px;height:20px;min-width:20px;border-radius:50%;background:var(--gold-dim);border:1px solid var(--gold-border);color:var(--gold);font-size:.67em;font-weight:700;display:flex;align-items:center;justify-content:center;margin-top:1px;}
-        .itxt{font-size:.77em;color:var(--text-dim);line-height:1.6;}
-        .itxt strong{color:var(--text);}
-        .toast{position:fixed;bottom:26px;left:50%;transform:translateX(-50%) translateY(16px);background:var(--navy2);border:1px solid var(--gold-border);color:var(--text);padding:8px 20px;border-radius:24px;font-size:.79em;font-weight:500;z-index:1000;opacity:0;transition:all .27s;white-space:nowrap;}
+
+        /* ── DOWNLOAD CARD ── */
+        .download-card{background:linear-gradient(135deg,rgba(15,155,142,.12),rgba(15,155,142,.04));border:1px solid rgba(15,155,142,.35);border-radius:var(--radius);padding:22px;text-align:center;}
+        .dl-icon{font-size:2.8em;margin-bottom:10px;}
+        .dl-title{font-size:1.05em;font-weight:700;color:var(--teal);margin-bottom:6px;}
+        .dl-desc{font-size:.78em;color:var(--text-dim);line-height:1.6;margin-bottom:18px;}
+        .dl-steps{background:rgba(0,0,0,.2);border-radius:var(--radius-sm);padding:13px 16px;margin-bottom:16px;text-align:left;}
+        .dl-step{display:flex;gap:9px;align-items:flex-start;margin-bottom:9px;}
+        .dl-step:last-child{margin-bottom:0;}
+        .dl-step-num{width:18px;height:18px;min-width:18px;border-radius:50%;background:var(--gold-dim);border:1px solid var(--gold-border);color:var(--gold);font-size:.64em;font-weight:700;display:flex;align-items:center;justify-content:center;margin-top:1px;}
+        .dl-step-txt{font-size:.75em;color:var(--text-dim);line-height:1.5;}
+        .dl-step-txt strong{color:var(--text);}
+        code{background:rgba(0,0,0,.3);border:1px solid var(--glass-border);border-radius:4px;padding:1px 5px;font-family:'JetBrains Mono',monospace;font-size:.88em;color:var(--gold-light);}
+
+        .toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(14px);background:var(--navy2);border:1px solid var(--gold-border);color:var(--text);padding:8px 18px;border-radius:22px;font-size:.78em;font-weight:500;z-index:1000;opacity:0;transition:all .27s;white-space:nowrap;}
         .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
-        @media(max-width:600px){.upg,.form-grid,.mode-row{grid-template-columns:1fr;}.steps{display:none;}}
+
+        /* ── TOGGLE ── */
+        .toggle-row{display:flex;align-items:center;gap:10px;padding:10px 13px;background:var(--glass);border:1px solid var(--glass-border);border-radius:var(--radius-sm);cursor:pointer;margin-bottom:13px;user-select:none;}
+        .tsw{width:36px;height:20px;background:rgba(255,255,255,.1);border-radius:10px;position:relative;transition:background .2s;flex-shrink:0;}
+        .tsw.on{background:linear-gradient(135deg,var(--gold),#8B6914);}
+        .tkn{width:14px;height:14px;background:white;border-radius:50%;position:absolute;top:3px;left:3px;transition:left .2s;box-shadow:0 1px 4px rgba(0,0,0,.3);}
+        .tsw.on .tkn{left:19px;}
+
+        @media(max-width:600px){.upg{grid-template-columns:1fr;}.workflow{grid-template-columns:1fr;gap:6px;}.wf-step::after{display:none;}}
     </style>
 </head>
 <body>
@@ -170,383 +164,300 @@
 <div class="hdr">
     <span class="hdr-icon">🕌</span>
     <h1>Waikato Prayer Times — Admin</h1>
-    <p>Manage mosques · Extract prayer times · Generate app-ready code</p>
-    <div class="hdr-badge">🔒 Runs Locally · No External Data Storage</div>
+    <p>Monthly update tool — extract prayer times &amp; download updated app</p>
+    <div class="hdr-badge">🔒 Everything runs locally in your browser</div>
 </div>
 
-<!-- MODE SELECTOR -->
-<div class="mode-card">
-    <div class="mode-title">⚙️ Choose Extraction Mode</div>
-    <div class="mode-row">
-        <button class="mode-btn" id="modeManualBtn" onclick="setMode('manual')">
-            <span class="mode-icon">🤖</span>
-            <span class="mode-name">Manual Mode (Recommended)</span>
-            <span class="mode-desc">Upload PDF here → copy prompt → paste into Claude.ai → paste result back. No API key needed. Always works.</span>
-        </button>
-        <button class="mode-btn" id="modeApiBtn" onclick="setMode('api')">
-            <span class="mode-icon">⚡</span>
-            <span class="mode-name">Auto Mode (API Key)</span>
-            <span class="mode-desc">Fully automatic using your Anthropic API key. May fail from GitHub Pages due to browser security (CORS).</span>
-        </button>
+<!-- WORKFLOW OVERVIEW -->
+<div class="workflow">
+    <div class="wf-step" id="wfStep1">
+        <div class="wf-num">1</div>
+        <div class="wf-title">Upload PDF</div>
+        <div class="wf-desc">WMA monthly timetable PDF</div>
     </div>
+    <div class="wf-step" id="wfStep2">
+        <div class="wf-num">2</div>
+        <div class="wf-title">Extract &amp; Review</div>
+        <div class="wf-desc">AI reads times, you verify</div>
+    </div>
+    <div class="wf-step" id="wfStep3">
+        <div class="wf-num">3</div>
+        <div class="wf-title">Download App</div>
+        <div class="wf-desc">Upload 1 file to GitHub</div>
+    </div>
+</div>
 
-    <!-- API key row — shown only in API mode -->
-    <div id="apiKeySection" style="display:none;margin-top:14px;padding-top:14px;border-top:1px solid var(--glass-border);">
-        <div style="font-size:.75em;color:var(--text-dim);margin-bottom:8px;">🔑 Anthropic API Key — saved in this browser only</div>
-        <div class="api-row">
-            <input type="password" class="api-inp" id="apiKeyInput" placeholder="sk-ant-api03-..." autocomplete="off">
-            <button class="btn-gold btn" onclick="saveApiKey()" style="padding:9px 16px;font-size:.8em;">💾 Save</button>
-            <button class="btn-ghost btn btn-danger" id="apiClearBtn" onclick="clearApiKey()" style="padding:9px 12px;font-size:.8em;display:none;">✕ Clear</button>
+<div class="steps-bar">
+    <div class="step-item active" id="s1"><div class="snum">1</div><div class="slbl">Configure</div></div>
+    <div class="step-item" id="s2"><div class="snum">2</div><div class="slbl">Extract</div></div>
+    <div class="step-item" id="s3"><div class="snum">3</div><div class="slbl">Review</div></div>
+    <div class="step-item" id="s4"><div class="snum">4</div><div class="slbl">Download</div></div>
+</div>
+
+<!-- ── STEP 1: CONFIGURE ── -->
+<div class="card" id="configCard">
+    <div class="card-hdr">
+        <div class="card-num" id="cn1">1</div>
+        <div>
+            <div class="card-title">Configure — Select Month &amp; Upload Files</div>
+            <div class="card-sub">Upload the WMA PDF and your current index.html</div>
         </div>
-        <div id="apiKeyStatus" style="font-size:.71em;color:var(--teal);margin-top:6px;display:none;">✅ Key saved — auto mode ready</div>
     </div>
-</div>
+    <div class="card-body">
 
-<div class="tabs">
-    <button class="tab active" onclick="switchTab('extract',this)">📤 Extract Data</button>
-    <button class="tab" onclick="switchTab('mosques',this)">🕌 Manage Mosques</button>
-    <button class="tab" onclick="switchTab('guide',this)">📖 How To Use</button>
-</div>
+        <!-- App file upload -->
+        <div class="fg">
+            <div class="flbl">📱 Current index.html (from GitHub) — upload once per session</div>
+            <div class="app-upz" id="appZone">
+                <input type="file" id="appFile" accept=".html" onchange="handleAppFile(this)">
+                <div class="app-upz-icon">📄</div>
+                <div class="app-upz-title">Upload your current index.html</div>
+                <div class="app-upz-desc">Drag &amp; drop or tap — from your <code>Hamilton/</code> folder on GitHub</div>
+                <div class="app-upz-badge" id="appBadge">✓ index.html loaded</div>
+            </div>
+        </div>
 
-<!-- TAB: EXTRACT DATA -->
-<div class="tab-pane active" id="tab-extract">
-    <div class="steps">
-        <div class="step active" id="s1"><div class="snum">1</div><div class="slbl">Configure</div></div>
-        <div class="step" id="s2"><div class="snum">2</div><div class="slbl">Extract</div></div>
-        <div class="step" id="s3"><div class="snum">3</div><div class="slbl">Review</div></div>
-        <div class="step" id="s4"><div class="snum">4</div><div class="slbl">Generate</div></div>
-        <div class="step" id="s5"><div class="snum">5</div><div class="slbl">Copy</div></div>
-    </div>
+        <!-- Month + Year -->
+        <div class="year-row">
+            <span class="yr-lbl">Year:</span>
+            <input type="number" class="yr-inp" id="yearInput" value="2026" min="2025" max="2030" oninput="checkReady()">
+            <span class="yr-lbl" style="margin-left:8px">Month:</span>
+        </div>
+        <div class="month-row">
+            <button class="mchip" onclick="selMonth('January',this)">Jan</button>
+            <button class="mchip" onclick="selMonth('February',this)">Feb</button>
+            <button class="mchip" onclick="selMonth('March',this)">Mar</button>
+            <button class="mchip" onclick="selMonth('April',this)">Apr</button>
+            <button class="mchip" onclick="selMonth('May',this)">May</button>
+            <button class="mchip" onclick="selMonth('June',this)">Jun</button>
+            <button class="mchip" onclick="selMonth('July',this)">Jul</button>
+            <button class="mchip" onclick="selMonth('August',this)">Aug</button>
+            <button class="mchip" onclick="selMonth('September',this)">Sep</button>
+            <button class="mchip" onclick="selMonth('October',this)">Oct</button>
+            <button class="mchip" onclick="selMonth('November',this)">Nov</button>
+            <button class="mchip" onclick="selMonth('December',this)">Dec</button>
+        </div>
 
-    <div class="card">
-        <div class="card-hdr">
-            <div class="card-num">1</div>
+        <div class="toggle-row" onclick="toggleRamadan()">
+            <div class="tsw" id="ramTog"><div class="tkn"></div></div>
             <div>
-                <div class="card-title">Configure & Upload Files</div>
-                <div class="card-sub">Select mosque, month, year — upload the WMA PDF</div>
+                <div style="font-size:.81em;font-weight:500">🌙 This month includes Ramadan</div>
+                <div style="font-size:.67em;color:var(--text-dim)">Enable only for Ramadan months — also upload FIANZ calendar below</div>
             </div>
         </div>
-        <div class="card-body">
-            <div style="display:flex;gap:8px;align-items:flex-end;margin-bottom:13px;">
-                <div class="fg" style="flex:1"><label class="flbl">Target Mosque</label><select class="finput" id="targetMosque" onchange="state.activeMosqueId=this.value"></select></div>
-                <button class="btn btn-ghost btn-sm" onclick="switchTab('mosques',document.querySelectorAll('.tab')[1])">+ Add Mosque</button>
+
+        <!-- PDF uploads -->
+        <div class="upg">
+            <div class="upz" id="wmaZone">
+                <input type="file" id="wmaFile" accept=".pdf,image/*" onchange="handleFile('wma',this)">
+                <span class="up-icon">📄</span>
+                <div class="up-title">WMA Timetable PDF</div>
+                <div class="up-desc">Monthly schedule with Iqama times</div>
+                <div class="up-badge" id="wmaBadge">✓ Ready</div>
             </div>
-            <div class="year-row">
-                <span class="yr-lbl">Year:</span>
-                <input type="number" class="yr-inp" id="yearInput" value="2026" min="2025" max="2035" oninput="checkExtractBtn()">
-                <span class="yr-lbl" style="margin-left:8px">Month:</span>
+            <div class="upz" id="fianzZone">
+                <input type="file" id="fianzFile" accept=".pdf,image/*" onchange="handleFile('fianz',this)">
+                <span class="up-icon">🖼️</span>
+                <div class="up-title">FIANZ Calendar</div>
+                <div class="up-desc">Suhoor &amp; Iftar times (Ramadan only)</div>
+                <div class="up-badge" id="fianzBadge">✓ Ready</div>
             </div>
-            <div class="month-row">
-                <button class="mchip" onclick="selMonth('January',this)">Jan</button>
-                <button class="mchip" onclick="selMonth('February',this)">Feb</button>
-                <button class="mchip" onclick="selMonth('March',this)">Mar</button>
-                <button class="mchip" onclick="selMonth('April',this)">Apr</button>
-                <button class="mchip" onclick="selMonth('May',this)">May</button>
-                <button class="mchip" onclick="selMonth('June',this)">Jun</button>
-                <button class="mchip" onclick="selMonth('July',this)">Jul</button>
-                <button class="mchip" onclick="selMonth('August',this)">Aug</button>
-                <button class="mchip" onclick="selMonth('September',this)">Sep</button>
-                <button class="mchip" onclick="selMonth('October',this)">Oct</button>
-                <button class="mchip" onclick="selMonth('November',this)">Nov</button>
-                <button class="mchip" onclick="selMonth('December',this)">Dec</button>
+        </div>
+
+        <div class="err-box" id="errBox"></div>
+        <button class="btn btn-gold btn-full" id="extractBtn" onclick="startExtract()" disabled>
+            <span id="extIco">📋</span><span id="extTxt">Select month &amp; upload WMA PDF first</span>
+        </button>
+        <div class="prog-wrap" id="progWrap"><div class="prog-fill" id="progFill"></div></div>
+        <div class="prog-lbl" id="progLbl"></div>
+        <div class="ai-log" id="aiLog"></div>
+    </div>
+</div>
+
+<!-- ── MANUAL EXTRACTION PANEL ── -->
+<div class="card hidden" id="manualPanel">
+    <div class="card-hdr">
+        <div class="card-num">2</div>
+        <div>
+            <div class="card-title">Extract — 3 Quick Steps via Claude.ai</div>
+            <div class="card-sub">Copy prompt → paste into Claude.ai with PDF → paste result back</div>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="manual-step">
+            <div class="ms-num">A</div>
+            <div class="ms-body">
+                <div class="ms-title">Copy this prompt</div>
+                <div class="prompt-box" id="manualPrompt">Loading...</div>
+                <button class="btn btn-ghost btn-sm" onclick="copyPrompt()">📋 Copy Prompt</button>
             </div>
-            <div class="toggle-row" onclick="toggleRamadan()">
-                <div class="tsw" id="ramTog"><div class="tkn"></div></div>
-                <div>
-                    <div style="font-size:.82em;font-weight:500">🌙 This month includes Ramadan</div>
-                    <div style="font-size:.68em;color:var(--text-dim)">Enable only for Ramadan months — also upload FIANZ calendar when on</div>
+        </div>
+        <div class="manual-step">
+            <div class="ms-num">B</div>
+            <div class="ms-body">
+                <div class="ms-title">Go to Claude.ai — upload PDF + paste prompt</div>
+                <div class="ms-desc">Open Claude.ai, start a new chat, attach your WMA PDF, paste the prompt above, send. Claude replies with JSON data.</div>
+                <button class="btn btn-teal btn-sm" onclick="window.open('https://claude.ai','_blank')">🔗 Open Claude.ai</button>
+            </div>
+        </div>
+        <div class="manual-step">
+            <div class="ms-num">C</div>
+            <div class="ms-body">
+                <div class="ms-title">Paste Claude's JSON response here</div>
+                <div class="ms-desc">Copy the entire JSON from Claude.ai and paste below, then click Parse.</div>
+                <textarea class="json-paste" id="jsonPaste" placeholder='Paste JSON here — starts with {"month":"May"..."days":[...]}' oninput="checkJsonPaste()"></textarea>
+                <div style="display:flex;gap:8px;margin-top:8px;">
+                    <button class="btn btn-gold" id="parseBtn" onclick="parseManualJson()" disabled>⚡ Parse &amp; Continue</button>
+                    <button class="btn btn-ghost btn-sm" onclick="resetAll()">↺ Start Over</button>
                 </div>
+                <div class="err-box" id="jsonErrBox" style="margin-top:8px;"></div>
             </div>
-            <div class="upg">
-                <div class="upz" id="wmaZone">
-                    <input type="file" id="wmaFile" accept=".pdf,image/*" onchange="handleFile('wma',this)">
-                    <span class="up-icon">📄</span>
-                    <div class="up-title">WMA Timetable</div>
-                    <div class="up-desc">Waikato Muslim Association monthly schedule</div>
-                    <div class="up-types">PDF or image · Contains Iqama times</div>
-                    <div class="up-badge" id="wmaBadge">✓ Ready</div>
-                </div>
-                <div class="upz" id="fianzZone">
-                    <input type="file" id="fianzFile" accept=".pdf,image/*" onchange="handleFile('fianz',this)">
-                    <span class="up-icon">🖼️</span>
-                    <div class="up-title">FIANZ Calendar</div>
-                    <div class="up-desc">Hamilton Suhoor &amp; Iftar times</div>
-                    <div class="up-types">PDF or image · Ramadan months only</div>
-                    <div class="up-badge" id="fianzBadge">✓ Ready</div>
-                </div>
-            </div>
-            <div class="err-box" id="errBox"></div>
-            <button class="btn btn-gold btn-full" id="extractBtn" onclick="startExtract()" disabled>
-                <span id="extIco">✨</span><span id="extTxt">Select month and upload a file first</span>
+        </div>
+    </div>
+</div>
+
+<!-- ── REVIEW TABLE ── -->
+<div class="card hidden" id="previewCard">
+    <div class="card-hdr">
+        <div class="card-num">3</div>
+        <div>
+            <div class="card-title">Review &amp; Edit Extracted Data</div>
+            <div class="card-sub">Click any cell to correct · Blank iqama = carry forward (intentional)</div>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="iq-legend"><span>Gold</span> = Iqama &nbsp;|&nbsp; Blank iqama = carry forward</div>
+        <div class="tscroll"><table class="prev"><thead id="prevHead"></thead><tbody id="prevBody"></tbody></table></div>
+        <div style="display:flex;gap:9px;margin-top:12px;flex-wrap:wrap">
+            <button class="btn btn-ghost" onclick="resetAll()">↺ Start Over</button>
+            <button class="btn btn-gold" onclick="buildDownload()" style="flex:1;max-width:240px;justify-content:center">📥 Build Updated App →</button>
+        </div>
+    </div>
+</div>
+
+<!-- ── DOWNLOAD ── -->
+<div class="card hidden" id="downloadCard">
+    <div class="card-hdr">
+        <div class="card-num done">✓</div>
+        <div>
+            <div class="card-title">Ready — Download &amp; Upload to GitHub</div>
+            <div class="card-sub" id="dlSub">Your updated app is ready</div>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="download-card">
+            <div class="dl-icon">📱</div>
+            <div class="dl-title" id="dlTitle">Updated App Ready</div>
+            <div class="dl-desc" id="dlDesc">Your index.html has been updated with the new prayer times and is ready to upload.</div>
+            <button class="btn btn-teal btn-full" id="dlBtn" onclick="downloadFile()" style="margin-bottom:16px;font-size:.95em;">
+                ⬇️ Download Updated index.html
             </button>
-            <div class="prog-wrap" id="progWrap"><div class="prog-fill" id="progFill"></div></div>
-            <div class="prog-lbl" id="progLbl"></div>
-            <div class="ai-log" id="aiLog"></div>
-        </div>
-    </div>
-
-    <!-- MANUAL MODE PANEL -->
-    <div class="card hidden" id="manualPanel">
-        <div class="card-hdr">
-            <div class="card-num">2</div>
-            <div>
-                <div class="card-title">Manual Extraction — 3 Quick Steps</div>
-                <div class="card-sub">Copy prompt → paste into Claude.ai with your PDF → paste result back here</div>
+            <div class="dl-steps">
+                <div class="dl-step"><div class="dl-step-num">1</div><div class="dl-step-txt">Go to <strong>github.com/nextwave-nz/prayer-times</strong></div></div>
+                <div class="dl-step"><div class="dl-step-num">2</div><div class="dl-step-txt">Open the <strong>Hamilton</strong> folder → click <strong>index.html</strong></div></div>
+                <div class="dl-step"><div class="dl-step-num">3</div><div class="dl-step-txt">Click the <strong>pencil ✏️ icon</strong> → then the <strong>three dots ···</strong> → <strong>Upload file</strong></div></div>
+                <div class="dl-step"><div class="dl-step-num">4</div><div class="dl-step-txt">Upload the downloaded file → click <strong>Commit changes</strong></div></div>
+                <div class="dl-step"><div class="dl-step-num">5</div><div class="dl-step-txt">✅ Done — the live app updates in about 30 seconds!</div></div>
             </div>
-        </div>
-        <div class="card-body">
-            <div class="manual-steps">
-                <!-- Step A -->
-                <div class="manual-step">
-                    <div class="manual-step-num">A</div>
-                    <div class="manual-step-content">
-                        <div class="manual-step-title">Copy this prompt</div>
-                        <div class="manual-step-desc">This tells Claude exactly what to extract and how to format the result.</div>
-                        <div class="prompt-box" id="manualPrompt">Loading...</div>
-                        <button class="btn btn-ghost btn-sm" onclick="copyPrompt()">📋 Copy Prompt</button>
-                    </div>
-                </div>
-                <!-- Step B -->
-                <div class="manual-step">
-                    <div class="manual-step-num">B</div>
-                    <div class="manual-step-content">
-                        <div class="manual-step-title">Go to Claude.ai — upload PDF + paste prompt</div>
-                        <div class="manual-step-desc">Open Claude.ai, start a new chat, attach your WMA PDF, paste the prompt above, and send. Claude will reply with JSON.</div>
-                        <button class="btn btn-teal btn-sm" onclick="window.open('https://claude.ai','_blank')" style="margin-top:2px;">🔗 Open Claude.ai</button>
-                    </div>
-                </div>
-                <!-- Step C -->
-                <div class="manual-step">
-                    <div class="manual-step-num">C</div>
-                    <div class="manual-step-content">
-                        <div class="manual-step-title">Paste Claude's JSON reply here</div>
-                        <div class="manual-step-desc">Copy the entire JSON response from Claude.ai and paste it below, then click Parse.</div>
-                        <textarea class="json-paste" id="jsonPaste" placeholder='Paste JSON here — starts with {"month":"April"..."days":[...]}' oninput="checkJsonPaste()"></textarea>
-                        <div style="display:flex;gap:8px;margin-top:8px;">
-                            <button class="btn btn-gold" id="parseBtn" onclick="parseManualJson()" disabled>⚡ Parse JSON &amp; Continue</button>
-                            <button class="btn btn-ghost btn-sm" onclick="resetExtract()">↺ Start Over</button>
-                        </div>
-                        <div class="err-box" id="jsonErrBox" style="margin-top:8px;"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- PREVIEW TABLE -->
-    <div class="card hidden" id="previewCard">
-        <div class="card-hdr">
-            <div class="card-num">3</div>
-            <div>
-                <div class="card-title">Review & Edit Extracted Data</div>
-                <div class="card-sub">Click any cell to correct · Empty iqama = carries forward</div>
-            </div>
-        </div>
-        <div class="card-body">
-            <div class="iq-legend"><span>Gold</span> = Iqama &nbsp;|&nbsp; <span style="color:var(--red)">Red</span> = Iftar &nbsp;|&nbsp; <span style="color:var(--teal)">Teal</span> = Suhoor</div>
-            <div class="tscroll"><table class="prev"><thead id="prevHead"></thead><tbody id="prevBody"></tbody></table></div>
-            <div style="display:flex;gap:9px;margin-top:12px;flex-wrap:wrap">
-                <button class="btn btn-ghost" onclick="resetExtract()">↺ Start Over</button>
-                <button class="btn btn-gold" onclick="generateCode()" style="flex:1;max-width:210px;justify-content:center">⚡ Generate Code →</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- OUTPUT CODE -->
-    <div class="card hidden" id="outputCard">
-        <div class="card-hdr">
-            <div class="card-num">4</div>
-            <div>
-                <div class="card-title">Generated Code — Ready to Paste</div>
-                <div class="card-sub" id="outSub"></div>
-            </div>
-        </div>
-        <div class="card-body">
-            <div class="code-bar">
-                <div class="code-ttl" id="codeTtl"></div>
-                <div style="display:flex;gap:7px">
-                    <button class="btn btn-ghost btn-sm" onclick="backToPreview()">← Edit</button>
-                    <button class="copy-btn" id="copyBtn" onclick="copyCode()">📋 Copy Code</button>
-                </div>
-            </div>
-            <div class="code-blk" id="codeBlk"></div>
-            <div class="paste-hint" id="pasteHint"></div>
+            <button class="btn btn-ghost btn-sm" onclick="resetAll()" style="margin-top:4px">↺ Add Another Month</button>
         </div>
     </div>
 </div>
 
-<!-- TAB: MANAGE MOSQUES -->
-<div class="tab-pane hidden" id="tab-mosques">
-    <div class="card">
-        <div class="card-hdr"><div class="card-num">🕌</div><div><div class="card-title">Registered Mosques</div></div></div>
-        <div class="card-body"><div id="mosqueList"></div></div>
-    </div>
-    <div class="card">
-        <div class="card-hdr"><div class="card-num">+</div><div><div class="card-title">Add New Mosque</div></div></div>
-        <div class="card-body">
-            <div class="form-grid">
-                <div class="fg"><label class="flbl">Full Name *</label><input class="finput" id="mName" placeholder="e.g. Cambridge Mosque" type="text"></div>
-                <div class="fg"><label class="flbl">Short Name *</label><input class="finput" id="mShort" placeholder="e.g. Cambridge" type="text"></div>
-                <div class="fg"><label class="flbl">Address</label><input class="finput" id="mAddr" placeholder="e.g. 12 Main St" type="text"></div>
-                <div class="fg"><label class="flbl">Friday Khutbah Time</label><input class="finput" id="mJummah" placeholder="e.g. 1:30 PM" type="text"></div>
-            </div>
-            <div class="form-grid full" style="margin-bottom:14px"><div class="fg"><label class="flbl">Unique ID (auto-generated)</label><input class="finput" id="mId" type="text"></div></div>
-            <button class="btn btn-gold" onclick="addMosque()">➕ Add Mosque</button>
-        </div>
-    </div>
-    <div class="card hidden" id="mqCodeCard">
-        <div class="card-hdr"><div class="card-num">📋</div><div><div class="card-title">Mosque Config Snippet</div></div></div>
-        <div class="card-body">
-            <div class="code-bar"><div class="code-ttl">Paste into index.html</div><button class="copy-btn" id="mqCopyBtn" onclick="copyMqCode()">📋 Copy</button></div>
-            <div class="code-blk" id="mqCodeBlk"></div>
-        </div>
-    </div>
-</div>
-
-<!-- TAB: HOW TO USE -->
-<div class="tab-pane hidden" id="tab-guide">
-    <div class="card">
-        <div class="card-hdr"><div class="card-num">🤖</div><div><div class="card-title">Manual Mode Workflow (Recommended)</div></div></div>
-        <div class="card-body">
-            <div class="inst-card">
-                <h3>Every Month — 5 Minutes</h3>
-                <div class="istep"><div class="inum">1</div><div class="itxt">Download the <strong>WMA monthly PDF</strong> from the masjid.</div></div>
-                <div class="istep"><div class="inum">2</div><div class="itxt">In <strong>Extract Data</strong>: select mosque, year, month. Upload the PDF.</div></div>
-                <div class="istep"><div class="inum">3</div><div class="itxt">Click <strong>Prepare Extraction</strong>. Copy the prompt shown.</div></div>
-                <div class="istep"><div class="inum">4</div><div class="itxt">Open <strong>Claude.ai</strong>, start a new chat, attach the PDF, paste the prompt, send.</div></div>
-                <div class="istep"><div class="inum">5</div><div class="itxt">Copy the JSON response from Claude.ai and paste it back into the admin.</div></div>
-                <div class="istep"><div class="inum">6</div><div class="itxt">Click <strong>Parse JSON</strong> → review table → <strong>Generate Code</strong> → <strong>Copy Code</strong>.</div></div>
-                <div class="istep"><div class="inum">7</div><div class="itxt">In <strong>index.html</strong> on GitHub, replace the old month array with the new one. Update <code>resolveIqamas([...])</code> to include the new variable. Push — done! 🎉</div></div>
-            </div>
-        </div>
-    </div>
-    <div class="card">
-        <div class="card-hdr"><div class="card-num">⚡</div><div><div class="card-title">Auto Mode (if CORS allows)</div></div></div>
-        <div class="card-body">
-            <div class="inst-card">
-                <h3>Auto Mode Setup</h3>
-                <div class="istep"><div class="inum">1</div><div class="itxt">Select <strong>Auto Mode</strong> in the mode selector and enter your API key from <strong>console.anthropic.com</strong>.</div></div>
-                <div class="istep"><div class="inum">2</div><div class="itxt">If it shows "Failed to fetch" — your browser is blocking the API call due to CORS. Switch to <strong>Manual Mode</strong> instead.</div></div>
-                <div class="istep"><div class="inum">3</div><div class="itxt">Auto mode may work if you open admin.html from a local computer rather than from GitHub Pages.</div></div>
-            </div>
-        </div>
-    </div>
-</div>
-
-</div>
+</div><!-- .wrap -->
 
 <script>
+// ── STATE ────────────────────────────────────────────────────────────────────
 const MONTHS=['January','February','March','April','May','June','July','August','September','October','November','December'];
 const MSHORT=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 const DAYS_IN_MONTH=[31,28,31,30,31,30,31,31,30,31,30,31];
-const DEFAULT_MOSQUE={id:'hamilton-jamia',name:'Hamilton Jamia Mosque',shortName:'Hamilton Jamia',address:'921 Heaphy Terrace, Hamilton',jummahTime:'1:40 PM'};
-const state={month:null,year:2026,isRamadan:false,wmaFile:null,wmaType:null,fianzFile:null,fianzType:null,rows:[],activeMosqueId:'hamilton-jamia',mode:'manual'};
 
-// ── MODE ─────────────────────────────────────
-function setMode(m){
-    state.mode=m;
-    document.getElementById('modeManualBtn').classList.toggle('active',m==='manual');
-    document.getElementById('modeApiBtn').classList.toggle('active',m==='api');
-    document.getElementById('apiKeySection').style.display=m==='api'?'block':'none';
-    updateExtractBtn();
+const state={
+    month:null, year:2026, isRamadan:false,
+    wmaFile:null, wmaType:null, fianzFile:null, fianzType:null,
+    appHtml:null, appFileName:'index.html',
+    rows:[]
+};
+
+let downloadBlob=null, downloadFilename='index.html';
+
+// ── APP FILE UPLOAD ──────────────────────────────────────────────────────────
+function handleAppFile(inp){
+    const f=inp.files[0];if(!f)return;
+    const reader=new FileReader();
+    reader.onload=e=>{
+        state.appHtml=e.target.result;
+        state.appFileName=f.name;
+        document.getElementById('appZone').classList.add('has');
+        document.getElementById('appBadge').textContent=`✓ ${f.name} loaded`;
+        showToast('✅ index.html loaded — ready to inject new data');
+        checkReady();
+    };
+    reader.readAsText(f);
 }
 
-// ── API KEY ──────────────────────────────────
-function getApiKey(){return localStorage.getItem('wpt_api_key')||'';}
-function saveApiKey(){
-    const v=document.getElementById('apiKeyInput').value.trim();
-    if(!v.startsWith('sk-ant-')){showToast('⚠️ Key must start with sk-ant-');return;}
-    localStorage.setItem('wpt_api_key',v);updateApiKeyUI();showToast('✅ API key saved!');updateExtractBtn();
-}
-function clearApiKey(){if(!confirm('Remove saved API key?'))return;localStorage.removeItem('wpt_api_key');document.getElementById('apiKeyInput').value='';updateApiKeyUI();updateExtractBtn();}
-function updateApiKeyUI(){
-    const key=getApiKey();
-    document.getElementById('apiKeyInput').value=key?'sk-ant-••••••••'+key.slice(-6):'';
-    document.getElementById('apiKeyInput').disabled=!!key;
-    document.getElementById('apiClearBtn').style.display=key?'inline-flex':'none';
-    document.getElementById('apiKeyStatus').style.display=key?'block':'none';
-}
-
-// ── MOSQUE ───────────────────────────────────
-function getMosques(){try{const s=localStorage.getItem('wpt_mosques');if(s)return JSON.parse(s);}catch(e){}return[DEFAULT_MOSQUE];}
-function saveMosques(m){localStorage.setItem('wpt_mosques',JSON.stringify(m));}
-function renderMosqueList(){
-    const mosques=getMosques();
-    document.getElementById('mosqueList').innerHTML=mosques.map((m,i)=>`<div class="mq-item">
-        <div class="mq-dot ${i===0?'on':''}"></div>
-        <div class="mq-info"><div class="mq-name">${m.name}</div><div class="mq-addr">📍 ${m.address||'—'} · Jummah ${m.jummahTime||'—'} · <code>${m.id}</code></div></div>
-        <div class="mq-acts">${m.id===DEFAULT_MOSQUE.id?'<span style="font-size:.68em;color:var(--text-muted)">Default</span>':`<button class="btn btn-ghost btn-sm btn-danger" onclick="delMosque('${m.id}')">🗑</button>`}</div>
-    </div>`).join('');
-    const sel=document.getElementById('targetMosque');
-    sel.innerHTML=mosques.map(m=>`<option value="${m.id}">${m.name}</option>`).join('');
-    state.activeMosqueId=sel.value;
-}
-function addMosque(){
-    const name=document.getElementById('mName').value.trim();
-    const shortName=document.getElementById('mShort').value.trim();
-    const address=document.getElementById('mAddr').value.trim();
-    const jummahTime=document.getElementById('mJummah').value.trim()||'1:30 PM';
-    let id=document.getElementById('mId').value.trim();
-    if(!name||!shortName){showToast('⚠️ Name and Short Name required');return;}
-    if(!id)id=name.toLowerCase().replace(/\s+/g,'-').replace(/[^a-z0-9-]/g,'');
-    const mosques=getMosques();
-    if(mosques.find(m=>m.id===id)){showToast('⚠️ ID exists');return;}
-    mosques.push({id,name,shortName,address,jummahTime});saveMosques(mosques);renderMosqueList();
-    document.getElementById('mqCodeBlk').textContent=`// Add to index.html\n${JSON.stringify({id,name,shortName,address,jummahTime},null,2)}`;
-    document.getElementById('mqCodeCard').classList.remove('hidden');
-    ['mName','mShort','mAddr','mJummah','mId'].forEach(x=>document.getElementById(x).value='');
-    showToast(`✅ ${name} added!`);
-}
-function delMosque(id){if(!confirm('Remove?'))return;saveMosques(getMosques().filter(m=>m.id!==id));renderMosqueList();}
-function copyMqCode(){navigator.clipboard.writeText(document.getElementById('mqCodeBlk').textContent).then(()=>{const b=document.getElementById('mqCopyBtn');b.textContent='✅ Copied!';setTimeout(()=>b.textContent='📋 Copy',2200);});}
-
-document.addEventListener('DOMContentLoaded',()=>{
-    document.getElementById('mName').addEventListener('input',e=>{document.getElementById('mId').value=e.target.value.toLowerCase().replace(/\s+/g,'-').replace(/[^a-z0-9-]/g,'');});
-    renderMosqueList();updateApiKeyUI();setMode('manual');
-});
-
-// ── TABS ─────────────────────────────────────
-function switchTab(id,btn){
-    document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-    document.querySelectorAll('.tab-pane').forEach(p=>{p.classList.remove('active');p.classList.add('hidden');});
-    btn.classList.add('active');
-    document.getElementById('tab-'+id).classList.remove('hidden');document.getElementById('tab-'+id).classList.add('active');
-}
-
-// ── EXTRACT CONFIG ───────────────────────────
+// ── MONTH / FILES ────────────────────────────────────────────────────────────
 function selMonth(m,el){
     state.month=m;
     document.querySelectorAll('.mchip').forEach(c=>c.classList.remove('sel'));el.classList.add('sel');
     setRamadan(parseInt(document.getElementById('yearInput').value)===2026&&['February','March'].includes(m));
-    updateExtractBtn();
+    checkReady();
 }
 function setRamadan(v){state.isRamadan=v;document.getElementById('ramTog').classList.toggle('on',v);}
 function toggleRamadan(){setRamadan(!state.isRamadan);}
+
 function handleFile(src,inp){
     const f=inp.files[0];if(!f)return;
     const isPDF=f.type==='application/pdf'||f.name.toLowerCase().endsWith('.pdf');
     if(src==='wma'){state.wmaFile=f;state.wmaType=isPDF?'pdf':'image';document.getElementById('wmaZone').classList.add('has');document.getElementById('wmaBadge').textContent=`✓ ${f.name.substring(0,22)}`;}
     else{state.fianzFile=f;state.fianzType=isPDF?'pdf':'image';document.getElementById('fianzZone').classList.add('has');document.getElementById('fianzBadge').textContent=`✓ ${f.name.substring(0,22)}`;}
-    updateExtractBtn();
+    checkReady();
 }
-function updateExtractBtn(){checkExtractBtn();}
-function checkExtractBtn(){
+
+function checkReady(){
     const btn=document.getElementById('extractBtn');const txt=document.getElementById('extTxt');const ico=document.getElementById('extIco');
     if(!state.month){txt.textContent='Select a month first';btn.disabled=true;return;}
-    if(!state.wmaFile&&!state.fianzFile){txt.textContent='Upload at least one file';btn.disabled=true;return;}
-    if(state.mode==='api'&&!getApiKey()){txt.textContent='Save your API key first';btn.disabled=true;return;}
-    const sel=document.getElementById('targetMosque');
-    const mName=sel.options[sel.selectedIndex]?.text||'';
-    if(state.mode==='manual'){ico.textContent='📋';txt.textContent=`Prepare Extraction — ${state.month} ${document.getElementById('yearInput').value}`;}
-    else{ico.textContent='✨';txt.textContent=`Extract ${state.month} ${document.getElementById('yearInput').value} — ${mName}`;}
+    if(!state.wmaFile&&!state.fianzFile){txt.textContent='Upload the WMA PDF first';btn.disabled=true;return;}
+    ico.textContent='📋';
+    txt.textContent=`Prepare Extraction — ${state.month} ${document.getElementById('yearInput').value}`;
     btn.disabled=false;
 }
 
+// ── STEP PROGRESS ────────────────────────────────────────────────────────────
+function setStep(n){
+    for(let i=1;i<=4;i++){
+        const el=document.getElementById('s'+i);if(!el)continue;
+        el.classList.remove('active','done');
+        if(i<n)el.classList.add('done');
+        else if(i===n)el.classList.add('active');
+    }
+    // Workflow bubbles
+    if(n>=2)document.getElementById('wfStep1').classList.add('done');
+    if(n>=3)document.getElementById('wfStep2').classList.add('done');
+    if(n>=4)document.getElementById('wfStep3').classList.add('done');
+}
+
+function setProgress(pct,lbl){
+    document.getElementById('progWrap').style.display='block';
+    document.getElementById('progFill').style.width=pct+'%';
+    document.getElementById('progLbl').style.display='block';
+    document.getElementById('progLbl').textContent=lbl;
+}
+function addLog(msg,type='linf'){
+    const log=document.getElementById('aiLog');log.style.display='block';
+    const d=document.createElement('div');d.className=type;d.textContent=msg;
+    log.appendChild(d);log.scrollTop=log.scrollHeight;
+}
+function clearLog(){const l=document.getElementById('aiLog');l.innerHTML='';l.style.display='none';}
+function showErr(msg){const b=document.getElementById('errBox');b.textContent='⚠️ '+msg;b.style.display='block';}
+function hideErr(){document.getElementById('errBox').style.display='none';}
+function fileToB64(f){return new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(r.result.split(',')[1]);r.onerror=rej;r.readAsDataURL(f);});}
+
+// ── PROMPT BUILDER ───────────────────────────────────────────────────────────
 function buildPrompt(){
-    const mosque=getMosques().find(m=>m.id===state.activeMosqueId)||DEFAULT_MOSQUE;
     const days=DAYS_IN_MONTH[MONTHS.indexOf(state.month)];
     const yr=document.getElementById('yearInput').value;
-    return `Extract ALL prayer times from the attached WMA timetable PDF for ${mosque.name}, Hamilton NZ. Month: ${state.month} ${yr} (${days} days). Do not skip any day.
+    return `Extract ALL prayer times from the attached WMA timetable PDF for Hamilton Jamia Mosque, Hamilton NZ. Month: ${state.month} ${yr} (${days} days). Do not skip any day.
 
 RULES:
 - WMA shows two values per prayer: adhan time and iqama (bold). Only include iqama when it explicitly appears for that day; use null when it carries forward.
@@ -555,17 +466,18 @@ RULES:
 ${state.isRamadan?'- Also extract suhoorEnds and iftar from the FIANZ calendar.':''}
 
 Return ONLY raw JSON (no markdown, no text before or after):
-{"month":"${state.month}","year":"${yr}","mosqueId":"${mosque.id}","isRamadan":${state.isRamadan},"days":[{"date":1,"dayName":"Wed","fajrAdhan":"6:04","fajrIqama":"6:20","sunrise":"7:31","dhuhrAdhan":"1:23","dhuhrIqama":null,"asrAdhan":"4:42","asrIqama":null,"maghribAdhan":"7:15","maghribIqama":null,"ishaAdhan":"8:27","ishaIqama":null,"suhoorEnds":null,"iftar":null,"isRamadan":false,"ramadanDay":null}]}`;
+{"month":"${state.month}","year":"${yr}","mosqueId":"hamilton-jamia","isRamadan":${state.isRamadan},"days":[{"date":1,"dayName":"Wed","fajrAdhan":"6:04","fajrIqama":"6:20","sunrise":"7:31","dhuhrAdhan":"1:23","dhuhrIqama":null,"asrAdhan":"4:42","asrIqama":null,"maghribAdhan":"7:15","maghribIqama":null,"ishaAdhan":"8:27","ishaIqama":null,"suhoorEnds":null,"iftar":null,"isRamadan":false,"ramadanDay":null}]}`;
 }
 
-// ── START EXTRACT (routes to manual or API) ──
+// ── START EXTRACT ────────────────────────────────────────────────────────────
 async function startExtract(){
     hideErr();
-    if(state.mode==='manual'){showManualPanel();} 
-    else{await runApiExtract();}
+    state.year=parseInt(document.getElementById('yearInput').value);
+    // Always use manual mode (CORS blocks direct API calls from GitHub Pages)
+    showManualPanel();
 }
 
-// ── MANUAL MODE ──────────────────────────────
+// ── MANUAL MODE ──────────────────────────────────────────────────────────────
 function showManualPanel(){
     document.getElementById('manualPanel').classList.remove('hidden');
     document.getElementById('manualPrompt').textContent=buildPrompt();
@@ -574,15 +486,17 @@ function showManualPanel(){
     document.getElementById('jsonErrBox').style.display='none';
     document.getElementById('manualPanel').scrollIntoView({behavior:'smooth',block:'start'});
     setStep(2);
+    // Update workflow
+    document.getElementById('wfStep1').classList.add('done');
 }
 
 function copyPrompt(){
-    navigator.clipboard.writeText(document.getElementById('manualPrompt').textContent).then(()=>showToast('✅ Prompt copied! Now go to Claude.ai'));
+    navigator.clipboard.writeText(document.getElementById('manualPrompt').textContent)
+        .then(()=>showToast('✅ Prompt copied! Now open Claude.ai'));
 }
 
 function checkJsonPaste(){
-    const v=document.getElementById('jsonPaste').value.trim();
-    document.getElementById('parseBtn').disabled=v.length<10;
+    document.getElementById('parseBtn').disabled=document.getElementById('jsonPaste').value.trim().length<10;
 }
 
 function parseManualJson(){
@@ -591,80 +505,24 @@ function parseManualJson(){
     try{
         let jt=raw.replace(/```json\s*/g,'').replace(/```\s*/g,'').trim();
         const si=jt.indexOf('{'),ei=jt.lastIndexOf('}');
-        if(si===-1||ei===-1)throw new Error('No JSON object found. Make sure you copied the full response.');
+        if(si===-1||ei===-1)throw new Error('No JSON found. Copy the full response from Claude.ai.');
         const parsed=JSON.parse(jt.substring(si,ei+1));
         if(!parsed.days?.length)throw new Error('No days array found in JSON.');
         state.rows=parsed.days;
-        state.year=parseInt(document.getElementById('yearInput').value);
         errBox.style.display='none';
         document.getElementById('manualPanel').classList.add('hidden');
         buildPreview();
         document.getElementById('previewCard').classList.remove('hidden');
         document.getElementById('previewCard').scrollIntoView({behavior:'smooth',block:'start'});
         setStep(3);
+        document.getElementById('wfStep2').classList.add('done');
         showToast(`✅ ${parsed.days.length} days parsed!`);
     }catch(err){
         errBox.textContent='⚠️ '+err.message;errBox.style.display='block';
     }
 }
 
-// ── API MODE ─────────────────────────────────
-function setStep(n){for(let i=1;i<=5;i++){const el=document.getElementById('s'+i);if(!el)continue;el.classList.remove('active','done');if(i<n)el.classList.add('done');else if(i===n)el.classList.add('active');}}
-function setProgress(pct,lbl){document.getElementById('progWrap').style.display='block';document.getElementById('progFill').style.width=pct+'%';document.getElementById('progLbl').style.display='block';document.getElementById('progLbl').textContent=lbl;}
-function addLog(msg,type='linf'){const log=document.getElementById('aiLog');log.style.display='block';const d=document.createElement('div');d.className=type;d.textContent=msg;log.appendChild(d);log.scrollTop=log.scrollHeight;}
-function clearLog(){const l=document.getElementById('aiLog');l.innerHTML='';l.style.display='none';}
-function showErr(msg){const b=document.getElementById('errBox');b.textContent='⚠️ '+msg;b.style.display='block';}
-function hideErr(){document.getElementById('errBox').style.display='none';}
-function fileToB64(f){return new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(r.result.split(',')[1]);r.onerror=rej;r.readAsDataURL(f);});}
-
-async function runApiExtract(){
-    clearLog();setStep(2);
-    const btn=document.getElementById('extractBtn');
-    btn.disabled=true;document.getElementById('extIco').textContent='⏳';document.getElementById('extTxt').textContent='Extracting...';
-    setProgress(10,'Reading files...');
-    try{
-        const parts=[];
-        if(state.wmaFile){
-            addLog(`📄 WMA: ${state.wmaFile.name}`,'linf');
-            const b64=await fileToB64(state.wmaFile);
-            parts.push(state.wmaType==='pdf'?{type:'document',source:{type:'base64',media_type:'application/pdf',data:b64}}:{type:'image',source:{type:'base64',media_type:state.wmaFile.type||'image/jpeg',data:b64}});
-            addLog(`✓ WMA loaded (${Math.round(state.wmaFile.size/1024)}KB)`,'lok');
-        }
-        if(state.fianzFile){
-            const b64=await fileToB64(state.fianzFile);
-            parts.push(state.fianzType==='pdf'?{type:'document',source:{type:'base64',media_type:'application/pdf',data:b64}}:{type:'image',source:{type:'base64',media_type:state.fianzFile.type||'image/jpeg',data:b64}});
-        }
-        parts.push({type:'text',text:`Extract all ${state.month} ${document.getElementById('yearInput').value} prayer times. Return only JSON.`});
-        setProgress(35,'Calling Claude API...');
-        addLog('🤖 Sending to Claude AI...','linf');
-        const resp=await fetch('https://api.anthropic.com/v1/messages',{
-            method:'POST',
-            headers:{'Content-Type':'application/json','x-api-key':getApiKey(),'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-iab':'true'},
-            body:JSON.stringify({model:'claude-opus-4-5',max_tokens:4000,system:buildPrompt(),messages:[{role:'user',content:parts}]})
-        });
-        if(!resp.ok){const e=await resp.json().catch(()=>({}));if(resp.status===401)throw new Error('Invalid API key');throw new Error(e.error?.message||`API error ${resp.status}`);}
-        const data=await resp.json();
-        const raw=data.content.find(b=>b.type==='text')?.text||'';
-        setProgress(75,'Parsing...');
-        addLog('📊 Parsing...','linf');
-        let jt=raw.replace(/```json\s*/g,'').replace(/```\s*/g,'').trim();
-        const si=jt.indexOf('{'),ei=jt.lastIndexOf('}');
-        if(si===-1||ei===-1)throw new Error('AI did not return valid JSON.');
-        const parsed=JSON.parse(jt.substring(si,ei+1));
-        if(!parsed.days?.length)throw new Error('No days found.');
-        state.rows=parsed.days;state.year=parseInt(document.getElementById('yearInput').value);
-        addLog(`✅ ${parsed.days.length} days extracted`,'lok');
-        setProgress(100,`✅ ${parsed.days.length} days ready`);
-        setTimeout(()=>{buildPreview();document.getElementById('previewCard').classList.remove('hidden');document.getElementById('outputCard').classList.add('hidden');document.getElementById('previewCard').scrollIntoView({behavior:'smooth',block:'start'});setStep(3);},500);
-    }catch(err){
-        setProgress(0,'');document.getElementById('progWrap').style.display='none';
-        addLog(`❌ ${err.message}`,'lerr');
-        showErr(err.message+' — Try switching to Manual Mode instead.');
-        setStep(1);
-    }finally{btn.disabled=false;checkExtractBtn();}
-}
-
-// ── PREVIEW ───────────────────────────────────
+// ── PREVIEW TABLE ────────────────────────────────────────────────────────────
 function buildPreview(){
     const hasRam=state.isRamadan||state.rows.some(r=>r.isRamadan);
     const ms=MSHORT[MONTHS.indexOf(state.month)];
@@ -674,13 +532,13 @@ function buildPreview(){
         <th>Asr</th><th style="color:var(--gold)">Asr Iq.</th>
         <th>Maghrib</th><th style="color:var(--gold)">Maghr.Iq.</th>
         <th>Isha</th><th style="color:var(--gold)">Isha Iq.</th>
-        ${hasRam?'<th style="color:var(--teal)">Suhoor</th><th style="color:var(--red)">Iftar</th>':''}
+        ${hasRam?'<th style="color:#6aacde">Suhoor</th><th style="color:#e8826a">Iftar</th>':''}
     </tr>`;
     const fields=[
         {k:'fajrAdhan',c:''},{k:'fajrIqama',c:'iq'},{k:'dhuhrAdhan',c:''},{k:'dhuhrIqama',c:'iq'},
         {k:'asrAdhan',c:''},{k:'asrIqama',c:'iq'},{k:'maghribAdhan',c:''},{k:'maghribIqama',c:'iq'},
         {k:'ishaAdhan',c:''},{k:'ishaIqama',c:'iq'},
-        ...(hasRam?[{k:'suhoorEnds',c:'sh'},{k:'iftar',c:'ft'}]:[])
+        ...(hasRam?[{k:'suhoorEnds',c:''},{k:'iftar',c:''}]:[])
     ];
     const tbody=document.getElementById('prevBody');tbody.innerHTML='';
     state.rows.forEach((row,i)=>{
@@ -692,13 +550,10 @@ function buildPreview(){
 }
 function updCell(inp){state.rows[parseInt(inp.dataset.r)][inp.dataset.f]=inp.value.trim();}
 
-// ── CODE GENERATION ───────────────────────────
-function generateCode(){
-    setStep(4);
+// ── BUILD DOWNLOAD ───────────────────────────────────────────────────────────
+function buildDownload(){
     const ms=MSHORT[MONTHS.indexOf(state.month)];
-    const mosque=getMosques().find(m=>m.id===state.activeMosqueId)||DEFAULT_MOSQUE;
-    const prefix=mosque.id!==DEFAULT_MOSQUE.id?mosque.id.replace(/-/g,'_').toUpperCase()+'_':'';
-    const varName=`${prefix}${ms.toUpperCase()}_DATA`;
+    const varName=`${ms.toUpperCase()}_DATA`;
     const f=v=>v?`"${v}"`:'null';
     const lines=state.rows.map(row=>{
         let l=` {date:"${ms} ${row.date}",day:"${row.dayName||'?'}",`;
@@ -712,37 +567,99 @@ function generateCode(){
         return l;
     });
     if(lines.length)lines[lines.length-1]=lines[lines.length-1].replace(/,$/,'');
-    const isDefault=mosque.id===DEFAULT_MOSQUE.id;
-    const code=`// ${mosque.name} — ${state.month} ${state.year}\n// Source: WMA (Iqama times)\nconst ${varName}=[\n${lines.join('\n')}\n];\n\n// Then add ...${varName} to resolveIqamas([...MAR_DATA, ...${varName}]) in index.html`;
-    document.getElementById('codeBlk').textContent=code;
-    document.getElementById('codeTtl').textContent=`${varName} — ${lines.length} days`;
-    document.getElementById('outSub').textContent=`${mosque.name} · ${state.month} ${state.year}`;
-    document.getElementById('pasteHint').innerHTML=isDefault
-        ?`In <strong>index.html</strong>, find the current data array (e.g. <code>const APR_DATA=[</code>) and replace it. Then update <code>resolveIqamas([...MAR_DATA, ...])</code> to include <code>...${varName}</code>.`
-        :`Data for <strong>${mosque.name}</strong> — add to index.html and route it for mosque ID <code>${mosque.id}</code>.`;
-    document.getElementById('outputCard').classList.remove('hidden');
-    document.getElementById('outputCard').scrollIntoView({behavior:'smooth',block:'start'});
-    setStep(5);
+
+    const newArrayCode=`// ═══════════════════════════════════════\n// ${state.month.toUpperCase()} ${state.year} — WMA Iqama times\n// ═══════════════════════════════════════\nconst ${varName}=[\n${lines.join('\n')}\n];`;
+
+    let updatedHtml=state.appHtml;
+
+    if(updatedHtml){
+        // ── Inject into uploaded index.html ──────────────────────────────────
+        // Find the resolve comment and insert new array just before it
+        const resolveMarker='// ═══════════════════════════════════════\n// RESOLVE CARRY-FORWARD IQAMA TIMES';
+        const resolveIdx=updatedHtml.indexOf(resolveMarker);
+
+        if(resolveIdx===-1){
+            showToast('⚠️ Could not find insertion point — check index.html format');
+            return;
+        }
+
+        // Insert the new data array before the resolve comment
+        updatedHtml=updatedHtml.substring(0,resolveIdx)+newArrayCode+'\n\n'+updatedHtml.substring(resolveIdx);
+
+        // Update buildAllData to include new variable
+        // Find current resolveIqamas call and add new array
+        const buildAllMatch=updatedHtml.match(/const base=resolveIqamas\(\[(.*?)\]\)/);
+        if(buildAllMatch){
+            const currentArgs=buildAllMatch[1];
+            // Add new variable if not already there
+            if(!currentArgs.includes(`...${varName}`)){
+                const newArgs=currentArgs+`,...${varName}`;
+                updatedHtml=updatedHtml.replace(
+                    `const base=resolveIqamas([${currentArgs}])`,
+                    `const base=resolveIqamas([${newArgs}])`
+                );
+            }
+        }
+
+        downloadFilename='index.html';
+        showToast('✅ index.html updated with '+state.month+' data!');
+    } else {
+        // No index.html uploaded — just provide the code snippet
+        updatedHtml='<!-- No index.html uploaded — paste this code into index.html before the RESOLVE CARRY-FORWARD comment -->\n\n'+newArrayCode;
+        downloadFilename=`${ms}_DATA_${state.year}.txt`;
+        showToast('ℹ️ No index.html uploaded — downloading code snippet only');
+    }
+
+    downloadBlob=new Blob([updatedHtml],{type:'text/html;charset=utf-8'});
+
+    // Show download card
+    document.getElementById('previewCard').classList.add('hidden');
+    document.getElementById('downloadCard').classList.remove('hidden');
+    document.getElementById('dlTitle').textContent=state.appHtml
+        ?`✅ index.html Updated with ${state.month} ${state.year}`
+        :`📋 ${varName} Code — ${lines.length} days`;
+    document.getElementById('dlSub').textContent=state.appHtml
+        ?`${state.month} ${state.year} data injected · Ready to upload to GitHub`
+        :`Code snippet ready — upload your index.html next time for one-click download`;
+    document.getElementById('dlDesc').textContent=state.appHtml
+        ?`Your index.html has been updated with all ${state.month} prayer times. Download it and upload to GitHub — done in 30 seconds.`
+        ?`Download the code snippet and manually paste it into index.html.`:'':''
+        ;
+
+    document.getElementById('downloadCard').scrollIntoView({behavior:'smooth',block:'start'});
+    setStep(4);
+    document.getElementById('wfStep3').classList.add('done');
 }
 
-function copyCode(){
-    navigator.clipboard.writeText(document.getElementById('codeBlk').textContent).then(()=>{
-        const b=document.getElementById('copyBtn');b.textContent='✅ Copied!';b.classList.add('copied');
-        showToast('✅ Code copied!');setTimeout(()=>{b.textContent='📋 Copy Code';b.classList.remove('copied');},2500);
-    });
+function downloadFile(){
+    if(!downloadBlob){showToast('⚠️ Nothing to download yet');return;}
+    const url=URL.createObjectURL(downloadBlob);
+    const a=document.createElement('a');
+    a.href=url;a.download=downloadFilename;
+    document.body.appendChild(a);a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    showToast('✅ Downloaded! Now upload to GitHub.');
 }
-function backToPreview(){document.getElementById('outputCard').classList.add('hidden');document.getElementById('previewCard').scrollIntoView({behavior:'smooth',block:'start'});setStep(3);}
 
-function resetExtract(){
+// ── RESET ────────────────────────────────────────────────────────────────────
+function resetAll(){
     state.rows=[];state.wmaFile=null;state.fianzFile=null;
+    // Keep appHtml loaded — user doesn't need to re-upload it
     document.getElementById('wmaFile').value='';document.getElementById('fianzFile').value='';
     document.getElementById('wmaZone').classList.remove('has');document.getElementById('fianzZone').classList.remove('has');
-    ['manualPanel','previewCard','outputCard'].forEach(id=>document.getElementById(id).classList.add('hidden'));
+    ['manualPanel','previewCard','downloadCard'].forEach(id=>document.getElementById(id).classList.add('hidden'));
     document.getElementById('progWrap').style.display='none';document.getElementById('progLbl').style.display='none';
-    clearLog();hideErr();checkExtractBtn();setStep(1);window.scrollTo({top:0,behavior:'smooth'});
+    clearLog();hideErr();checkReady();setStep(1);
+    // Reset workflow dots
+    ['wfStep1','wfStep2','wfStep3'].forEach(id=>document.getElementById(id).classList.remove('done'));
+    window.scrollTo({top:0,behavior:'smooth'});
 }
 
-function showToast(msg,dur=3000){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),dur);}
+function showToast(msg,dur=3000){
+    const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');
+    setTimeout(()=>t.classList.remove('show'),dur);
+}
 </script>
 </body>
 </html>
