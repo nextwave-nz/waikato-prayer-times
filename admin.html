@@ -9,7 +9,7 @@
         :root{--midnight:#0d0d1a;--navy:#111128;--navy2:#161630;--gold:#c9a84c;--gold-light:#f0d080;--gold-dim:rgba(201,168,76,.12);--gold-border:rgba(201,168,76,.28);--teal:#0f9b8e;--red:#e74c3c;--text:#e8e8f0;--text-dim:rgba(232,232,240,.6);--text-muted:rgba(232,232,240,.3);--glass:rgba(255,255,255,.04);--glass-border:rgba(255,255,255,.08);--radius:16px;--radius-sm:10px;}
         *{margin:0;padding:0;box-sizing:border-box;}
         body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--midnight);color:var(--text);min-height:100vh;}
-        body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 60% 40% at 50% -10%,rgba(201,168,76,.06) 0%,transparent 60%),radial-gradient(1.5px 1.5px at 15% 10%,rgba(255,255,255,.3) 0%,transparent 100%),radial-gradient(1px 1px at 72% 8%,rgba(255,255,255,.35) 0%,transparent 100%);pointer-events:none;z-index:0;}
+        body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 60% 40% at 50% -10%,rgba(201,168,76,.06) 0%,transparent 60%);pointer-events:none;z-index:0;}
         .wrap{position:relative;z-index:1;max-width:980px;margin:0 auto;padding:28px 18px 60px;}
         .hdr{text-align:center;margin-bottom:32px;padding-bottom:22px;border-bottom:1px solid var(--glass-border);}
         .hdr-icon{font-size:2.4em;display:block;margin-bottom:8px;filter:drop-shadow(0 0 14px rgba(201,168,76,.5));}
@@ -17,21 +17,17 @@
         .hdr p{color:var(--text-dim);font-size:.84em;font-weight:300;}
         .hdr-badge{display:inline-block;margin-top:8px;background:var(--gold-dim);border:1px solid var(--gold-border);color:var(--gold);font-size:.63em;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;padding:3px 13px;border-radius:20px;}
 
-        /* API KEY BANNER */
-        .api-banner{background:linear-gradient(135deg,rgba(231,76,60,.1),rgba(231,76,60,.05));border:1px solid rgba(231,76,60,.35);border-radius:var(--radius);padding:16px 18px;margin-bottom:22px;}
-        .api-banner.ok{background:linear-gradient(135deg,rgba(15,155,142,.1),rgba(15,155,142,.04));border-color:rgba(15,155,142,.35);}
-        .api-banner-title{font-weight:700;font-size:.88em;color:var(--text);margin-bottom:4px;}
-        .api-banner-sub{font-size:.73em;color:var(--text-dim);line-height:1.5;margin-bottom:10px;}
-        .api-key-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
-        .api-key-inp{flex:1;min-width:200px;background:rgba(0,0,0,.35);border:1px solid var(--glass-border);border-radius:8px;color:var(--text);font-family:'JetBrains Mono',monospace;font-size:.78em;padding:10px 13px;letter-spacing:.4px;}
-        .api-key-inp:focus{outline:none;border-color:var(--gold-border);}
-        .api-key-inp::placeholder{color:var(--text-muted);letter-spacing:0;}
-        .api-save-btn{padding:10px 18px;background:linear-gradient(135deg,var(--gold),#8B6914);color:#1a1100;border:none;border-radius:8px;font-family:'Plus Jakarta Sans',sans-serif;font-size:.8em;font-weight:700;cursor:pointer;white-space:nowrap;transition:all .2s;}
-        .api-save-btn:hover{transform:translateY(-1px);}
-        .api-clear-btn{padding:10px 14px;background:var(--glass);border:1px solid var(--glass-border);color:var(--text-muted);border-radius:8px;font-size:.8em;cursor:pointer;transition:all .2s;}
-        .api-clear-btn:hover{border-color:rgba(231,76,60,.4);color:var(--red);}
-        .api-ok-note{margin-top:8px;font-size:.72em;color:var(--teal);display:none;}
-        .api-banner.ok .api-ok-note{display:block;}
+        /* MODE SELECTOR */
+        .mode-card{background:var(--navy);border:1px solid var(--glass-border);border-radius:var(--radius);padding:18px;margin-bottom:22px;}
+        .mode-title{font-weight:700;font-size:.9em;margin-bottom:12px;color:var(--text);}
+        .mode-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+        .mode-btn{padding:14px 16px;border-radius:var(--radius-sm);border:2px solid var(--glass-border);background:transparent;color:var(--text-dim);font-family:'Plus Jakarta Sans',sans-serif;font-size:.82em;font-weight:600;cursor:pointer;transition:all .2s;text-align:left;line-height:1.4;}
+        .mode-btn .mode-icon{font-size:1.4em;display:block;margin-bottom:6px;}
+        .mode-btn .mode-name{font-size:.9em;font-weight:700;color:var(--text);display:block;margin-bottom:3px;}
+        .mode-btn .mode-desc{font-size:.75em;color:var(--text-dim);font-weight:400;}
+        .mode-btn.active{background:var(--gold-dim);border-color:var(--gold-border);color:var(--gold);}
+        .mode-btn.active .mode-name{color:var(--gold);}
+        .mode-btn:hover:not(.active){border-color:var(--gold-border);}
 
         .tabs{display:flex;gap:4px;margin-bottom:22px;background:var(--glass);border:1px solid var(--glass-border);border-radius:var(--radius-sm);padding:4px;}
         .tab{flex:1;padding:10px 6px;border:none;background:transparent;color:var(--text-muted);border-radius:8px;font-family:'Plus Jakarta Sans',sans-serif;font-size:.8em;font-weight:500;cursor:pointer;transition:all .2s;text-align:center;}
@@ -45,6 +41,7 @@
         .card-sub{font-size:.72em;color:var(--text-dim);margin-top:1px;}
         .card-body{padding:18px;}
         .hidden{display:none!important;}
+
         .steps{display:flex;background:var(--glass);border:1px solid var(--glass-border);border-radius:var(--radius-sm);overflow:hidden;margin-bottom:20px;}
         .step{flex:1;padding:11px 6px;text-align:center;position:relative;}
         .step:not(:last-child)::after{content:'›';position:absolute;right:-5px;top:50%;transform:translateY(-50%);color:var(--text-muted);font-size:1em;z-index:2;}
@@ -55,6 +52,7 @@
         .step.done .snum{background:var(--teal);color:white;border-color:var(--teal);}
         .slbl{font-size:.65em;color:var(--text-muted);font-weight:500;}
         .step.active .slbl{color:var(--gold);}.step.done .slbl{color:var(--teal);}
+
         .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-bottom:13px;}
         .form-grid.full{grid-template-columns:1fr;}
         .fg{display:flex;flex-direction:column;gap:5px;}
@@ -92,13 +90,35 @@
         .btn-gold:disabled{opacity:.5;cursor:not-allowed;transform:none;}
         .btn-ghost{background:var(--glass);border:1px solid var(--glass-border);color:var(--text-dim);}
         .btn-ghost:hover{border-color:var(--gold-border);color:var(--gold);}
+        .btn-teal{background:linear-gradient(135deg,var(--teal),#0a7a70);color:white;}
+        .btn-teal:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(15,155,142,.3);}
         .btn-full{width:100%;justify-content:center;}
         .btn-sm{padding:6px 13px;font-size:.74em;}
         .btn-danger:hover{border-color:rgba(231,76,60,.4)!important;color:var(--red)!important;}
+
+        /* API KEY */
+        .api-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:10px;}
+        .api-inp{flex:1;min-width:180px;background:rgba(0,0,0,.35);border:1px solid var(--glass-border);border-radius:8px;color:var(--text);font-family:'JetBrains Mono',monospace;font-size:.78em;padding:9px 12px;}
+        .api-inp:focus{outline:none;border-color:var(--gold-border);}
+        .api-inp::placeholder{color:var(--text-muted);}
+
+        /* MANUAL MODE */
+        .manual-steps{display:flex;flex-direction:column;gap:12px;margin-bottom:16px;}
+        .manual-step{display:flex;gap:12px;align-items:flex-start;padding:14px;background:var(--glass);border:1px solid var(--glass-border);border-radius:var(--radius-sm);}
+        .manual-step-num{width:24px;height:24px;min-width:24px;border-radius:50%;background:linear-gradient(135deg,var(--gold),#8B6914);color:#1a1100;font-weight:700;font-size:.75em;display:flex;align-items:center;justify-content:center;}
+        .manual-step-content{flex:1;}
+        .manual-step-title{font-weight:600;font-size:.85em;margin-bottom:4px;}
+        .manual-step-desc{font-size:.74em;color:var(--text-dim);line-height:1.5;margin-bottom:8px;}
+
+        .prompt-box{background:rgba(0,0,0,.4);border:1px solid var(--gold-border);border-radius:var(--radius-sm);padding:13px;font-family:'JetBrains Mono',monospace;font-size:.68em;color:var(--gold-light);line-height:1.6;max-height:160px;overflow-y:auto;white-space:pre-wrap;margin-bottom:8px;}
+        .json-paste{width:100%;background:rgba(0,0,0,.3);border:1px solid var(--glass-border);border-radius:var(--radius-sm);color:var(--text);font-family:'JetBrains Mono',monospace;font-size:.72em;padding:12px;min-height:100px;resize:vertical;line-height:1.6;}
+        .json-paste:focus{outline:none;border-color:var(--gold-border);}
+        .json-paste::placeholder{color:var(--text-muted);}
+
         .prog-wrap{background:var(--glass);border-radius:4px;height:4px;margin:11px 0;overflow:hidden;display:none;}
         .prog-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--gold-light));border-radius:4px;width:0%;transition:width .4s ease;}
         .prog-lbl{font-size:.72em;color:var(--text-dim);text-align:center;display:none;margin-bottom:6px;}
-        .ai-log{background:rgba(0,0,0,.3);border:1px solid var(--glass-border);border-radius:var(--radius-sm);padding:10px 13px;font-family:'JetBrains Mono',monospace;font-size:.69em;color:var(--text-dim);max-height:100px;overflow-y:auto;margin-bottom:13px;display:none;line-height:1.7;}
+        .ai-log{background:rgba(0,0,0,.3);border:1px solid var(--glass-border);border-radius:var(--radius-sm);padding:10px 13px;font-family:'JetBrains Mono',monospace;font-size:.69em;color:var(--text-dim);max-height:80px;overflow-y:auto;margin-bottom:13px;display:none;line-height:1.7;}
         .ai-log .lok{color:var(--teal);}.ai-log .lerr{color:var(--red);}.ai-log .linf{color:var(--gold);}
         .err-box{background:rgba(231,76,60,.08);border:1px solid rgba(231,76,60,.3);border-radius:var(--radius-sm);padding:10px 13px;font-size:.78em;color:#ff9999;display:none;margin-bottom:11px;}
         .tscroll{overflow-x:auto;border-radius:var(--radius-sm);border:1px solid var(--glass-border);}
@@ -125,8 +145,7 @@
         .paste-hint{margin-top:11px;padding:11px 13px;background:linear-gradient(135deg,rgba(201,168,76,.07),var(--glass));border:1px solid var(--gold-border);border-radius:var(--radius-sm);font-size:.72em;color:var(--text-dim);line-height:1.7;}
         .paste-hint strong{color:var(--text);}
         code{background:rgba(0,0,0,.3);border:1px solid var(--glass-border);border-radius:4px;padding:1px 5px;font-family:'JetBrains Mono',monospace;font-size:.9em;color:var(--gold-light);}
-        .mq-item{background:var(--glass);border:1px solid var(--glass-border);border-radius:var(--radius-sm);padding:13px 15px;margin-bottom:9px;display:flex;align-items:center;gap:13px;transition:all .2s;}
-        .mq-item.mq-active{border-color:var(--gold-border);background:var(--gold-dim);}
+        .mq-item{background:var(--glass);border:1px solid var(--glass-border);border-radius:var(--radius-sm);padding:13px 15px;margin-bottom:9px;display:flex;align-items:center;gap:13px;}
         .mq-dot{width:9px;height:9px;border-radius:50%;background:var(--glass-border);flex-shrink:0;}
         .mq-dot.on{background:var(--gold);}
         .mq-info{flex:1;}
@@ -141,7 +160,7 @@
         .itxt strong{color:var(--text);}
         .toast{position:fixed;bottom:26px;left:50%;transform:translateX(-50%) translateY(16px);background:var(--navy2);border:1px solid var(--gold-border);color:var(--text);padding:8px 20px;border-radius:24px;font-size:.79em;font-weight:500;z-index:1000;opacity:0;transition:all .27s;white-space:nowrap;}
         .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
-        @media(max-width:600px){.upg,.form-grid{grid-template-columns:1fr;}.steps{display:none;}.api-key-row{flex-direction:column;}}
+        @media(max-width:600px){.upg,.form-grid,.mode-row{grid-template-columns:1fr;}.steps{display:none;}}
     </style>
 </head>
 <body>
@@ -155,16 +174,32 @@
     <div class="hdr-badge">🔒 Runs Locally · No External Data Storage</div>
 </div>
 
-<!-- API KEY BANNER -->
-<div class="api-banner" id="apiBanner">
-    <div class="api-banner-title" id="apiTitle">🔑 Anthropic API Key Required</div>
-    <div class="api-banner-sub" id="apiSub">Enter your key once — stored only in this browser, sent only to Anthropic. Get yours free at <strong>console.anthropic.com</strong> → API Keys.</div>
-    <div class="api-key-row">
-        <input type="password" class="api-key-inp" id="apiKeyInput" placeholder="sk-ant-api03-..." autocomplete="off">
-        <button class="api-save-btn" onclick="saveApiKey()">💾 Save Key</button>
-        <button class="api-clear-btn" id="apiClearBtn" onclick="clearApiKey()" style="display:none">✕ Clear</button>
+<!-- MODE SELECTOR -->
+<div class="mode-card">
+    <div class="mode-title">⚙️ Choose Extraction Mode</div>
+    <div class="mode-row">
+        <button class="mode-btn" id="modeManualBtn" onclick="setMode('manual')">
+            <span class="mode-icon">🤖</span>
+            <span class="mode-name">Manual Mode (Recommended)</span>
+            <span class="mode-desc">Upload PDF here → copy prompt → paste into Claude.ai → paste result back. No API key needed. Always works.</span>
+        </button>
+        <button class="mode-btn" id="modeApiBtn" onclick="setMode('api')">
+            <span class="mode-icon">⚡</span>
+            <span class="mode-name">Auto Mode (API Key)</span>
+            <span class="mode-desc">Fully automatic using your Anthropic API key. May fail from GitHub Pages due to browser security (CORS).</span>
+        </button>
     </div>
-    <div class="api-ok-note" id="apiOkNote">✅ API key saved — extraction is ready</div>
+
+    <!-- API key row — shown only in API mode -->
+    <div id="apiKeySection" style="display:none;margin-top:14px;padding-top:14px;border-top:1px solid var(--glass-border);">
+        <div style="font-size:.75em;color:var(--text-dim);margin-bottom:8px;">🔑 Anthropic API Key — saved in this browser only</div>
+        <div class="api-row">
+            <input type="password" class="api-inp" id="apiKeyInput" placeholder="sk-ant-api03-..." autocomplete="off">
+            <button class="btn-gold btn" onclick="saveApiKey()" style="padding:9px 16px;font-size:.8em;">💾 Save</button>
+            <button class="btn-ghost btn btn-danger" id="apiClearBtn" onclick="clearApiKey()" style="padding:9px 12px;font-size:.8em;display:none;">✕ Clear</button>
+        </div>
+        <div id="apiKeyStatus" style="font-size:.71em;color:var(--teal);margin-top:6px;display:none;">✅ Key saved — auto mode ready</div>
+    </div>
 </div>
 
 <div class="tabs">
@@ -193,10 +228,7 @@
         </div>
         <div class="card-body">
             <div style="display:flex;gap:8px;align-items:flex-end;margin-bottom:13px;">
-                <div class="fg" style="flex:1">
-                    <label class="flbl">Target Mosque</label>
-                    <select class="finput" id="targetMosque" onchange="state.activeMosqueId=this.value"></select>
-                </div>
+                <div class="fg" style="flex:1"><label class="flbl">Target Mosque</label><select class="finput" id="targetMosque" onchange="state.activeMosqueId=this.value"></select></div>
                 <button class="btn btn-ghost btn-sm" onclick="switchTab('mosques',document.querySelectorAll('.tab')[1])">+ Add Mosque</button>
             </div>
             <div class="year-row">
@@ -227,7 +259,7 @@
             </div>
             <div class="upg">
                 <div class="upz" id="wmaZone">
-                    <input type="file" id="wmaFile" accept=".pdf,image/*,.jpg,.jpeg,.png" onchange="handleFile('wma',this)">
+                    <input type="file" id="wmaFile" accept=".pdf,image/*" onchange="handleFile('wma',this)">
                     <span class="up-icon">📄</span>
                     <div class="up-title">WMA Timetable</div>
                     <div class="up-desc">Waikato Muslim Association monthly schedule</div>
@@ -235,7 +267,7 @@
                     <div class="up-badge" id="wmaBadge">✓ Ready</div>
                 </div>
                 <div class="upz" id="fianzZone">
-                    <input type="file" id="fianzFile" accept=".pdf,image/*,.jpg,.jpeg,.png" onchange="handleFile('fianz',this)">
+                    <input type="file" id="fianzFile" accept=".pdf,image/*" onchange="handleFile('fianz',this)">
                     <span class="up-icon">🖼️</span>
                     <div class="up-title">FIANZ Calendar</div>
                     <div class="up-desc">Hamilton Suhoor &amp; Iftar times</div>
@@ -244,7 +276,7 @@
                 </div>
             </div>
             <div class="err-box" id="errBox"></div>
-            <button class="btn btn-gold btn-full" id="extractBtn" onclick="runExtract()" disabled>
+            <button class="btn btn-gold btn-full" id="extractBtn" onclick="startExtract()" disabled>
                 <span id="extIco">✨</span><span id="extTxt">Select month and upload a file first</span>
             </button>
             <div class="prog-wrap" id="progWrap"><div class="prog-fill" id="progFill"></div></div>
@@ -253,16 +285,65 @@
         </div>
     </div>
 
-    <div class="card hidden" id="previewCard">
+    <!-- MANUAL MODE PANEL -->
+    <div class="card hidden" id="manualPanel">
         <div class="card-hdr">
             <div class="card-num">2</div>
             <div>
-                <div class="card-title">Review & Edit Extracted Data</div>
-                <div class="card-sub">Click any cell to correct · Empty iqama = carries forward from previous row</div>
+                <div class="card-title">Manual Extraction — 3 Quick Steps</div>
+                <div class="card-sub">Copy prompt → paste into Claude.ai with your PDF → paste result back here</div>
             </div>
         </div>
         <div class="card-body">
-            <div class="iq-legend"><span>Gold</span> = Iqama &nbsp;|&nbsp; <span style="color:var(--red)">Red</span> = Iftar &nbsp;|&nbsp; <span style="color:var(--teal)">Teal</span> = Suhoor &nbsp;|&nbsp; Blank iqama = carry forward</div>
+            <div class="manual-steps">
+                <!-- Step A -->
+                <div class="manual-step">
+                    <div class="manual-step-num">A</div>
+                    <div class="manual-step-content">
+                        <div class="manual-step-title">Copy this prompt</div>
+                        <div class="manual-step-desc">This tells Claude exactly what to extract and how to format the result.</div>
+                        <div class="prompt-box" id="manualPrompt">Loading...</div>
+                        <button class="btn btn-ghost btn-sm" onclick="copyPrompt()">📋 Copy Prompt</button>
+                    </div>
+                </div>
+                <!-- Step B -->
+                <div class="manual-step">
+                    <div class="manual-step-num">B</div>
+                    <div class="manual-step-content">
+                        <div class="manual-step-title">Go to Claude.ai — upload PDF + paste prompt</div>
+                        <div class="manual-step-desc">Open Claude.ai, start a new chat, attach your WMA PDF, paste the prompt above, and send. Claude will reply with JSON.</div>
+                        <button class="btn btn-teal btn-sm" onclick="window.open('https://claude.ai','_blank')" style="margin-top:2px;">🔗 Open Claude.ai</button>
+                    </div>
+                </div>
+                <!-- Step C -->
+                <div class="manual-step">
+                    <div class="manual-step-num">C</div>
+                    <div class="manual-step-content">
+                        <div class="manual-step-title">Paste Claude's JSON reply here</div>
+                        <div class="manual-step-desc">Copy the entire JSON response from Claude.ai and paste it below, then click Parse.</div>
+                        <textarea class="json-paste" id="jsonPaste" placeholder='Paste JSON here — starts with {"month":"April"..."days":[...]}' oninput="checkJsonPaste()"></textarea>
+                        <div style="display:flex;gap:8px;margin-top:8px;">
+                            <button class="btn btn-gold" id="parseBtn" onclick="parseManualJson()" disabled>⚡ Parse JSON &amp; Continue</button>
+                            <button class="btn btn-ghost btn-sm" onclick="resetExtract()">↺ Start Over</button>
+                        </div>
+                        <div class="err-box" id="jsonErrBox" style="margin-top:8px;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PREVIEW TABLE -->
+    <div class="card hidden" id="previewCard">
+        <div class="card-hdr">
+            <div class="card-num">3</div>
+            <div>
+                <div class="card-title">Review & Edit Extracted Data</div>
+                <div class="card-sub">Click any cell to correct · Empty iqama = carries forward</div>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="iq-legend"><span>Gold</span> = Iqama &nbsp;|&nbsp; <span style="color:var(--red)">Red</span> = Iftar &nbsp;|&nbsp; <span style="color:var(--teal)">Teal</span> = Suhoor</div>
             <div class="tscroll"><table class="prev"><thead id="prevHead"></thead><tbody id="prevBody"></tbody></table></div>
             <div style="display:flex;gap:9px;margin-top:12px;flex-wrap:wrap">
                 <button class="btn btn-ghost" onclick="resetExtract()">↺ Start Over</button>
@@ -271,9 +352,10 @@
         </div>
     </div>
 
+    <!-- OUTPUT CODE -->
     <div class="card hidden" id="outputCard">
         <div class="card-hdr">
-            <div class="card-num">3</div>
+            <div class="card-num">4</div>
             <div>
                 <div class="card-title">Generated Code — Ready to Paste</div>
                 <div class="card-sub" id="outSub"></div>
@@ -296,53 +378,27 @@
 <!-- TAB: MANAGE MOSQUES -->
 <div class="tab-pane hidden" id="tab-mosques">
     <div class="card">
-        <div class="card-hdr">
-            <div class="card-num">🕌</div>
-            <div>
-                <div class="card-title">Registered Mosques</div>
-                <div class="card-sub">App shows a mosque selector automatically when 2+ mosques are registered</div>
-            </div>
-        </div>
-        <div class="card-body">
-            <div id="mosqueList"></div>
-            <div style="margin-top:9px;padding:9px 12px;background:var(--glass);border:1px solid var(--glass-border);border-radius:8px;font-size:.71em;color:var(--text-muted)">
-                💡 Once a second mosque is added, users will see a mosque switcher in the app header.
-            </div>
-        </div>
+        <div class="card-hdr"><div class="card-num">🕌</div><div><div class="card-title">Registered Mosques</div></div></div>
+        <div class="card-body"><div id="mosqueList"></div></div>
     </div>
     <div class="card">
-        <div class="card-hdr">
-            <div class="card-num">+</div>
-            <div>
-                <div class="card-title">Add New Mosque</div>
-                <div class="card-sub">Fill in the details — then extract its prayer times in the Extract tab</div>
-            </div>
-        </div>
+        <div class="card-hdr"><div class="card-num">+</div><div><div class="card-title">Add New Mosque</div></div></div>
         <div class="card-body">
             <div class="form-grid">
                 <div class="fg"><label class="flbl">Full Name *</label><input class="finput" id="mName" placeholder="e.g. Cambridge Mosque" type="text"></div>
                 <div class="fg"><label class="flbl">Short Name *</label><input class="finput" id="mShort" placeholder="e.g. Cambridge" type="text"></div>
-                <div class="fg"><label class="flbl">Address</label><input class="finput" id="mAddr" placeholder="e.g. 12 Main St, Cambridge" type="text"></div>
+                <div class="fg"><label class="flbl">Address</label><input class="finput" id="mAddr" placeholder="e.g. 12 Main St" type="text"></div>
                 <div class="fg"><label class="flbl">Friday Khutbah Time</label><input class="finput" id="mJummah" placeholder="e.g. 1:30 PM" type="text"></div>
             </div>
-            <div class="form-grid full" style="margin-bottom:14px">
-                <div class="fg"><label class="flbl">Unique ID (auto-generated)</label><input class="finput" id="mId" placeholder="e.g. cambridge-mosque" type="text"></div>
-            </div>
+            <div class="form-grid full" style="margin-bottom:14px"><div class="fg"><label class="flbl">Unique ID (auto-generated)</label><input class="finput" id="mId" type="text"></div></div>
             <button class="btn btn-gold" onclick="addMosque()">➕ Add Mosque</button>
         </div>
     </div>
     <div class="card hidden" id="mqCodeCard">
-        <div class="card-hdr">
-            <div class="card-num">📋</div>
-            <div><div class="card-title">Mosque Config Snippet</div><div class="card-sub">Add this to index.html</div></div>
-        </div>
+        <div class="card-hdr"><div class="card-num">📋</div><div><div class="card-title">Mosque Config Snippet</div></div></div>
         <div class="card-body">
-            <div class="code-bar">
-                <div class="code-ttl">Mosque object for index.html</div>
-                <button class="copy-btn" id="mqCopyBtn" onclick="copyMqCode()">📋 Copy</button>
-            </div>
+            <div class="code-bar"><div class="code-ttl">Paste into index.html</div><button class="copy-btn" id="mqCopyBtn" onclick="copyMqCode()">📋 Copy</button></div>
             <div class="code-blk" id="mqCodeBlk"></div>
-            <div class="paste-hint">In <strong>index.html</strong>, find <code>const DEFAULT_MOSQUE = {</code> and add this mosque to the mosques array. Save and push to GitHub.</div>
         </div>
     </div>
 </div>
@@ -350,28 +406,28 @@
 <!-- TAB: HOW TO USE -->
 <div class="tab-pane hidden" id="tab-guide">
     <div class="card">
-        <div class="card-hdr"><div class="card-num">🔑</div><div><div class="card-title">First Time — Get Your API Key</div></div></div>
+        <div class="card-hdr"><div class="card-num">🤖</div><div><div class="card-title">Manual Mode Workflow (Recommended)</div></div></div>
         <div class="card-body">
             <div class="inst-card">
-                <h3>API Key Setup (One Time Only)</h3>
-                <div class="istep"><div class="inum">1</div><div class="itxt">Go to <strong>console.anthropic.com</strong> → sign in or create a free account.</div></div>
-                <div class="istep"><div class="inum">2</div><div class="itxt">Click <strong>API Keys</strong> in the left sidebar → <strong>Create Key</strong>. Copy the key — it starts with <code>sk-ant-</code>.</div></div>
-                <div class="istep"><div class="inum">3</div><div class="itxt">Paste it into the <strong>API Key field at the top of this page</strong> and click <strong>Save Key</strong>. Done — it's remembered in your browser from now on.</div></div>
+                <h3>Every Month — 5 Minutes</h3>
+                <div class="istep"><div class="inum">1</div><div class="itxt">Download the <strong>WMA monthly PDF</strong> from the masjid.</div></div>
+                <div class="istep"><div class="inum">2</div><div class="itxt">In <strong>Extract Data</strong>: select mosque, year, month. Upload the PDF.</div></div>
+                <div class="istep"><div class="inum">3</div><div class="itxt">Click <strong>Prepare Extraction</strong>. Copy the prompt shown.</div></div>
+                <div class="istep"><div class="inum">4</div><div class="itxt">Open <strong>Claude.ai</strong>, start a new chat, attach the PDF, paste the prompt, send.</div></div>
+                <div class="istep"><div class="inum">5</div><div class="itxt">Copy the JSON response from Claude.ai and paste it back into the admin.</div></div>
+                <div class="istep"><div class="inum">6</div><div class="itxt">Click <strong>Parse JSON</strong> → review table → <strong>Generate Code</strong> → <strong>Copy Code</strong>.</div></div>
+                <div class="istep"><div class="inum">7</div><div class="itxt">In <strong>index.html</strong> on GitHub, replace the old month array with the new one. Update <code>resolveIqamas([...])</code> to include the new variable. Push — done! 🎉</div></div>
             </div>
         </div>
     </div>
     <div class="card">
-        <div class="card-hdr"><div class="card-num">📅</div><div><div class="card-title">Adding a New Month (Every Month)</div></div></div>
+        <div class="card-hdr"><div class="card-num">⚡</div><div><div class="card-title">Auto Mode (if CORS allows)</div></div></div>
         <div class="card-body">
             <div class="inst-card">
-                <h3>Monthly Workflow</h3>
-                <div class="istep"><div class="inum">1</div><div class="itxt">Download the <strong>WMA monthly PDF</strong> from the masjid for the upcoming month.</div></div>
-                <div class="istep"><div class="inum">2</div><div class="itxt">Select mosque, year and month. Leave Ramadan toggle <strong>OFF</strong> for normal months.</div></div>
-                <div class="istep"><div class="inum">3</div><div class="itxt">Upload the WMA PDF → click <strong>Extract Data</strong>. AI reads it and builds the table in seconds.</div></div>
-                <div class="istep"><div class="inum">4</div><div class="itxt">Review every row — click any cell to fix errors. Empty iqama cells carry forward automatically.</div></div>
-                <div class="istep"><div class="inum">5</div><div class="itxt">Click <strong>Generate Code</strong> → <strong>Copy Code</strong>.</div></div>
-                <div class="istep"><div class="inum">6</div><div class="itxt">Open <code>index.html</code> on GitHub. Replace the old month's data array (e.g. <code>const APR_DATA=[</code>) with the new one. Update <code>resolveIqamas([...MAR_DATA, ...APR_DATA])</code> to include the new variable.</div></div>
-                <div class="istep"><div class="inum">7</div><div class="itxt">Commit to GitHub — the live app updates in seconds. 🎉</div></div>
+                <h3>Auto Mode Setup</h3>
+                <div class="istep"><div class="inum">1</div><div class="itxt">Select <strong>Auto Mode</strong> in the mode selector and enter your API key from <strong>console.anthropic.com</strong>.</div></div>
+                <div class="istep"><div class="inum">2</div><div class="itxt">If it shows "Failed to fetch" — your browser is blocking the API call due to CORS. Switch to <strong>Manual Mode</strong> instead.</div></div>
+                <div class="istep"><div class="inum">3</div><div class="itxt">Auto mode may work if you open admin.html from a local computer rather than from GitHub Pages.</div></div>
             </div>
         </div>
     </div>
@@ -384,71 +440,47 @@ const MONTHS=['January','February','March','April','May','June','July','August',
 const MSHORT=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 const DAYS_IN_MONTH=[31,28,31,30,31,30,31,31,30,31,30,31];
 const DEFAULT_MOSQUE={id:'hamilton-jamia',name:'Hamilton Jamia Mosque',shortName:'Hamilton Jamia',address:'921 Heaphy Terrace, Hamilton',jummahTime:'1:40 PM'};
-const state={month:null,year:2026,isRamadan:false,wmaFile:null,wmaType:null,fianzFile:null,fianzType:null,rows:[],activeMosqueId:'hamilton-jamia'};
+const state={month:null,year:2026,isRamadan:false,wmaFile:null,wmaType:null,fianzFile:null,fianzType:null,rows:[],activeMosqueId:'hamilton-jamia',mode:'manual'};
+
+// ── MODE ─────────────────────────────────────
+function setMode(m){
+    state.mode=m;
+    document.getElementById('modeManualBtn').classList.toggle('active',m==='manual');
+    document.getElementById('modeApiBtn').classList.toggle('active',m==='api');
+    document.getElementById('apiKeySection').style.display=m==='api'?'block':'none';
+    updateExtractBtn();
+}
 
 // ── API KEY ──────────────────────────────────
 function getApiKey(){return localStorage.getItem('wpt_api_key')||'';}
-
 function saveApiKey(){
     const v=document.getElementById('apiKeyInput').value.trim();
     if(!v.startsWith('sk-ant-')){showToast('⚠️ Key must start with sk-ant-');return;}
-    localStorage.setItem('wpt_api_key',v);
-    updateApiKeyUI();
-    showToast('✅ API key saved!');
-    checkExtractBtn();
+    localStorage.setItem('wpt_api_key',v);updateApiKeyUI();showToast('✅ API key saved!');updateExtractBtn();
 }
-
-function clearApiKey(){
-    if(!confirm('Remove saved API key?'))return;
-    localStorage.removeItem('wpt_api_key');
-    document.getElementById('apiKeyInput').value='';
-    updateApiKeyUI();
-    checkExtractBtn();
-}
-
+function clearApiKey(){if(!confirm('Remove saved API key?'))return;localStorage.removeItem('wpt_api_key');document.getElementById('apiKeyInput').value='';updateApiKeyUI();updateExtractBtn();}
 function updateApiKeyUI(){
     const key=getApiKey();
-    const banner=document.getElementById('apiBanner');
-    const inp=document.getElementById('apiKeyInput');
-    const clr=document.getElementById('apiClearBtn');
-    const note=document.getElementById('apiOkNote');
-    if(key){
-        banner.classList.add('ok');
-        document.getElementById('apiTitle').textContent='✅ API Key Saved';
-        document.getElementById('apiSub').textContent='Your Anthropic API key is stored in this browser. Ready to extract prayer times.';
-        inp.value='sk-ant-••••••••••••••••'+key.slice(-6);
-        inp.disabled=true;
-        clr.style.display='inline-flex';
-        note.style.display='block';
-    }else{
-        banner.classList.remove('ok');
-        document.getElementById('apiTitle').textContent='🔑 Anthropic API Key Required';
-        document.getElementById('apiSub').innerHTML='Enter your key once — stored only in this browser, sent only to Anthropic. Get yours free at <strong>console.anthropic.com</strong> → API Keys.';
-        inp.value='';inp.disabled=false;
-        clr.style.display='none';
-        note.style.display='none';
-    }
+    document.getElementById('apiKeyInput').value=key?'sk-ant-••••••••'+key.slice(-6):'';
+    document.getElementById('apiKeyInput').disabled=!!key;
+    document.getElementById('apiClearBtn').style.display=key?'inline-flex':'none';
+    document.getElementById('apiKeyStatus').style.display=key?'block':'none';
 }
 
-// ── MOSQUE MANAGEMENT ────────────────────────
+// ── MOSQUE ───────────────────────────────────
 function getMosques(){try{const s=localStorage.getItem('wpt_mosques');if(s)return JSON.parse(s);}catch(e){}return[DEFAULT_MOSQUE];}
 function saveMosques(m){localStorage.setItem('wpt_mosques',JSON.stringify(m));}
-
 function renderMosqueList(){
     const mosques=getMosques();
-    document.getElementById('mosqueList').innerHTML=mosques.map((m,i)=>{
-        const isDefault=m.id===DEFAULT_MOSQUE.id;
-        return`<div class="mq-item ${i===0?'mq-active':''}">
-            <div class="mq-dot ${i===0?'on':''}"></div>
-            <div class="mq-info"><div class="mq-name">${m.name}</div><div class="mq-addr">📍 ${m.address||'—'} · 🕌 Jummah ${m.jummahTime||'—'} · ID: <code>${m.id}</code></div></div>
-            <div class="mq-acts">${isDefault?'<span style="font-size:.68em;color:var(--text-muted)">Default</span>':`<button class="btn btn-ghost btn-sm btn-danger" onclick="delMosque('${m.id}')">🗑 Remove</button>`}</div>
-        </div>`;
-    }).join('');
+    document.getElementById('mosqueList').innerHTML=mosques.map((m,i)=>`<div class="mq-item">
+        <div class="mq-dot ${i===0?'on':''}"></div>
+        <div class="mq-info"><div class="mq-name">${m.name}</div><div class="mq-addr">📍 ${m.address||'—'} · Jummah ${m.jummahTime||'—'} · <code>${m.id}</code></div></div>
+        <div class="mq-acts">${m.id===DEFAULT_MOSQUE.id?'<span style="font-size:.68em;color:var(--text-muted)">Default</span>':`<button class="btn btn-ghost btn-sm btn-danger" onclick="delMosque('${m.id}')">🗑</button>`}</div>
+    </div>`).join('');
     const sel=document.getElementById('targetMosque');
     sel.innerHTML=mosques.map(m=>`<option value="${m.id}">${m.name}</option>`).join('');
     state.activeMosqueId=sel.value;
 }
-
 function addMosque(){
     const name=document.getElementById('mName').value.trim();
     const shortName=document.getElementById('mShort').value.trim();
@@ -458,73 +490,125 @@ function addMosque(){
     if(!name||!shortName){showToast('⚠️ Name and Short Name required');return;}
     if(!id)id=name.toLowerCase().replace(/\s+/g,'-').replace(/[^a-z0-9-]/g,'');
     const mosques=getMosques();
-    if(mosques.find(m=>m.id===id)){showToast('⚠️ ID already exists');return;}
-    const newM={id,name,shortName,address,jummahTime};
-    mosques.push(newM);saveMosques(mosques);renderMosqueList();
-    document.getElementById('mqCodeBlk').textContent=`// Add this to index.html\n${JSON.stringify(newM,null,2)}`;
+    if(mosques.find(m=>m.id===id)){showToast('⚠️ ID exists');return;}
+    mosques.push({id,name,shortName,address,jummahTime});saveMosques(mosques);renderMosqueList();
+    document.getElementById('mqCodeBlk').textContent=`// Add to index.html\n${JSON.stringify({id,name,shortName,address,jummahTime},null,2)}`;
     document.getElementById('mqCodeCard').classList.remove('hidden');
-    ['mName','mShort','mAddr','mJummah','mId'].forEach(id=>document.getElementById(id).value='');
+    ['mName','mShort','mAddr','mJummah','mId'].forEach(x=>document.getElementById(x).value='');
     showToast(`✅ ${name} added!`);
 }
-
-function delMosque(id){
-    if(!confirm('Remove this mosque?'))return;
-    saveMosques(getMosques().filter(m=>m.id!==id));renderMosqueList();showToast('🗑 Removed');
-}
-
-function copyMqCode(){
-    navigator.clipboard.writeText(document.getElementById('mqCodeBlk').textContent).then(()=>{
-        const b=document.getElementById('mqCopyBtn');b.textContent='✅ Copied!';setTimeout(()=>b.textContent='📋 Copy',2200);
-    });
-}
+function delMosque(id){if(!confirm('Remove?'))return;saveMosques(getMosques().filter(m=>m.id!==id));renderMosqueList();}
+function copyMqCode(){navigator.clipboard.writeText(document.getElementById('mqCodeBlk').textContent).then(()=>{const b=document.getElementById('mqCopyBtn');b.textContent='✅ Copied!';setTimeout(()=>b.textContent='📋 Copy',2200);});}
 
 document.addEventListener('DOMContentLoaded',()=>{
-    document.getElementById('mName').addEventListener('input',e=>{
-        document.getElementById('mId').value=e.target.value.toLowerCase().replace(/\s+/g,'-').replace(/[^a-z0-9-]/g,'');
-    });
-    renderMosqueList();
-    updateApiKeyUI();
-    checkExtractBtn();
+    document.getElementById('mName').addEventListener('input',e=>{document.getElementById('mId').value=e.target.value.toLowerCase().replace(/\s+/g,'-').replace(/[^a-z0-9-]/g,'');});
+    renderMosqueList();updateApiKeyUI();setMode('manual');
 });
 
-// ── TAB SWITCHING ────────────────────────────
+// ── TABS ─────────────────────────────────────
 function switchTab(id,btn){
     document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
     document.querySelectorAll('.tab-pane').forEach(p=>{p.classList.remove('active');p.classList.add('hidden');});
     btn.classList.add('active');
-    document.getElementById('tab-'+id).classList.remove('hidden');
-    document.getElementById('tab-'+id).classList.add('active');
+    document.getElementById('tab-'+id).classList.remove('hidden');document.getElementById('tab-'+id).classList.add('active');
 }
 
-// ── EXTRACT ──────────────────────────────────
+// ── EXTRACT CONFIG ───────────────────────────
 function selMonth(m,el){
     state.month=m;
     document.querySelectorAll('.mchip').forEach(c=>c.classList.remove('sel'));el.classList.add('sel');
-    const yr=parseInt(document.getElementById('yearInput').value);
-    setRamadan(yr===2026&&['February','March'].includes(m));
-    checkExtractBtn();
+    setRamadan(parseInt(document.getElementById('yearInput').value)===2026&&['February','March'].includes(m));
+    updateExtractBtn();
 }
 function setRamadan(v){state.isRamadan=v;document.getElementById('ramTog').classList.toggle('on',v);}
 function toggleRamadan(){setRamadan(!state.isRamadan);}
-
 function handleFile(src,inp){
     const f=inp.files[0];if(!f)return;
     const isPDF=f.type==='application/pdf'||f.name.toLowerCase().endsWith('.pdf');
     if(src==='wma'){state.wmaFile=f;state.wmaType=isPDF?'pdf':'image';document.getElementById('wmaZone').classList.add('has');document.getElementById('wmaBadge').textContent=`✓ ${f.name.substring(0,22)}`;}
     else{state.fianzFile=f;state.fianzType=isPDF?'pdf':'image';document.getElementById('fianzZone').classList.add('has');document.getElementById('fianzBadge').textContent=`✓ ${f.name.substring(0,22)}`;}
-    checkExtractBtn();
+    updateExtractBtn();
 }
-
+function updateExtractBtn(){checkExtractBtn();}
 function checkExtractBtn(){
-    const btn=document.getElementById('extractBtn');const txt=document.getElementById('extTxt');
-    if(!getApiKey()){txt.textContent='Save your API key first (top of page)';btn.disabled=true;return;}
+    const btn=document.getElementById('extractBtn');const txt=document.getElementById('extTxt');const ico=document.getElementById('extIco');
     if(!state.month){txt.textContent='Select a month first';btn.disabled=true;return;}
     if(!state.wmaFile&&!state.fianzFile){txt.textContent='Upload at least one file';btn.disabled=true;return;}
+    if(state.mode==='api'&&!getApiKey()){txt.textContent='Save your API key first';btn.disabled=true;return;}
     const sel=document.getElementById('targetMosque');
-    txt.textContent=`✨ Extract ${state.month} ${document.getElementById('yearInput').value} — ${sel.options[sel.selectedIndex]?.text||''}`;
+    const mName=sel.options[sel.selectedIndex]?.text||'';
+    if(state.mode==='manual'){ico.textContent='📋';txt.textContent=`Prepare Extraction — ${state.month} ${document.getElementById('yearInput').value}`;}
+    else{ico.textContent='✨';txt.textContent=`Extract ${state.month} ${document.getElementById('yearInput').value} — ${mName}`;}
     btn.disabled=false;
 }
 
+function buildPrompt(){
+    const mosque=getMosques().find(m=>m.id===state.activeMosqueId)||DEFAULT_MOSQUE;
+    const days=DAYS_IN_MONTH[MONTHS.indexOf(state.month)];
+    const yr=document.getElementById('yearInput').value;
+    return `Extract ALL prayer times from the attached WMA timetable PDF for ${mosque.name}, Hamilton NZ. Month: ${state.month} ${yr} (${days} days). Do not skip any day.
+
+RULES:
+- WMA shows two values per prayer: adhan time and iqama (bold). Only include iqama when it explicitly appears for that day; use null when it carries forward.
+- Times format: h:mm no leading zero (e.g. "6:20" not "06:20")
+- AM: Fajr, Sunrise. PM: Dhuhr, Asr, Maghrib, Isha.
+${state.isRamadan?'- Also extract suhoorEnds and iftar from the FIANZ calendar.':''}
+
+Return ONLY raw JSON (no markdown, no text before or after):
+{"month":"${state.month}","year":"${yr}","mosqueId":"${mosque.id}","isRamadan":${state.isRamadan},"days":[{"date":1,"dayName":"Wed","fajrAdhan":"6:04","fajrIqama":"6:20","sunrise":"7:31","dhuhrAdhan":"1:23","dhuhrIqama":null,"asrAdhan":"4:42","asrIqama":null,"maghribAdhan":"7:15","maghribIqama":null,"ishaAdhan":"8:27","ishaIqama":null,"suhoorEnds":null,"iftar":null,"isRamadan":false,"ramadanDay":null}]}`;
+}
+
+// ── START EXTRACT (routes to manual or API) ──
+async function startExtract(){
+    hideErr();
+    if(state.mode==='manual'){showManualPanel();} 
+    else{await runApiExtract();}
+}
+
+// ── MANUAL MODE ──────────────────────────────
+function showManualPanel(){
+    document.getElementById('manualPanel').classList.remove('hidden');
+    document.getElementById('manualPrompt').textContent=buildPrompt();
+    document.getElementById('jsonPaste').value='';
+    document.getElementById('parseBtn').disabled=true;
+    document.getElementById('jsonErrBox').style.display='none';
+    document.getElementById('manualPanel').scrollIntoView({behavior:'smooth',block:'start'});
+    setStep(2);
+}
+
+function copyPrompt(){
+    navigator.clipboard.writeText(document.getElementById('manualPrompt').textContent).then(()=>showToast('✅ Prompt copied! Now go to Claude.ai'));
+}
+
+function checkJsonPaste(){
+    const v=document.getElementById('jsonPaste').value.trim();
+    document.getElementById('parseBtn').disabled=v.length<10;
+}
+
+function parseManualJson(){
+    const raw=document.getElementById('jsonPaste').value.trim();
+    const errBox=document.getElementById('jsonErrBox');
+    try{
+        let jt=raw.replace(/```json\s*/g,'').replace(/```\s*/g,'').trim();
+        const si=jt.indexOf('{'),ei=jt.lastIndexOf('}');
+        if(si===-1||ei===-1)throw new Error('No JSON object found. Make sure you copied the full response.');
+        const parsed=JSON.parse(jt.substring(si,ei+1));
+        if(!parsed.days?.length)throw new Error('No days array found in JSON.');
+        state.rows=parsed.days;
+        state.year=parseInt(document.getElementById('yearInput').value);
+        errBox.style.display='none';
+        document.getElementById('manualPanel').classList.add('hidden');
+        buildPreview();
+        document.getElementById('previewCard').classList.remove('hidden');
+        document.getElementById('previewCard').scrollIntoView({behavior:'smooth',block:'start'});
+        setStep(3);
+        showToast(`✅ ${parsed.days.length} days parsed!`);
+    }catch(err){
+        errBox.textContent='⚠️ '+err.message;errBox.style.display='block';
+    }
+}
+
+// ── API MODE ─────────────────────────────────
 function setStep(n){for(let i=1;i<=5;i++){const el=document.getElementById('s'+i);if(!el)continue;el.classList.remove('active','done');if(i<n)el.classList.add('done');else if(i===n)el.classList.add('active');}}
 function setProgress(pct,lbl){document.getElementById('progWrap').style.display='block';document.getElementById('progFill').style.width=pct+'%';document.getElementById('progLbl').style.display='block';document.getElementById('progLbl').textContent=lbl;}
 function addLog(msg,type='linf'){const log=document.getElementById('aiLog');log.style.display='block';const d=document.createElement('div');d.className=type;d.textContent=msg;log.appendChild(d);log.scrollTop=log.scrollHeight;}
@@ -533,27 +617,8 @@ function showErr(msg){const b=document.getElementById('errBox');b.textContent='�
 function hideErr(){document.getElementById('errBox').style.display='none';}
 function fileToB64(f){return new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(r.result.split(',')[1]);r.onerror=rej;r.readAsDataURL(f);});}
 
-function buildPrompt(){
-    const mosque=getMosques().find(m=>m.id===state.activeMosqueId)||DEFAULT_MOSQUE;
-    const days=DAYS_IN_MONTH[MONTHS.indexOf(state.month)];
-    return `You are an expert at extracting Islamic prayer times from WMA timetable documents for ${mosque.name}, Hamilton, New Zealand.
-
-Extract ALL prayer times for ${state.month} ${document.getElementById('yearInput').value} (${days} days). Do NOT skip any day.
-
-RULES:
-1. WMA PDF shows two values per prayer: adhan time and iqama (bold/larger). Only set iqama when it explicitly appears in the document for that day; otherwise null (carry-forward).
-2. Times format: h:mm with no leading zero (e.g. "6:20" not "06:20")
-3. AM prayers: Fajr, Sunrise. All others PM: Dhuhr, Asr, Maghrib, Isha.
-4. If Ramadan is true, also extract suhoorEnds and iftar.
-
-Return ONLY raw JSON — no markdown, no explanation, no extra text:
-{"month":"${state.month}","year":"${document.getElementById('yearInput').value}","mosqueId":"${mosque.id}","isRamadan":${state.isRamadan},"days":[{"date":1,"dayName":"Wed","fajrAdhan":"6:04","fajrIqama":"6:20","sunrise":"7:31","dhuhrAdhan":"1:23","dhuhrIqama":null,"asrAdhan":"4:42","asrIqama":null,"maghribAdhan":"7:15","maghribIqama":null,"ishaAdhan":"8:27","ishaIqama":null,"suhoorEnds":null,"iftar":null,"isRamadan":false,"ramadanDay":null}]}`;
-}
-
-async function runExtract(){
-    const apiKey=getApiKey();
-    if(!apiKey){showErr('Please save your API key first (top of page).');return;}
-    hideErr();clearLog();setStep(2);
+async function runApiExtract(){
+    clearLog();setStep(2);
     const btn=document.getElementById('extractBtn');
     btn.disabled=true;document.getElementById('extIco').textContent='⏳';document.getElementById('extTxt').textContent='Extracting...';
     setProgress(10,'Reading files...');
@@ -566,66 +631,40 @@ async function runExtract(){
             addLog(`✓ WMA loaded (${Math.round(state.wmaFile.size/1024)}KB)`,'lok');
         }
         if(state.fianzFile){
-            addLog(`🖼️ FIANZ: ${state.fianzFile.name}`,'linf');
             const b64=await fileToB64(state.fianzFile);
             parts.push(state.fianzType==='pdf'?{type:'document',source:{type:'base64',media_type:'application/pdf',data:b64}}:{type:'image',source:{type:'base64',media_type:state.fianzFile.type||'image/jpeg',data:b64}});
-            addLog(`✓ FIANZ loaded (${Math.round(state.fianzFile.size/1024)}KB)`,'lok');
         }
         parts.push({type:'text',text:`Extract all ${state.month} ${document.getElementById('yearInput').value} prayer times. Return only JSON.`});
-        setProgress(35,'Calling Claude AI...');
+        setProgress(35,'Calling Claude API...');
         addLog('🤖 Sending to Claude AI...','linf');
-
         const resp=await fetch('https://api.anthropic.com/v1/messages',{
             method:'POST',
-            headers:{
-                'Content-Type':'application/json',
-                'x-api-key':apiKey,
-                'anthropic-version':'2023-06-01',
-                'anthropic-dangerous-direct-browser-iab':'true'
-            },
-            body:JSON.stringify({
-                model:'claude-sonnet-4-20250514',
-                max_tokens:4000,
-                system:buildPrompt(),
-                messages:[{role:'user',content:parts}]
-            })
+            headers:{'Content-Type':'application/json','x-api-key':getApiKey(),'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-iab':'true'},
+            body:JSON.stringify({model:'claude-opus-4-5',max_tokens:4000,system:buildPrompt(),messages:[{role:'user',content:parts}]})
         });
-
-        if(!resp.ok){
-            const e=await resp.json().catch(()=>({}));
-            if(resp.status===401)throw new Error('Invalid API key — check it at console.anthropic.com');
-            if(resp.status===429)throw new Error('Rate limit — wait a minute and try again');
-            throw new Error(e.error?.message||`API error ${resp.status}`);
-        }
-
+        if(!resp.ok){const e=await resp.json().catch(()=>({}));if(resp.status===401)throw new Error('Invalid API key');throw new Error(e.error?.message||`API error ${resp.status}`);}
         const data=await resp.json();
         const raw=data.content.find(b=>b.type==='text')?.text||'';
-        setProgress(75,'Parsing data...');
-        addLog('📊 Parsing response...','linf');
+        setProgress(75,'Parsing...');
+        addLog('📊 Parsing...','linf');
         let jt=raw.replace(/```json\s*/g,'').replace(/```\s*/g,'').trim();
         const si=jt.indexOf('{'),ei=jt.lastIndexOf('}');
-        if(si===-1||ei===-1)throw new Error('AI did not return valid JSON. Please try again.');
+        if(si===-1||ei===-1)throw new Error('AI did not return valid JSON.');
         const parsed=JSON.parse(jt.substring(si,ei+1));
-        if(!parsed.days?.length)throw new Error('No days found in response.');
-        state.rows=parsed.days;
-        state.year=parseInt(document.getElementById('yearInput').value);
-        addLog(`✅ ${parsed.days.length} days extracted successfully`,'lok');
-        setProgress(100,`✅ ${parsed.days.length} days ready to review`);
-        setTimeout(()=>{
-            buildPreview();
-            document.getElementById('previewCard').classList.remove('hidden');
-            document.getElementById('outputCard').classList.add('hidden');
-            document.getElementById('previewCard').scrollIntoView({behavior:'smooth',block:'start'});
-            setStep(3);
-        },500);
+        if(!parsed.days?.length)throw new Error('No days found.');
+        state.rows=parsed.days;state.year=parseInt(document.getElementById('yearInput').value);
+        addLog(`✅ ${parsed.days.length} days extracted`,'lok');
+        setProgress(100,`✅ ${parsed.days.length} days ready`);
+        setTimeout(()=>{buildPreview();document.getElementById('previewCard').classList.remove('hidden');document.getElementById('outputCard').classList.add('hidden');document.getElementById('previewCard').scrollIntoView({behavior:'smooth',block:'start'});setStep(3);},500);
     }catch(err){
         setProgress(0,'');document.getElementById('progWrap').style.display='none';
-        addLog(`❌ ${err.message}`,'lerr');showErr(err.message);setStep(1);
-    }finally{
-        btn.disabled=false;document.getElementById('extIco').textContent='✨';checkExtractBtn();
-    }
+        addLog(`❌ ${err.message}`,'lerr');
+        showErr(err.message+' — Try switching to Manual Mode instead.');
+        setStep(1);
+    }finally{btn.disabled=false;checkExtractBtn();}
 }
 
+// ── PREVIEW ───────────────────────────────────
 function buildPreview(){
     const hasRam=state.isRamadan||state.rows.some(r=>r.isRamadan);
     const ms=MSHORT[MONTHS.indexOf(state.month)];
@@ -653,6 +692,7 @@ function buildPreview(){
 }
 function updCell(inp){state.rows[parseInt(inp.dataset.r)][inp.dataset.f]=inp.value.trim();}
 
+// ── CODE GENERATION ───────────────────────────
 function generateCode(){
     setStep(4);
     const ms=MSHORT[MONTHS.indexOf(state.month)];
@@ -661,8 +701,7 @@ function generateCode(){
     const varName=`${prefix}${ms.toUpperCase()}_DATA`;
     const f=v=>v?`"${v}"`:'null';
     const lines=state.rows.map(row=>{
-        const ds=`${ms} ${row.date}`;
-        let l=` {date:"${ds}",day:"${row.dayName||'?'}",`;
+        let l=` {date:"${ms} ${row.date}",day:"${row.dayName||'?'}",`;
         if(row.ramadanDay)l+=`ramadanDay:${row.ramadanDay},`;
         l+=` fajr:${f(row.fajrAdhan)},fajrIq:${f(row.fajrIqama)},shuruq:${f(row.sunrise)},`;
         l+=` dhuhr:${f(row.dhuhrAdhan)},dhuhrIq:${f(row.dhuhrIqama)},`;
@@ -674,14 +713,13 @@ function generateCode(){
     });
     if(lines.length)lines[lines.length-1]=lines[lines.length-1].replace(/,$/,'');
     const isDefault=mosque.id===DEFAULT_MOSQUE.id;
-    const note=isDefault?`// Then add ...${varName} to resolveIqamas([...MAR_DATA, ...${varName}]) in index.html`:`// For ${mosque.name} — add to that mosque's data resolver in index.html`;
-    const code=`// ${mosque.name} — ${state.month} ${state.year}\n// Source: WMA (Iqama times)\nconst ${varName}=[\n${lines.join('\n')}\n];\n\n${note}`;
+    const code=`// ${mosque.name} — ${state.month} ${state.year}\n// Source: WMA (Iqama times)\nconst ${varName}=[\n${lines.join('\n')}\n];\n\n// Then add ...${varName} to resolveIqamas([...MAR_DATA, ...${varName}]) in index.html`;
     document.getElementById('codeBlk').textContent=code;
     document.getElementById('codeTtl').textContent=`${varName} — ${lines.length} days`;
     document.getElementById('outSub').textContent=`${mosque.name} · ${state.month} ${state.year}`;
     document.getElementById('pasteHint').innerHTML=isDefault
-        ?`In <strong>index.html</strong>, find the current month's data array (e.g. <code>const APR_DATA=[</code>) and replace it. Then update <code>resolveIqamas([...MAR_DATA, ...])</code> to include <code>...${varName}</code>.`
-        :`Data for <strong>${mosque.name}</strong> — add to index.html and route for mosque ID <code>${mosque.id}</code>.`;
+        ?`In <strong>index.html</strong>, find the current data array (e.g. <code>const APR_DATA=[</code>) and replace it. Then update <code>resolveIqamas([...MAR_DATA, ...])</code> to include <code>...${varName}</code>.`
+        :`Data for <strong>${mosque.name}</strong> — add to index.html and route it for mosque ID <code>${mosque.id}</code>.`;
     document.getElementById('outputCard').classList.remove('hidden');
     document.getElementById('outputCard').scrollIntoView({behavior:'smooth',block:'start'});
     setStep(5);
@@ -691,26 +729,20 @@ function copyCode(){
     navigator.clipboard.writeText(document.getElementById('codeBlk').textContent).then(()=>{
         const b=document.getElementById('copyBtn');b.textContent='✅ Copied!';b.classList.add('copied');
         showToast('✅ Code copied!');setTimeout(()=>{b.textContent='📋 Copy Code';b.classList.remove('copied');},2500);
-    }).catch(()=>{
-        const ta=document.createElement('textarea');ta.value=document.getElementById('codeBlk').textContent;
-        document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove();showToast('✅ Copied!');
     });
 }
-
 function backToPreview(){document.getElementById('outputCard').classList.add('hidden');document.getElementById('previewCard').scrollIntoView({behavior:'smooth',block:'start'});setStep(3);}
 
 function resetExtract(){
     state.rows=[];state.wmaFile=null;state.fianzFile=null;
     document.getElementById('wmaFile').value='';document.getElementById('fianzFile').value='';
     document.getElementById('wmaZone').classList.remove('has');document.getElementById('fianzZone').classList.remove('has');
-    document.getElementById('previewCard').classList.add('hidden');document.getElementById('outputCard').classList.add('hidden');
+    ['manualPanel','previewCard','outputCard'].forEach(id=>document.getElementById(id).classList.add('hidden'));
     document.getElementById('progWrap').style.display='none';document.getElementById('progLbl').style.display='none';
     clearLog();hideErr();checkExtractBtn();setStep(1);window.scrollTo({top:0,behavior:'smooth'});
 }
 
-function showToast(msg,dur=3000){
-    const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),dur);
-}
+function showToast(msg,dur=3000){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),dur);}
 </script>
 </body>
 </html>
