@@ -559,8 +559,8 @@
         <div class="header-info">
             <div class="hi-left">
                 <div class="clock-date" id="liveDate">Loading...</div>
-                <div class="clock-hijri" id="hijriDate">Ramadan 1447H</div>
-                <div id="modeBadge" class="mode-badge ramadan">✨ Ramadan Day <span id="ramadanDayNum">--</span></div>
+                <div class="clock-hijri" id="hijriDate">Shawwal / Dhul Qaʿdah 1447H</div>
+                <div id="modeBadge" class="mode-badge normal">🕌 Daily Salaat</div>
             </div>
         </div>
         <div class="tracker-ring-wrap" id="trackerRingWrap">
@@ -1391,7 +1391,8 @@ function buildCalCards(){
 }
 
 function buildCalTable(){
-    const data=currentMonth==='feb'?FEB_R:currentMonth==='mar'?MAR_R:APR_R;
+    const grp=MONTH_GROUPS.find(g=>g.key===currentMonth)||MONTH_GROUPS[0];
+    const data=grp?grp.data:[];
     const nowStr=new Date().toDateString();
     const isRam=data.some(r=>r.ramadan);
     document.getElementById('tableHead').innerHTML=isRam
