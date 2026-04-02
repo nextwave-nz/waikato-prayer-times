@@ -1,224 +1,190 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Waikato Prayer Times — Admin</title>
-    <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-    <style>
-        :root{--midnight:#0d0d1a;--navy:#111128;--navy2:#161630;--gold:#c9a84c;--gold-light:#f0d080;--gold-dim:rgba(201,168,76,.12);--gold-border:rgba(201,168,76,.28);--teal:#0f9b8e;--red:#e74c3c;--text:#e8e8f0;--text-dim:rgba(232,232,240,.6);--text-muted:rgba(232,232,240,.3);--glass:rgba(255,255,255,.04);--glass-border:rgba(255,255,255,.08);--radius:16px;--radius-sm:10px;}
-        *{margin:0;padding:0;box-sizing:border-box;}
-        body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--midnight);color:var(--text);min-height:100vh;}
-        body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 60% 40% at 50% -10%,rgba(201,168,76,.06) 0%,transparent 60%);pointer-events:none;z-index:0;}
-        .wrap{position:relative;z-index:1;max-width:860px;margin:0 auto;padding:28px 18px 60px;}
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Waikato Prayer Times — Admin</title>
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0d0d1a;--navy:#111128;--navy2:#161630;--gold:#c9a84c;--gold-light:#f0d080;--gold-dim:rgba(201,168,76,.12);--gold-border:rgba(201,168,76,.28);--teal:#0f9b8e;--red:#e74c3c;--text:#e8e8f0;--text-dim:rgba(232,232,240,.6);--text-muted:rgba(232,232,240,.3);--glass:rgba(255,255,255,.04);--glass-border:rgba(255,255,255,.08);--r:16px;--rsm:10px;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 60% 40% at 50% -10%,rgba(201,168,76,.06) 0%,transparent 60%);pointer-events:none;z-index:0;}
+.wrap{position:relative;z-index:1;max-width:820px;margin:0 auto;padding:26px 16px 60px;}
+.hdr{text-align:center;margin-bottom:20px;padding-bottom:16px;border-bottom:1px solid var(--glass-border);}
+.hdr h1{font-family:'Amiri',serif;font-size:1.65em;color:var(--gold);margin-bottom:2px;}
+.hdr p{color:var(--text-dim);font-size:.79em;}
 
-        .hdr{text-align:center;margin-bottom:28px;padding-bottom:20px;border-bottom:1px solid var(--glass-border);}
-        .hdr-icon{font-size:2.2em;display:block;margin-bottom:6px;filter:drop-shadow(0 0 14px rgba(201,168,76,.5));}
-        .hdr h1{font-family:'Amiri',serif;font-size:1.75em;color:var(--gold);margin-bottom:2px;}
-        .hdr p{color:var(--text-dim);font-size:.82em;}
-        .hdr-badge{display:inline-block;margin-top:7px;background:var(--gold-dim);border:1px solid var(--gold-border);color:var(--gold);font-size:.62em;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;padding:3px 13px;border-radius:20px;}
+/* STATUS BAR */
+.status-bar{display:flex;gap:7px;margin-bottom:18px;flex-wrap:wrap;}
+.spill{padding:4px 11px;border-radius:20px;font-size:.67em;font-weight:600;display:flex;align-items:center;gap:5px;border:1px solid var(--glass-border);background:var(--glass);}
+.spill .dot{width:6px;height:6px;border-radius:50%;background:var(--text-muted);flex-shrink:0;}
+.spill.ok{border-color:rgba(15,155,142,.35);color:#7fd8cf;}.spill.ok .dot{background:var(--teal);}
+.spill.warn{border-color:var(--gold-border);color:var(--gold-light);}.spill.warn .dot{background:var(--gold);}
 
-        /* ── WORKFLOW STEPS ── */
-        .workflow{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:24px;}
-        .wf-step{background:var(--navy);border:1px solid var(--glass-border);border-radius:var(--radius-sm);padding:14px 13px;text-align:center;position:relative;}
-        .wf-step::after{content:'→';position:absolute;right:-14px;top:50%;transform:translateY(-50%);color:var(--gold);font-size:1.1em;font-weight:700;}
-        .wf-step:last-child::after{display:none;}
-        .wf-num{width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,var(--gold),#8B6914);color:#1a1100;font-weight:700;font-size:.75em;display:flex;align-items:center;justify-content:center;margin:0 auto 7px;}
-        .wf-title{font-size:.8em;font-weight:600;color:var(--text);margin-bottom:3px;}
-        .wf-desc{font-size:.68em;color:var(--text-dim);line-height:1.4;}
-        .wf-step.done .wf-num{background:linear-gradient(135deg,var(--teal),#0a7a70);}
-        .wf-step.done .wf-title{color:var(--teal);}
+/* TABS */
+.tabs{display:flex;gap:4px;margin-bottom:18px;background:var(--glass);border:1px solid var(--glass-border);border-radius:var(--rsm);padding:4px;}
+.tab{flex:1;padding:9px 6px;border:none;background:transparent;color:var(--text-muted);border-radius:8px;font-family:'Plus Jakarta Sans',sans-serif;font-size:.77em;font-weight:500;cursor:pointer;transition:all .2s;text-align:center;}
+.tab.active{background:linear-gradient(135deg,var(--gold),#8B6914);color:#1a1100;font-weight:700;}
+.tab-pane{display:none;}.tab-pane.active{display:block;}
 
-        .card{background:var(--navy);border:1px solid var(--glass-border);border-radius:var(--radius);margin-bottom:16px;overflow:hidden;}
-        .card-hdr{padding:13px 18px;border-bottom:1px solid var(--glass-border);display:flex;align-items:center;gap:10px;}
-        .card-num{width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,var(--gold),#8B6914);color:#1a1100;font-weight:700;font-size:.75em;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-        .card-num.done{background:linear-gradient(135deg,var(--teal),#0a7a70);}
-        .card-title{font-weight:600;font-size:.9em;}
-        .card-sub{font-size:.71em;color:var(--text-dim);margin-top:1px;}
-        .card-body{padding:16px;}
-        .hidden{display:none!important;}
+/* CARDS */
+.card{background:var(--navy);border:1px solid var(--glass-border);border-radius:var(--r);margin-bottom:13px;overflow:hidden;}
+.card-hdr{padding:12px 15px;border-bottom:1px solid var(--glass-border);display:flex;align-items:center;gap:9px;}
+.cnum{width:23px;height:23px;border-radius:50%;background:linear-gradient(135deg,var(--gold),#8B6914);color:#1a1100;font-weight:700;font-size:.7em;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.cnum.ok{background:linear-gradient(135deg,var(--teal),#0a7a70);}
+.ctitle{font-weight:600;font-size:.87em;}
+.csub{font-size:.69em;color:var(--text-dim);margin-top:1px;}
+.card-body{padding:14px;}
+.hidden{display:none!important;}
 
-        .steps-bar{display:flex;background:var(--glass);border:1px solid var(--glass-border);border-radius:var(--radius-sm);overflow:hidden;margin-bottom:18px;}
-        .step-item{flex:1;padding:10px 6px;text-align:center;position:relative;}
-        .step-item:not(:last-child)::after{content:'›';position:absolute;right:-5px;top:50%;transform:translateY(-50%);color:var(--text-muted);font-size:1em;z-index:2;}
-        .step-item.active{background:var(--gold-dim);}
-        .step-item.done{background:rgba(15,155,142,.07);}
-        .snum{width:20px;height:20px;border-radius:50%;background:var(--glass);border:1px solid var(--glass-border);color:var(--text-muted);font-size:.65em;font-weight:700;display:flex;align-items:center;justify-content:center;margin:0 auto 3px;}
-        .step-item.active .snum{background:var(--gold);color:#1a1100;border-color:var(--gold);}
-        .step-item.done .snum{background:var(--teal);color:white;border-color:var(--teal);}
-        .slbl{font-size:.62em;color:var(--text-muted);font-weight:500;}
-        .step-item.active .slbl{color:var(--gold);}.step-item.done .slbl{color:var(--teal);}
+/* STEPS */
+.sbar{display:flex;background:var(--glass);border:1px solid var(--glass-border);border-radius:var(--rsm);overflow:hidden;margin-bottom:14px;}
+.stp{flex:1;padding:9px 5px;text-align:center;position:relative;}
+.stp:not(:last-child)::after{content:'›';position:absolute;right:-5px;top:50%;transform:translateY(-50%);color:var(--text-muted);z-index:2;}
+.stp.active{background:var(--gold-dim);}.stp.done{background:rgba(15,155,142,.07);}
+.snum{width:18px;height:18px;border-radius:50%;background:var(--glass);border:1px solid var(--glass-border);color:var(--text-muted);font-size:.62em;font-weight:700;display:flex;align-items:center;justify-content:center;margin:0 auto 2px;}
+.stp.active .snum{background:var(--gold);color:#1a1100;border-color:var(--gold);}
+.stp.done .snum{background:var(--teal);color:white;border-color:var(--teal);}
+.slbl{font-size:.59em;color:var(--text-muted);font-weight:500;}
+.stp.active .slbl{color:var(--gold);}.stp.done .slbl{color:var(--teal);}
 
-        /* ── APP FILE UPLOAD ── */
-        .app-upz{border:2px dashed var(--glass-border);border-radius:var(--radius-sm);padding:22px 16px;text-align:center;cursor:pointer;transition:all .22s;position:relative;margin-bottom:13px;}
-        .app-upz:hover,.app-upz:focus-within{border-color:var(--gold-border);background:var(--gold-dim);}
-        .app-upz.has{border-color:rgba(15,155,142,.5);background:rgba(15,155,142,.06);border-style:solid;}
-        .app-upz input[type="file"]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
-        .app-upz-icon{font-size:1.7em;margin-bottom:5px;}
-        .app-upz-title{font-weight:600;font-size:.85em;margin-bottom:3px;}
-        .app-upz-desc{font-size:.71em;color:var(--text-dim);}
-        .app-upz-badge{display:none;margin-top:7px;background:rgba(15,155,142,.15);border:1px solid rgba(15,155,142,.3);border-radius:6px;padding:3px 12px;font-size:.68em;color:var(--teal);font-weight:500;}
-        .app-upz.has .app-upz-badge{display:inline-block;}
+/* FORMS */
+.fg{display:flex;flex-direction:column;gap:4px;margin-bottom:10px;}
+.flbl{font-size:.69em;color:var(--text-dim);font-weight:500;}
+.fi{background:var(--glass);border:1px solid var(--glass-border);border-radius:8px;color:var(--text);font-family:'Plus Jakarta Sans',sans-serif;font-size:.82em;padding:8px 10px;transition:border-color .2s;width:100%;}
+.fi:focus{outline:none;border-color:var(--gold-border);}
+.fi::placeholder{color:var(--text-muted);}
+.fi-mono{font-family:'JetBrains Mono',monospace;font-size:.76em;}
+.fgrid{display:grid;grid-template-columns:1fr 1fr;gap:9px;}
+.yr-row{display:flex;align-items:center;gap:9px;margin-bottom:11px;}
+.yr-lbl{font-size:.73em;color:var(--text-dim);}
+.yr-inp{background:var(--glass);border:1px solid var(--glass-border);border-radius:8px;color:var(--text);font-family:'JetBrains Mono',monospace;font-size:.82em;padding:7px 10px;width:76px;}
+.yr-inp:focus{outline:none;border-color:var(--gold-border);}
+.month-row{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:11px;}
+.mchip{padding:5px 10px;border-radius:20px;border:1px solid var(--glass-border);background:transparent;color:var(--text-dim);font-family:'Plus Jakarta Sans',sans-serif;font-size:.72em;cursor:pointer;transition:all .18s;font-weight:500;}
+.mchip.sel{background:var(--gold-dim);border-color:var(--gold-border);color:var(--gold);}
+.toggle-row{display:flex;align-items:center;gap:9px;padding:8px 11px;background:var(--glass);border:1px solid var(--glass-border);border-radius:var(--rsm);cursor:pointer;margin-bottom:11px;user-select:none;}
+.tsw{width:34px;height:19px;background:rgba(255,255,255,.1);border-radius:10px;position:relative;transition:background .2s;flex-shrink:0;}
+.tsw.on{background:linear-gradient(135deg,var(--gold),#8B6914);}
+.tkn{width:13px;height:13px;background:white;border-radius:50%;position:absolute;top:3px;left:3px;transition:left .2s;}
+.tsw.on .tkn{left:18px;}
 
-        /* ── FORM ELEMENTS ── */
-        .month-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:13px;}
-        .mchip{padding:6px 12px;border-radius:20px;border:1px solid var(--glass-border);background:transparent;color:var(--text-dim);font-family:'Plus Jakarta Sans',sans-serif;font-size:.74em;cursor:pointer;transition:all .18s;font-weight:500;}
-        .mchip.sel{background:var(--gold-dim);border-color:var(--gold-border);color:var(--gold);}
-        .year-row{display:flex;align-items:center;gap:10px;margin-bottom:13px;}
-        .yr-lbl{font-size:.76em;color:var(--text-dim);}
-        .yr-inp{background:var(--glass);border:1px solid var(--glass-border);border-radius:8px;color:var(--text);font-family:'JetBrains Mono',monospace;font-size:.84em;padding:7px 11px;width:80px;}
-        .yr-inp:focus{outline:none;border-color:var(--gold-border);}
-        .finput{background:var(--glass);border:1px solid var(--glass-border);border-radius:8px;color:var(--text);font-family:'Plus Jakarta Sans',sans-serif;font-size:.83em;padding:9px 11px;transition:border-color .2s;width:100%;}
-        .finput:focus{outline:none;border-color:var(--gold-border);}
-        .finput::placeholder{color:var(--text-muted);}
-        .fg{display:flex;flex-direction:column;gap:5px;margin-bottom:11px;}
-        .flbl{font-size:.7em;color:var(--text-dim);font-weight:500;}
+/* UPLOAD ZONES */
+.upg{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:11px;}
+.upz{border:2px dashed var(--glass-border);border-radius:var(--rsm);padding:15px 11px;text-align:center;cursor:pointer;transition:all .22s;position:relative;}
+.upz:hover,.upz:focus-within{border-color:var(--gold-border);background:var(--gold-dim);}
+.upz.has{border-color:rgba(15,155,142,.5);background:rgba(15,155,142,.06);border-style:solid;}
+.upz input[type="file"]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
+.upz-icon{font-size:1.4em;margin-bottom:4px;display:block;}
+.upz-title{font-weight:600;font-size:.79em;color:var(--text);margin-bottom:2px;}
+.upz-desc{font-size:.66em;color:var(--text-dim);}
+.upz-badge{display:none;margin-top:4px;background:rgba(15,155,142,.15);border:1px solid rgba(15,155,142,.3);border-radius:6px;padding:2px 8px;font-size:.64em;color:var(--teal);font-weight:500;}
+.upz.has .upz-badge{display:inline-block;}
 
-        /* ── UPLOAD ZONES ── */
-        .upg{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:13px;}
-        .upz{border:2px dashed var(--glass-border);border-radius:var(--radius-sm);padding:18px 12px;text-align:center;cursor:pointer;transition:all .22s;position:relative;}
-        .upz:hover,.upz:focus-within{border-color:var(--gold-border);background:var(--gold-dim);}
-        .upz.has{border-color:rgba(15,155,142,.5);background:rgba(15,155,142,.06);border-style:solid;}
-        .upz input[type="file"]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
-        .up-icon{font-size:1.6em;margin-bottom:5px;display:block;}
-        .up-title{font-weight:600;font-size:.82em;color:var(--text);margin-bottom:2px;}
-        .up-desc{font-size:.68em;color:var(--text-dim);}
-        .up-badge{display:none;margin-top:5px;background:rgba(15,155,142,.15);border:1px solid rgba(15,155,142,.3);border-radius:6px;padding:3px 10px;font-size:.66em;color:var(--teal);font-weight:500;}
-        .upz.has .up-badge{display:inline-block;}
+/* BUTTONS */
+.btn{padding:9px 16px;border:none;border-radius:var(--rsm);font-family:'Plus Jakarta Sans',sans-serif;font-size:.81em;font-weight:700;cursor:pointer;transition:all .2s;display:inline-flex;align-items:center;gap:7px;}
+.btn-gold{background:linear-gradient(135deg,var(--gold),#8B6914);color:#1a1100;}
+.btn-gold:hover{transform:translateY(-1px);box-shadow:0 5px 18px rgba(201,168,76,.3);}
+.btn-gold:disabled{opacity:.5;cursor:not-allowed;transform:none;}
+.btn-teal{background:linear-gradient(135deg,var(--teal),#0a7a70);color:white;}
+.btn-teal:hover{transform:translateY(-1px);box-shadow:0 5px 18px rgba(15,155,142,.3);}
+.btn-teal:disabled{opacity:.5;cursor:not-allowed;transform:none;}
+.btn-ghost{background:var(--glass);border:1px solid var(--glass-border);color:var(--text-dim);}
+.btn-ghost:hover{border-color:var(--gold-border);color:var(--gold);}
+.btn-full{width:100%;justify-content:center;}
+.btn-sm{padding:5px 11px;font-size:.71em;}
+.btn-row{display:flex;gap:8px;flex-wrap:wrap;}
 
-        /* ── BUTTONS ── */
-        .btn{padding:11px 20px;border:none;border-radius:var(--radius-sm);font-family:'Plus Jakarta Sans',sans-serif;font-size:.84em;font-weight:700;cursor:pointer;transition:all .2s;display:inline-flex;align-items:center;gap:8px;}
-        .btn-gold{background:linear-gradient(135deg,var(--gold),#8B6914);color:#1a1100;}
-        .btn-gold:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(201,168,76,.3);}
-        .btn-gold:disabled{opacity:.5;cursor:not-allowed;transform:none;}
-        .btn-teal{background:linear-gradient(135deg,var(--teal),#0a7a70);color:white;}
-        .btn-teal:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(15,155,142,.3);}
-        .btn-ghost{background:var(--glass);border:1px solid var(--glass-border);color:var(--text-dim);}
-        .btn-ghost:hover{border-color:var(--gold-border);color:var(--gold);}
-        .btn-full{width:100%;justify-content:center;}
-        .btn-sm{padding:6px 13px;font-size:.73em;}
+/* PROGRESS / LOG */
+.prog-wrap{background:var(--glass);border-radius:4px;height:4px;margin:9px 0;overflow:hidden;display:none;}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--gold-light));border-radius:4px;width:0%;transition:width .4s ease;}
+.prog-lbl{font-size:.69em;color:var(--text-dim);text-align:center;display:none;margin-bottom:5px;}
+.ai-log{background:rgba(0,0,0,.3);border:1px solid var(--glass-border);border-radius:var(--rsm);padding:8px 11px;font-family:'JetBrains Mono',monospace;font-size:.66em;color:var(--text-dim);max-height:70px;overflow-y:auto;margin-bottom:10px;display:none;line-height:1.7;}
+.ai-log .lok{color:var(--teal);}.ai-log .lerr{color:var(--red);}.ai-log .linf{color:var(--gold);}
+.err-box{background:rgba(231,76,60,.08);border:1px solid rgba(231,76,60,.3);border-radius:var(--rsm);padding:8px 11px;font-size:.75em;color:#ff9999;display:none;margin-bottom:9px;}
 
-        /* ── MANUAL PANEL ── */
-        .manual-step{display:flex;gap:11px;align-items:flex-start;padding:13px;background:var(--glass);border:1px solid var(--glass-border);border-radius:var(--radius-sm);margin-bottom:10px;}
-        .ms-num{width:23px;height:23px;min-width:23px;border-radius:50%;background:linear-gradient(135deg,var(--gold),#8B6914);color:#1a1100;font-weight:700;font-size:.72em;display:flex;align-items:center;justify-content:center;}
-        .ms-body{flex:1;}
-        .ms-title{font-weight:600;font-size:.83em;margin-bottom:3px;}
-        .ms-desc{font-size:.72em;color:var(--text-dim);line-height:1.5;margin-bottom:7px;}
-        .prompt-box{background:rgba(0,0,0,.4);border:1px solid var(--gold-border);border-radius:var(--radius-sm);padding:11px;font-family:'JetBrains Mono',monospace;font-size:.67em;color:var(--gold-light);line-height:1.6;max-height:150px;overflow-y:auto;white-space:pre-wrap;margin-bottom:7px;}
-        .json-paste{width:100%;background:rgba(0,0,0,.3);border:1px solid var(--glass-border);border-radius:var(--radius-sm);color:var(--text);font-family:'JetBrains Mono',monospace;font-size:.71em;padding:11px;min-height:90px;resize:vertical;line-height:1.6;}
-        .json-paste:focus{outline:none;border-color:var(--gold-border);}
-        .json-paste::placeholder{color:var(--text-muted);}
+/* MANUAL */
+.ms{display:flex;gap:10px;align-items:flex-start;padding:11px;background:var(--glass);border:1px solid var(--glass-border);border-radius:var(--rsm);margin-bottom:8px;}
+.ms-n{width:21px;height:21px;min-width:21px;border-radius:50%;background:linear-gradient(135deg,var(--gold),#8B6914);color:#1a1100;font-weight:700;font-size:.68em;display:flex;align-items:center;justify-content:center;}
+.ms-b{flex:1;}
+.ms-t{font-weight:600;font-size:.8em;margin-bottom:3px;}
+.ms-d{font-size:.7em;color:var(--text-dim);line-height:1.5;margin-bottom:6px;}
+.prompt-box{background:rgba(0,0,0,.4);border:1px solid var(--gold-border);border-radius:var(--rsm);padding:9px;font-family:'JetBrains Mono',monospace;font-size:.65em;color:var(--gold-light);line-height:1.6;max-height:120px;overflow-y:auto;white-space:pre-wrap;margin-bottom:6px;}
+.json-paste{width:100%;background:rgba(0,0,0,.3);border:1px solid var(--glass-border);border-radius:var(--rsm);color:var(--text);font-family:'JetBrains Mono',monospace;font-size:.69em;padding:9px;min-height:75px;resize:vertical;line-height:1.6;}
+.json-paste:focus{outline:none;border-color:var(--gold-border);}
+.json-paste::placeholder{color:var(--text-muted);}
 
-        /* ── PROGRESS ── */
-        .prog-wrap{background:var(--glass);border-radius:4px;height:4px;margin:10px 0;overflow:hidden;display:none;}
-        .prog-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--gold-light));border-radius:4px;width:0%;transition:width .4s ease;}
-        .prog-lbl{font-size:.71em;color:var(--text-dim);text-align:center;display:none;margin-bottom:5px;}
-        .ai-log{background:rgba(0,0,0,.3);border:1px solid var(--glass-border);border-radius:var(--radius-sm);padding:9px 12px;font-family:'JetBrains Mono',monospace;font-size:.68em;color:var(--text-dim);max-height:80px;overflow-y:auto;margin-bottom:12px;display:none;line-height:1.7;}
-        .ai-log .lok{color:var(--teal);}.ai-log .lerr{color:var(--red);}.ai-log .linf{color:var(--gold);}
-        .err-box{background:rgba(231,76,60,.08);border:1px solid rgba(231,76,60,.3);border-radius:var(--radius-sm);padding:9px 12px;font-size:.77em;color:#ff9999;display:none;margin-bottom:10px;}
+/* TABLE */
+.tscroll{overflow-x:auto;border-radius:var(--rsm);border:1px solid var(--glass-border);}
+table.prev{width:100%;border-collapse:collapse;font-size:.66em;min-width:600px;}
+table.prev thead{background:linear-gradient(135deg,rgba(201,168,76,.15),rgba(201,168,76,.05));}
+table.prev th{padding:7px 4px;text-align:center;color:var(--gold);font-weight:600;font-size:.76em;text-transform:uppercase;border-bottom:1px solid var(--glass-border);white-space:nowrap;}
+table.prev td{padding:0;text-align:center;border-bottom:1px solid rgba(255,255,255,.04);}
+table.prev td input{width:100%;background:transparent;border:none;color:var(--text-dim);font-family:'JetBrains Mono',monospace;font-size:.89em;text-align:center;padding:5px 2px;min-width:42px;}
+table.prev td input:focus{background:rgba(201,168,76,.08);color:var(--gold-light);outline:none;}
+table.prev td.iq input{color:var(--gold);font-weight:600;}
+table.prev td.dt{padding:5px 6px;font-family:'Plus Jakarta Sans',sans-serif;font-size:.82em;color:var(--text);font-weight:500;white-space:nowrap;}
+table.prev tr:hover td{background:rgba(255,255,255,.02);}
+.iq-legend{font-size:.63em;color:var(--text-muted);margin-bottom:6px;padding:4px 9px;background:var(--glass);border-radius:8px;border:1px solid var(--glass-border);}
 
-        /* ── PREVIEW TABLE ── */
-        .tscroll{overflow-x:auto;border-radius:var(--radius-sm);border:1px solid var(--glass-border);}
-        table.prev{width:100%;border-collapse:collapse;font-size:.68em;min-width:640px;}
-        table.prev thead{background:linear-gradient(135deg,rgba(201,168,76,.15),rgba(201,168,76,.05));}
-        table.prev th{padding:8px 5px;text-align:center;color:var(--gold);font-weight:600;font-size:.78em;letter-spacing:.3px;text-transform:uppercase;border-bottom:1px solid var(--glass-border);white-space:nowrap;}
-        table.prev td{padding:0;text-align:center;border-bottom:1px solid rgba(255,255,255,.04);}
-        table.prev td input{width:100%;background:transparent;border:none;color:var(--text-dim);font-family:'JetBrains Mono',monospace;font-size:.91em;text-align:center;padding:6px 3px;min-width:46px;}
-        table.prev td input:focus{background:rgba(201,168,76,.08);color:var(--gold-light);outline:none;}
-        table.prev td.iq input{color:var(--gold);font-weight:600;}
-        table.prev td.dt{padding:6px 7px;font-family:'Plus Jakarta Sans',sans-serif;font-size:.84em;color:var(--text);font-weight:500;white-space:nowrap;}
-        table.prev tr:hover td{background:rgba(255,255,255,.02);}
-        .iq-legend{font-size:.65em;color:var(--text-muted);margin-bottom:7px;padding:5px 10px;background:var(--glass);border-radius:8px;border:1px solid var(--glass-border);}
-        .iq-legend span{color:var(--gold);}
+/* PUBLISH CARD */
+.pub-card{background:linear-gradient(135deg,rgba(15,155,142,.12),rgba(15,155,142,.04));border:1px solid rgba(15,155,142,.35);border-radius:var(--r);padding:18px;text-align:center;margin-bottom:11px;}
+.pub-icon{font-size:2.3em;margin-bottom:7px;}
+.pub-title{font-size:.97em;font-weight:700;margin-bottom:5px;}
+.pub-desc{font-size:.76em;color:var(--text-dim);line-height:1.6;margin-bottom:14px;}
 
-        /* ── DOWNLOAD CARD ── */
-        .download-card{background:linear-gradient(135deg,rgba(15,155,142,.12),rgba(15,155,142,.04));border:1px solid rgba(15,155,142,.35);border-radius:var(--radius);padding:22px;text-align:center;}
-        .dl-icon{font-size:2.8em;margin-bottom:10px;}
-        .dl-title{font-size:1.05em;font-weight:700;color:var(--teal);margin-bottom:6px;}
-        .dl-desc{font-size:.78em;color:var(--text-dim);line-height:1.6;margin-bottom:18px;}
-        .dl-steps{background:rgba(0,0,0,.2);border-radius:var(--radius-sm);padding:13px 16px;margin-bottom:16px;text-align:left;}
-        .dl-step{display:flex;gap:9px;align-items:flex-start;margin-bottom:9px;}
-        .dl-step:last-child{margin-bottom:0;}
-        .dl-step-num{width:18px;height:18px;min-width:18px;border-radius:50%;background:var(--gold-dim);border:1px solid var(--gold-border);color:var(--gold);font-size:.64em;font-weight:700;display:flex;align-items:center;justify-content:center;margin-top:1px;}
-        .dl-step-txt{font-size:.75em;color:var(--text-dim);line-height:1.5;}
-        .dl-step-txt strong{color:var(--text);}
-        code{background:rgba(0,0,0,.3);border:1px solid var(--glass-border);border-radius:4px;padding:1px 5px;font-family:'JetBrains Mono',monospace;font-size:.88em;color:var(--gold-light);}
+/* INFO BOXES */
+.ib{border-radius:8px;padding:9px 12px;font-size:.75em;line-height:1.6;margin-bottom:9px;}
+.ib.tip{background:var(--gold-dim);border:1px solid var(--gold-border);color:var(--text-dim);}
+.ib.good{background:rgba(15,155,142,.1);border:1px solid rgba(15,155,142,.3);color:#7fd8cf;}
+.ib.warn{background:rgba(231,76,60,.08);border:1px solid rgba(231,76,60,.3);color:#ffb3b3;}
+code{background:rgba(0,0,0,.3);border:1px solid var(--glass-border);border-radius:4px;padding:1px 5px;font-family:'JetBrains Mono',monospace;font-size:.87em;color:var(--gold-light);}
 
-        .toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(14px);background:var(--navy2);border:1px solid var(--gold-border);color:var(--text);padding:8px 18px;border-radius:22px;font-size:.78em;font-weight:500;z-index:1000;opacity:0;transition:all .27s;white-space:nowrap;}
-        .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+/* SETTINGS */
+.ss{background:var(--glass);border:1px solid var(--glass-border);border-radius:var(--rsm);padding:13px;margin-bottom:12px;}
+.ss-title{font-size:.73em;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:.9px;margin-bottom:11px;display:flex;align-items:center;gap:8px;}
+.ss-title::after{content:'';flex:1;height:1px;background:var(--glass-border);}
 
-        /* ── TOGGLE ── */
-        .toggle-row{display:flex;align-items:center;gap:10px;padding:10px 13px;background:var(--glass);border:1px solid var(--glass-border);border-radius:var(--radius-sm);cursor:pointer;margin-bottom:13px;user-select:none;}
-        .tsw{width:36px;height:20px;background:rgba(255,255,255,.1);border-radius:10px;position:relative;transition:background .2s;flex-shrink:0;}
-        .tsw.on{background:linear-gradient(135deg,var(--gold),#8B6914);}
-        .tkn{width:14px;height:14px;background:white;border-radius:50%;position:absolute;top:3px;left:3px;transition:left .2s;box-shadow:0 1px 4px rgba(0,0,0,.3);}
-        .tsw.on .tkn{left:19px;}
-
-        @media(max-width:600px){.upg{grid-template-columns:1fr;}.workflow{grid-template-columns:1fr;gap:6px;}.wf-step::after{display:none;}}
-    </style>
+.toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%) translateY(14px);background:var(--navy2);border:1px solid var(--gold-border);color:var(--text);padding:8px 16px;border-radius:22px;font-size:.76em;font-weight:500;z-index:1000;opacity:0;transition:all .27s;white-space:nowrap;max-width:90vw;text-align:center;}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+@media(max-width:580px){.upg,.fgrid{grid-template-columns:1fr;}.sbar .slbl{display:none;}}
+</style>
 </head>
 <body>
 <div class="wrap">
 <div class="toast" id="toast"></div>
 
 <div class="hdr">
-    <span class="hdr-icon">🕌</span>
-    <h1>Waikato Prayer Times — Admin</h1>
-    <p>Monthly update tool — extract prayer times &amp; download updated app</p>
-    <div class="hdr-badge">🔒 Everything runs locally in your browser</div>
+    <h1>🕌 Waikato Prayer Times — Admin</h1>
+    <p>Monthly update tool · Extract · Review · Publish</p>
 </div>
 
-<!-- WORKFLOW OVERVIEW -->
-<div class="workflow">
-    <div class="wf-step" id="wfStep1">
-        <div class="wf-num">1</div>
-        <div class="wf-title">Upload PDF</div>
-        <div class="wf-desc">WMA monthly timetable PDF</div>
-    </div>
-    <div class="wf-step" id="wfStep2">
-        <div class="wf-num">2</div>
-        <div class="wf-title">Extract &amp; Review</div>
-        <div class="wf-desc">AI reads times, you verify</div>
-    </div>
-    <div class="wf-step" id="wfStep3">
-        <div class="wf-num">3</div>
-        <div class="wf-title">Download App</div>
-        <div class="wf-desc">Upload 1 file to GitHub</div>
-    </div>
+<div class="status-bar" id="statusBar">
+    <div class="spill warn" id="stProxy"><div class="dot"></div><span id="stProxyTxt">Proxy: not set</span></div>
+    <div class="spill warn" id="stGh"><div class="dot"></div><span id="stGhTxt">GitHub: not set</span></div>
+    <div class="spill warn" id="stMode"><div class="dot"></div><span id="stModeTxt">Mode: manual</span></div>
 </div>
 
-<div class="steps-bar">
-    <div class="step-item active" id="s1"><div class="snum">1</div><div class="slbl">Configure</div></div>
-    <div class="step-item" id="s2"><div class="snum">2</div><div class="slbl">Extract</div></div>
-    <div class="step-item" id="s3"><div class="snum">3</div><div class="slbl">Review</div></div>
-    <div class="step-item" id="s4"><div class="snum">4</div><div class="slbl">Download</div></div>
+<div class="tabs">
+    <button class="tab active" onclick="switchTab('extract',this)">📤 Extract</button>
+    <button class="tab" onclick="switchTab('settings',this)">⚙️ Settings</button>
+    <button class="tab" onclick="switchTab('guide',this)">📖 Help</button>
 </div>
 
-<!-- ── STEP 1: CONFIGURE ── -->
+<!-- ══ TAB: EXTRACT ══ -->
+<div class="tab-pane active" id="tab-extract">
+<div class="sbar">
+    <div class="stp active" id="s1"><div class="snum">1</div><div class="slbl">Configure</div></div>
+    <div class="stp" id="s2"><div class="snum">2</div><div class="slbl">Extract</div></div>
+    <div class="stp" id="s3"><div class="snum">3</div><div class="slbl">Review</div></div>
+    <div class="stp" id="s4"><div class="snum">4</div><div class="slbl">Publish</div></div>
+</div>
+
 <div class="card" id="configCard">
-    <div class="card-hdr">
-        <div class="card-num" id="cn1">1</div>
-        <div>
-            <div class="card-title">Configure — Select Month &amp; Upload Files</div>
-            <div class="card-sub">Upload the WMA PDF and your current index.html</div>
-        </div>
-    </div>
+    <div class="card-hdr"><div class="cnum" id="cn1">1</div><div><div class="ctitle">Configure — Month &amp; Files</div><div class="csub">Select month, upload WMA PDF</div></div></div>
     <div class="card-body">
-
-        <!-- App file upload -->
-        <div class="fg">
-            <div class="flbl">📱 Current index.html (from GitHub) — upload once per session</div>
-            <div class="app-upz" id="appZone">
-                <input type="file" id="appFile" accept=".html" onchange="handleAppFile(this)">
-                <div class="app-upz-icon">📄</div>
-                <div class="app-upz-title">Upload your current index.html</div>
-                <div class="app-upz-desc">Drag &amp; drop or tap — from your <code>Hamilton/</code> folder on GitHub</div>
-                <div class="app-upz-badge" id="appBadge">✓ index.html loaded</div>
-            </div>
-        </div>
-
-        <!-- Month + Year -->
-        <div class="year-row">
+        <div class="yr-row">
             <span class="yr-lbl">Year:</span>
             <input type="number" class="yr-inp" id="yearInput" value="2026" min="2025" max="2030" oninput="checkReady()">
             <span class="yr-lbl" style="margin-left:8px">Month:</span>
@@ -237,33 +203,26 @@
             <button class="mchip" onclick="selMonth('November',this)">Nov</button>
             <button class="mchip" onclick="selMonth('December',this)">Dec</button>
         </div>
-
         <div class="toggle-row" onclick="toggleRamadan()">
             <div class="tsw" id="ramTog"><div class="tkn"></div></div>
-            <div>
-                <div style="font-size:.81em;font-weight:500">🌙 This month includes Ramadan</div>
-                <div style="font-size:.67em;color:var(--text-dim)">Enable only for Ramadan months — also upload FIANZ calendar below</div>
-            </div>
+            <div><div style="font-size:.79em;font-weight:500">🌙 This month includes Ramadan</div><div style="font-size:.66em;color:var(--text-dim)">Enable only for Ramadan months — also upload FIANZ calendar</div></div>
         </div>
-
-        <!-- PDF uploads -->
         <div class="upg">
             <div class="upz" id="wmaZone">
                 <input type="file" id="wmaFile" accept=".pdf,image/*" onchange="handleFile('wma',this)">
-                <span class="up-icon">📄</span>
-                <div class="up-title">WMA Timetable PDF</div>
-                <div class="up-desc">Monthly schedule with Iqama times</div>
-                <div class="up-badge" id="wmaBadge">✓ Ready</div>
+                <span class="upz-icon">📄</span>
+                <div class="upz-title">WMA Timetable PDF</div>
+                <div class="upz-desc">Monthly schedule · Iqama times</div>
+                <div class="upz-badge" id="wmaBadge">✓ Ready</div>
             </div>
             <div class="upz" id="fianzZone">
                 <input type="file" id="fianzFile" accept=".pdf,image/*" onchange="handleFile('fianz',this)">
-                <span class="up-icon">🖼️</span>
-                <div class="up-title">FIANZ Calendar</div>
-                <div class="up-desc">Suhoor &amp; Iftar times (Ramadan only)</div>
-                <div class="up-badge" id="fianzBadge">✓ Ready</div>
+                <span class="upz-icon">🖼️</span>
+                <div class="upz-title">FIANZ Calendar</div>
+                <div class="upz-desc">Suhoor &amp; Iftar (Ramadan only)</div>
+                <div class="upz-badge" id="fianzBadge">✓ Ready</div>
             </div>
         </div>
-
         <div class="err-box" id="errBox"></div>
         <button class="btn btn-gold btn-full" id="extractBtn" onclick="startExtract()" disabled>
             <span id="extIco">📋</span><span id="extTxt">Select month &amp; upload WMA PDF first</span>
@@ -274,135 +233,248 @@
     </div>
 </div>
 
-<!-- ── MANUAL EXTRACTION PANEL ── -->
 <div class="card hidden" id="manualPanel">
-    <div class="card-hdr">
-        <div class="card-num">2</div>
-        <div>
-            <div class="card-title">Extract — 3 Quick Steps via Claude.ai</div>
-            <div class="card-sub">Copy prompt → paste into Claude.ai with PDF → paste result back</div>
-        </div>
-    </div>
+    <div class="card-hdr"><div class="cnum">2</div><div><div class="ctitle">Manual Extraction — Claude.ai</div><div class="csub">Copy prompt → Claude.ai → paste JSON back</div></div></div>
     <div class="card-body">
-        <div class="manual-step">
-            <div class="ms-num">A</div>
-            <div class="ms-body">
-                <div class="ms-title">Copy this prompt</div>
-                <div class="prompt-box" id="manualPrompt">Loading...</div>
-                <button class="btn btn-ghost btn-sm" onclick="copyPrompt()">📋 Copy Prompt</button>
-            </div>
-        </div>
-        <div class="manual-step">
-            <div class="ms-num">B</div>
-            <div class="ms-body">
-                <div class="ms-title">Go to Claude.ai — upload PDF + paste prompt</div>
-                <div class="ms-desc">Open Claude.ai, start a new chat, attach your WMA PDF, paste the prompt above, send. Claude replies with JSON data.</div>
-                <button class="btn btn-teal btn-sm" onclick="window.open('https://claude.ai','_blank')">🔗 Open Claude.ai</button>
-            </div>
-        </div>
-        <div class="manual-step">
-            <div class="ms-num">C</div>
-            <div class="ms-body">
-                <div class="ms-title">Paste Claude's JSON response here</div>
-                <div class="ms-desc">Copy the entire JSON from Claude.ai and paste below, then click Parse.</div>
-                <textarea class="json-paste" id="jsonPaste" placeholder='Paste JSON here — starts with {"month":"May"..."days":[...]}' oninput="checkJsonPaste()"></textarea>
-                <div style="display:flex;gap:8px;margin-top:8px;">
-                    <button class="btn btn-gold" id="parseBtn" onclick="parseManualJson()" disabled>⚡ Parse &amp; Continue</button>
-                    <button class="btn btn-ghost btn-sm" onclick="resetAll()">↺ Start Over</button>
-                </div>
-                <div class="err-box" id="jsonErrBox" style="margin-top:8px;"></div>
-            </div>
-        </div>
+        <div class="ms"><div class="ms-n">A</div><div class="ms-b"><div class="ms-t">Copy this extraction prompt</div><div class="prompt-box" id="manualPrompt">Loading...</div><button class="btn btn-ghost btn-sm" onclick="copyPrompt()">📋 Copy Prompt</button></div></div>
+        <div class="ms"><div class="ms-n">B</div><div class="ms-b"><div class="ms-t">Claude.ai — upload PDF + paste prompt + send</div><div class="ms-d">New chat · attach WMA PDF · paste prompt · send · wait for JSON response</div><button class="btn btn-teal btn-sm" onclick="window.open('https://claude.ai','_blank')">🔗 Open Claude.ai</button></div></div>
+        <div class="ms"><div class="ms-n">C</div><div class="ms-b"><div class="ms-t">Paste Claude's JSON response here</div><textarea class="json-paste" id="jsonPaste" placeholder='Paste JSON here — starts with {"month":"May"..."days":[...]}' oninput="checkJsonPaste()"></textarea><div class="btn-row" style="margin-top:7px"><button class="btn btn-gold" id="parseBtn" onclick="parseManualJson()" disabled>⚡ Parse &amp; Review</button><button class="btn btn-ghost btn-sm" onclick="resetAll()">↺ Start Over</button></div><div class="err-box" id="jsonErrBox" style="margin-top:7px;"></div></div></div>
     </div>
 </div>
 
-<!-- ── REVIEW TABLE ── -->
 <div class="card hidden" id="previewCard">
-    <div class="card-hdr">
-        <div class="card-num">3</div>
-        <div>
-            <div class="card-title">Review &amp; Edit Extracted Data</div>
-            <div class="card-sub">Click any cell to correct · Blank iqama = carry forward (intentional)</div>
-        </div>
-    </div>
+    <div class="card-hdr"><div class="cnum">3</div><div><div class="ctitle">Review &amp; Edit</div><div class="csub">Click any cell to correct · Blank iqama = carry forward</div></div></div>
     <div class="card-body">
-        <div class="iq-legend"><span>Gold</span> = Iqama &nbsp;|&nbsp; Blank iqama = carry forward</div>
+        <div class="iq-legend"><span style="color:var(--gold)">Gold</span> = Iqama &nbsp;|&nbsp; Blank = carry forward (correct)</div>
         <div class="tscroll"><table class="prev"><thead id="prevHead"></thead><tbody id="prevBody"></tbody></table></div>
-        <div style="display:flex;gap:9px;margin-top:12px;flex-wrap:wrap">
+        <div class="btn-row" style="margin-top:11px">
             <button class="btn btn-ghost" onclick="resetAll()">↺ Start Over</button>
-            <button class="btn btn-gold" onclick="buildDownload()" style="flex:1;max-width:240px;justify-content:center">📥 Build Updated App →</button>
+            <button class="btn btn-gold" onclick="goToPublish()">📥 Continue to Publish →</button>
         </div>
     </div>
 </div>
 
-<!-- ── DOWNLOAD ── -->
-<div class="card hidden" id="downloadCard">
-    <div class="card-hdr">
-        <div class="card-num done">✓</div>
-        <div>
-            <div class="card-title">Ready — Download &amp; Upload to GitHub</div>
-            <div class="card-sub" id="dlSub">Your updated app is ready</div>
-        </div>
-    </div>
+<div class="card hidden" id="publishCard">
+    <div class="card-hdr"><div class="cnum ok">✓</div><div><div class="ctitle">Publish</div><div class="csub" id="publishSub">Choose how to deploy</div></div></div>
     <div class="card-body">
-        <div class="download-card">
-            <div class="dl-icon">📱</div>
-            <div class="dl-title" id="dlTitle">Updated App Ready</div>
-            <div class="dl-desc" id="dlDesc">Your index.html has been updated with the new prayer times and is ready to upload.</div>
-            <button class="btn btn-teal btn-full" id="dlBtn" onclick="downloadFile()" style="margin-bottom:16px;font-size:.95em;">
-                ⬇️ Download Updated index.html
-            </button>
-            <div class="dl-steps">
-                <div class="dl-step"><div class="dl-step-num">1</div><div class="dl-step-txt">Go to <strong>github.com/nextwave-nz/prayer-times</strong></div></div>
-                <div class="dl-step"><div class="dl-step-num">2</div><div class="dl-step-txt">Open the <strong>Hamilton</strong> folder → click <strong>index.html</strong></div></div>
-                <div class="dl-step"><div class="dl-step-num">3</div><div class="dl-step-txt">Click the <strong>pencil ✏️ icon</strong> → then the <strong>three dots ···</strong> → <strong>Upload file</strong></div></div>
-                <div class="dl-step"><div class="dl-step-num">4</div><div class="dl-step-txt">Upload the downloaded file → click <strong>Commit changes</strong></div></div>
-                <div class="dl-step"><div class="dl-step-num">5</div><div class="dl-step-txt">✅ Done — the live app updates in about 30 seconds!</div></div>
+
+        <!-- GitHub auto-publish (shown only when configured) -->
+        <div id="ghPublishSection" class="hidden">
+            <div class="pub-card">
+                <div class="pub-icon">🚀</div>
+                <div class="pub-title" style="color:var(--teal)">One-Click Publish to GitHub</div>
+                <div class="pub-desc">Fetches current index.html, injects <span id="pubMonthLbl">month</span> data, commits back. App live in ~30 seconds.</div>
+                <div class="btn-row" style="justify-content:center;margin-bottom:10px">
+                    <button class="btn btn-teal" id="ghBtn" onclick="publishToGitHub()">🚀 Publish to GitHub</button>
+                    <button class="btn btn-ghost btn-sm" onclick="showDlSection()">⬇️ Download instead</button>
+                </div>
+                <div id="pubProg" style="display:none">
+                    <div class="prog-wrap" style="display:block"><div class="prog-fill" id="pubFill" style="transition:width .5s"></div></div>
+                    <div class="prog-lbl" id="pubLbl" style="display:block;margin-top:5px"></div>
+                </div>
             </div>
-            <button class="btn btn-ghost btn-sm" onclick="resetAll()" style="margin-top:4px">↺ Add Another Month</button>
+        </div>
+
+        <!-- Download section -->
+        <div id="dlSection">
+            <div class="pub-card" style="background:linear-gradient(135deg,rgba(201,168,76,.1),rgba(201,168,76,.04));border-color:var(--gold-border)">
+                <div class="pub-icon">📱</div>
+                <div class="pub-title" style="color:var(--gold)">Download Updated index.html</div>
+                <div class="pub-desc">Upload your current index.html below, then download the updated version ready for GitHub.</div>
+                <div class="upz" id="appZone" style="margin-bottom:11px;max-width:320px;margin-left:auto;margin-right:auto">
+                    <input type="file" id="appFile" accept=".html" onchange="handleAppFile(this)">
+                    <span class="upz-icon">📄</span>
+                    <div class="upz-title">Upload current index.html</div>
+                    <div class="upz-desc">From GitHub → Hamilton folder</div>
+                    <div class="upz-badge" id="appBadge">✓ index.html loaded</div>
+                </div>
+                <button class="btn btn-gold" id="dlBtn" onclick="downloadFile()" disabled>⬇️ Download Updated index.html</button>
+                <div id="ghSteps" style="background:rgba(0,0,0,.2);border-radius:8px;padding:11px;margin-top:13px;text-align:left;display:none;font-size:.73em;color:var(--text-dim);line-height:1.9">
+                    1. Go to <code>github.com/nextwave-nz/prayer-times</code><br>
+                    2. Open <strong>Hamilton</strong> folder → click <strong>index.html</strong><br>
+                    3. Click ✏️ → ··· → <strong>Upload file</strong><br>
+                    4. Upload downloaded file → <strong>Commit changes</strong><br>
+                    5. ✅ App live in ~30 seconds
+                </div>
+            </div>
+        </div>
+
+        <div class="btn-row" style="margin-top:11px">
+            <button class="btn btn-ghost btn-sm" onclick="backToReview()">← Back to Review</button>
+            <button class="btn btn-ghost btn-sm" onclick="resetAll()">↺ Add Another Month</button>
         </div>
     </div>
 </div>
+</div><!-- end tab-extract -->
+
+<!-- ══ TAB: SETTINGS ══ -->
+<div class="tab-pane hidden" id="tab-settings">
+    <div class="card">
+        <div class="card-hdr"><div class="cnum">☁️</div><div><div class="ctitle">Cloudflare Worker Proxy</div><div class="csub">Enables automatic extraction — see Help tab for setup</div></div></div>
+        <div class="card-body">
+            <div class="ib tip">Set up a free Cloudflare Worker proxy to enable auto extraction. Without this, you use manual Claude.ai mode. See the Help tab for step-by-step setup.</div>
+            <div class="fg"><label class="flbl">Worker URL</label><input class="fi fi-mono" id="settingProxy" placeholder="https://wpt-proxy.yourname.workers.dev" type="url"></div>
+            <div class="btn-row">
+                <button class="btn btn-gold btn-sm" onclick="saveProxy()">💾 Save Proxy URL</button>
+                <span id="proxySaveResult" style="font-size:.71em;color:var(--text-dim);align-self:center"></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-hdr"><div class="cnum">🐙</div><div><div class="ctitle">GitHub Auto-Publish</div><div class="csub">Publish directly to GitHub — no download/upload needed</div></div></div>
+        <div class="card-body">
+            <div class="ib tip">Create a GitHub Personal Access Token with <code>repo</code> scope. See Help tab for exact steps. Once saved, a "Publish to GitHub" button appears after extraction.</div>
+            <div class="ss"><div class="ss-title">GitHub Token</div>
+                <div class="fg" style="margin-bottom:0"><input class="fi fi-mono" id="settingToken" placeholder="ghp_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" type="password"><div style="font-size:.66em;color:var(--text-muted);margin-top:3px">Stored in your browser only · never sent anywhere except GitHub</div></div>
+            </div>
+            <div class="ss"><div class="ss-title">Repository</div>
+                <div class="fgrid">
+                    <div class="fg"><label class="flbl">GitHub Username</label><input class="fi" id="settingUser" placeholder="nextwave-nz" type="text"></div>
+                    <div class="fg"><label class="flbl">Repository Name</label><input class="fi" id="settingRepo" placeholder="prayer-times" type="text"></div>
+                </div>
+                <div class="fg" style="margin-bottom:0"><label class="flbl">File Path</label><input class="fi fi-mono" id="settingPath" placeholder="Hamilton/index.html" type="text"></div>
+            </div>
+            <div class="btn-row">
+                <button class="btn btn-gold btn-sm" onclick="saveGitHub()">💾 Save GitHub Settings</button>
+                <span id="ghSaveResult" style="font-size:.71em;color:var(--text-dim);align-self:center"></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-hdr"><div class="cnum" style="background:rgba(231,76,60,.3);color:var(--red)">!</div><div><div class="ctitle">Clear All Settings</div></div></div>
+        <div class="card-body"><button class="btn btn-ghost btn-sm" onclick="clearAll()" style="border-color:rgba(231,76,60,.3);color:var(--red)">🗑 Clear All Saved Settings</button></div>
+    </div>
+</div><!-- end tab-settings -->
+
+<!-- ══ TAB: HELP ══ -->
+<div class="tab-pane hidden" id="tab-guide">
+    <div class="card">
+        <div class="card-hdr"><div class="cnum">☁️</div><div><div class="ctitle">Option 1 — Cloudflare Worker (5 min)</div></div></div>
+        <div class="card-body">
+            <div class="ib good">Do this once. Fixes extraction error, makes admin fully automatic forever. Free.</div>
+            <div style="font-size:.78em;color:var(--text-dim);line-height:2">
+                1. Sign up free at <code>cloudflare.com</code><br>
+                2. Dashboard → <strong>Workers &amp; Pages</strong> → <strong>Create</strong> → <strong>Create Worker</strong><br>
+                3. Name it <code>wpt-proxy</code> → Deploy → <strong>Edit Code</strong><br>
+                4. Delete all code. Paste the Worker code from the Setup Guide PDF.<br>
+                5. Click <strong>Deploy</strong> → copy the Worker URL (e.g. <code>wpt-proxy.yourname.workers.dev</code>)<br>
+                6. Worker → <strong>Settings</strong> → <strong>Variables and Secrets</strong> → <strong>Add</strong> → Secret<br>
+                7. Name: <code>ANTHROPIC_KEY</code> · Value: your Anthropic API key → Deploy again<br>
+                8. Come back → <strong>Settings tab</strong> → paste Worker URL → Save
+            </div>
+            <div class="ib tip" style="margin-top:10px">The Worker code to paste is in the Setup Guide. Download it from the Setup Guide file provided.</div>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-hdr"><div class="cnum">🐙</div><div><div class="ctitle">Option 2 — GitHub Auto-Publish (10 min)</div></div></div>
+        <div class="card-body">
+            <div class="ib good">Do this after Option 1. Adds "Publish to GitHub" button — no more file download/upload.</div>
+            <div style="font-size:.78em;color:var(--text-dim);line-height:2">
+                1. <code>github.com</code> → profile picture → <strong>Settings</strong><br>
+                2. Scroll to bottom → <strong>Developer settings</strong><br>
+                3. <strong>Personal access tokens</strong> → <strong>Tokens (classic)</strong><br>
+                4. <strong>Generate new token (classic)</strong><br>
+                5. Note: <code>Waikato Prayer Times admin</code> · Expiration: No expiration<br>
+                6. Scopes: tick <strong>repo</strong> only → <strong>Generate token</strong><br>
+                7. Copy the token (starts <code>ghp_</code>) — shown once only!<br>
+                8. <strong>Settings tab</strong> here → paste token + fill username/repo/path → Save
+            </div>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-hdr"><div class="cnum">📅</div><div><div class="ctitle">Monthly Workflow (after full setup)</div></div></div>
+        <div class="card-body">
+            <div style="font-size:.78em;color:var(--text-dim);line-height:2.1">
+                1. Get WMA PDF from masjid (WhatsApp or email)<br>
+                2. Open admin → select month → upload PDF<br>
+                3. Click <strong>Auto Extract</strong> — ~10 seconds<br>
+                4. Review the times table<br>
+                5. Click <strong>Publish to GitHub</strong><br>
+                6. ✅ App live in 30 seconds — total time: ~3 minutes
+            </div>
+        </div>
+    </div>
+</div><!-- end tab-guide -->
 
 </div><!-- .wrap -->
-
 <script>
-// ── STATE ────────────────────────────────────────────────────────────────────
 const MONTHS=['January','February','March','April','May','June','July','August','September','October','November','December'];
 const MSHORT=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 const DAYS_IN_MONTH=[31,28,31,30,31,30,31,31,30,31,30,31];
+const state={month:null,year:2026,isRamadan:false,wmaFile:null,wmaType:null,fianzFile:null,fianzType:null,rows:[],appHtml:null};
+let downloadBlob=null;
 
-const state={
-    month:null, year:2026, isRamadan:false,
-    wmaFile:null, wmaType:null, fianzFile:null, fianzType:null,
-    appHtml:null, appFileName:'index.html',
-    rows:[]
-};
+function cfg(){try{return JSON.parse(localStorage.getItem('wpt_cfg')||'{}');}catch(e){return{};}}
+function saveCfg(c){localStorage.setItem('wpt_cfg',JSON.stringify(c));}
 
-let downloadBlob=null, downloadFilename='index.html';
-
-// ── APP FILE UPLOAD ──────────────────────────────────────────────────────────
-function handleAppFile(inp){
-    const f=inp.files[0];if(!f)return;
-    const reader=new FileReader();
-    reader.onload=e=>{
-        state.appHtml=e.target.result;
-        state.appFileName=f.name;
-        document.getElementById('appZone').classList.add('has');
-        document.getElementById('appBadge').textContent=`✓ ${f.name} loaded`;
-        showToast('✅ index.html loaded — ready to inject new data');
-        checkReady();
-    };
-    reader.readAsText(f);
+function loadSettingsUI(){
+    const c=cfg();
+    if(c.proxy)document.getElementById('settingProxy').value=c.proxy;
+    if(c.token)document.getElementById('settingToken').value='ghp_••••'+c.token.slice(-6);
+    if(c.user)document.getElementById('settingUser').value=c.user;
+    if(c.repo)document.getElementById('settingRepo').value=c.repo;
+    if(c.path)document.getElementById('settingPath').value=c.path;
+    updateStatus();
 }
 
-// ── MONTH / FILES ────────────────────────────────────────────────────────────
-function selMonth(m,el){
-    state.month=m;
-    document.querySelectorAll('.mchip').forEach(c=>c.classList.remove('sel'));el.classList.add('sel');
-    setRamadan(parseInt(document.getElementById('yearInput').value)===2026&&['February','March'].includes(m));
+function saveProxy(){
+    const url=document.getElementById('settingProxy').value.trim();
+    if(!url){showToast('Enter a Worker URL');return;}
+    const c=cfg();c.proxy=url;saveCfg(c);updateStatus();
+    document.getElementById('proxySaveResult').textContent='✅ Saved';
+    document.getElementById('proxySaveResult').style.color='var(--teal)';
+    showToast('✅ Proxy saved — auto extraction enabled!');
     checkReady();
 }
+
+function saveGitHub(){
+    const tokenVal=document.getElementById('settingToken').value.trim();
+    const user=document.getElementById('settingUser').value.trim();
+    const repo=document.getElementById('settingRepo').value.trim();
+    const path=document.getElementById('settingPath').value.trim();
+    if(!user||!repo||!path){showToast('Fill in all GitHub fields');return;}
+    const c=cfg();
+    if(tokenVal&&!tokenVal.includes('••••'))c.token=tokenVal;
+    c.user=user;c.repo=repo;c.path=path;saveCfg(c);updateStatus();
+    document.getElementById('ghSaveResult').textContent='✅ Saved';
+    document.getElementById('ghSaveResult').style.color='var(--teal)';
+    showToast('✅ GitHub settings saved!');
+}
+
+function clearAll(){
+    if(!confirm('Clear all saved settings?'))return;
+    localStorage.removeItem('wpt_cfg');loadSettingsUI();updateStatus();showToast('🗑 Cleared');
+}
+
+function updateStatus(){
+    const c=cfg();
+    const hasProxy=!!c.proxy;
+    const hasGh=!!(c.token&&c.user&&c.repo);
+    const p=document.getElementById('stProxy');
+    const g=document.getElementById('stGh');
+    const m=document.getElementById('stMode');
+    p.className='spill '+(hasProxy?'ok':'warn');
+    document.getElementById('stProxyTxt').textContent=hasProxy?'Proxy: configured ✓':'Proxy: not set';
+    g.className='spill '+(hasGh?'ok':'warn');
+    document.getElementById('stGhTxt').textContent=hasGh?`GitHub: ${c.user}/${c.repo} ✓`:'GitHub: not set';
+    const mode=hasProxy?(hasGh?'full auto':'auto extract'):'manual';
+    m.className='spill '+(hasProxy?'ok':'warn');
+    document.getElementById('stModeTxt').textContent='Mode: '+mode;
+}
+
+function switchTab(id,btn){
+    document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+    document.querySelectorAll('.tab-pane').forEach(p=>{p.classList.remove('active');p.classList.add('hidden');});
+    btn.classList.add('active');
+    document.getElementById('tab-'+id).classList.remove('hidden');
+    document.getElementById('tab-'+id).classList.add('active');
+}
+
+function setStep(n){for(let i=1;i<=4;i++){const el=document.getElementById('s'+i);if(!el)continue;el.classList.remove('active','done');if(i<n)el.classList.add('done');else if(i===n)el.classList.add('active');}}
+
+function selMonth(m,el){state.month=m;document.querySelectorAll('.mchip').forEach(c=>c.classList.remove('sel'));el.classList.add('sel');setRamadan(parseInt(document.getElementById('yearInput').value)===2026&&['February','March'].includes(m));checkReady();}
 function setRamadan(v){state.isRamadan=v;document.getElementById('ramTog').classList.toggle('on',v);}
 function toggleRamadan(){setRamadan(!state.isRamadan);}
 
@@ -414,252 +486,208 @@ function handleFile(src,inp){
     checkReady();
 }
 
+function handleAppFile(inp){
+    const f=inp.files[0];if(!f)return;
+    const r=new FileReader();
+    r.onload=e=>{state.appHtml=e.target.result;document.getElementById('appZone').classList.add('has');document.getElementById('appBadge').textContent=`✓ ${f.name}`;document.getElementById('dlBtn').disabled=false;document.getElementById('ghSteps').style.display='block';showToast('✅ index.html loaded');};
+    r.readAsText(f);
+}
+
 function checkReady(){
     const btn=document.getElementById('extractBtn');const txt=document.getElementById('extTxt');const ico=document.getElementById('extIco');
     if(!state.month){txt.textContent='Select a month first';btn.disabled=true;return;}
     if(!state.wmaFile&&!state.fianzFile){txt.textContent='Upload the WMA PDF first';btn.disabled=true;return;}
-    ico.textContent='📋';
-    txt.textContent=`Prepare Extraction — ${state.month} ${document.getElementById('yearInput').value}`;
+    const c=cfg();
+    if(c.proxy){ico.textContent='✨';txt.textContent=`Auto Extract — ${state.month} ${document.getElementById('yearInput').value}`;}
+    else{ico.textContent='📋';txt.textContent=`Prepare Manual Extraction — ${state.month} ${document.getElementById('yearInput').value}`;}
     btn.disabled=false;
 }
 
-// ── STEP PROGRESS ────────────────────────────────────────────────────────────
-function setStep(n){
-    for(let i=1;i<=4;i++){
-        const el=document.getElementById('s'+i);if(!el)continue;
-        el.classList.remove('active','done');
-        if(i<n)el.classList.add('done');
-        else if(i===n)el.classList.add('active');
-    }
-    // Workflow bubbles
-    if(n>=2)document.getElementById('wfStep1').classList.add('done');
-    if(n>=3)document.getElementById('wfStep2').classList.add('done');
-    if(n>=4)document.getElementById('wfStep3').classList.add('done');
+function buildPrompt(){
+    const days=DAYS_IN_MONTH[MONTHS.indexOf(state.month)];
+    const yr=document.getElementById('yearInput').value;
+    return `Extract ALL prayer times from the attached WMA timetable PDF for Hamilton Jamia Mosque, Hamilton NZ. Month: ${state.month} ${yr} (${days} days). Do not skip any day.\n\nRULES:\n- WMA shows two values per prayer: adhan time and iqama (bold). Only include iqama when it explicitly appears for that day; use null when it carries forward.\n- Times format: h:mm no leading zero (e.g. "6:20" not "06:20")\n- AM: Fajr, Sunrise. PM: Dhuhr, Asr, Maghrib, Isha.\n${state.isRamadan?'- Also extract suhoorEnds and iftar from the FIANZ calendar.\n':''}\nReturn ONLY raw JSON (no markdown, no text before or after):\n{"month":"${state.month}","year":"${yr}","mosqueId":"hamilton-jamia","isRamadan":${state.isRamadan},"days":[{"date":1,"dayName":"Wed","fajrAdhan":"6:04","fajrIqama":"6:20","sunrise":"7:31","dhuhrAdhan":"1:23","dhuhrIqama":null,"asrAdhan":"4:42","asrIqama":null,"maghribAdhan":"7:15","maghribIqama":null,"ishaAdhan":"8:27","ishaIqama":null,"suhoorEnds":null,"iftar":null,"isRamadan":false,"ramadanDay":null}]}`;
 }
 
-function setProgress(pct,lbl){
-    document.getElementById('progWrap').style.display='block';
-    document.getElementById('progFill').style.width=pct+'%';
-    document.getElementById('progLbl').style.display='block';
-    document.getElementById('progLbl').textContent=lbl;
+async function startExtract(){
+    hideErr();state.year=parseInt(document.getElementById('yearInput').value);
+    const c=cfg();
+    if(c.proxy){await runAutoExtract(c.proxy);}
+    else{showManualPanel();}
 }
-function addLog(msg,type='linf'){
-    const log=document.getElementById('aiLog');log.style.display='block';
-    const d=document.createElement('div');d.className=type;d.textContent=msg;
-    log.appendChild(d);log.scrollTop=log.scrollHeight;
-}
+
+function setProg(pct,lbl){document.getElementById('progWrap').style.display='block';document.getElementById('progFill').style.width=pct+'%';document.getElementById('progLbl').style.display='block';document.getElementById('progLbl').textContent=lbl;}
+function addLog(msg,type='linf'){const l=document.getElementById('aiLog');l.style.display='block';const d=document.createElement('div');d.className=type;d.textContent=msg;l.appendChild(d);l.scrollTop=l.scrollHeight;}
 function clearLog(){const l=document.getElementById('aiLog');l.innerHTML='';l.style.display='none';}
 function showErr(msg){const b=document.getElementById('errBox');b.textContent='⚠️ '+msg;b.style.display='block';}
 function hideErr(){document.getElementById('errBox').style.display='none';}
 function fileToB64(f){return new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(r.result.split(',')[1]);r.onerror=rej;r.readAsDataURL(f);});}
 
-// ── PROMPT BUILDER ───────────────────────────────────────────────────────────
-function buildPrompt(){
-    const days=DAYS_IN_MONTH[MONTHS.indexOf(state.month)];
-    const yr=document.getElementById('yearInput').value;
-    return `Extract ALL prayer times from the attached WMA timetable PDF for Hamilton Jamia Mosque, Hamilton NZ. Month: ${state.month} ${yr} (${days} days). Do not skip any day.
-
-RULES:
-- WMA shows two values per prayer: adhan time and iqama (bold). Only include iqama when it explicitly appears for that day; use null when it carries forward.
-- Times format: h:mm no leading zero (e.g. "6:20" not "06:20")
-- AM: Fajr, Sunrise. PM: Dhuhr, Asr, Maghrib, Isha.
-${state.isRamadan?'- Also extract suhoorEnds and iftar from the FIANZ calendar.':''}
-
-Return ONLY raw JSON (no markdown, no text before or after):
-{"month":"${state.month}","year":"${yr}","mosqueId":"hamilton-jamia","isRamadan":${state.isRamadan},"days":[{"date":1,"dayName":"Wed","fajrAdhan":"6:04","fajrIqama":"6:20","sunrise":"7:31","dhuhrAdhan":"1:23","dhuhrIqama":null,"asrAdhan":"4:42","asrIqama":null,"maghribAdhan":"7:15","maghribIqama":null,"ishaAdhan":"8:27","ishaIqama":null,"suhoorEnds":null,"iftar":null,"isRamadan":false,"ramadanDay":null}]}`;
+async function runAutoExtract(proxyUrl){
+    clearLog();setStep(2);
+    const btn=document.getElementById('extractBtn');
+    btn.disabled=true;document.getElementById('extIco').textContent='⏳';document.getElementById('extTxt').textContent='Extracting...';
+    setProg(10,'Reading PDF...');
+    try{
+        const parts=[];
+        if(state.wmaFile){addLog(`📄 ${state.wmaFile.name}`,'linf');const b64=await fileToB64(state.wmaFile);parts.push(state.wmaType==='pdf'?{type:'document',source:{type:'base64',media_type:'application/pdf',data:b64}}:{type:'image',source:{type:'base64',media_type:state.wmaFile.type||'image/jpeg',data:b64}});addLog(`✓ Loaded (${Math.round(state.wmaFile.size/1024)}KB)`,'lok');}
+        if(state.fianzFile){const b64=await fileToB64(state.fianzFile);parts.push(state.fianzType==='pdf'?{type:'document',source:{type:'base64',media_type:'application/pdf',data:b64}}:{type:'image',source:{type:'base64',media_type:state.fianzFile.type||'image/jpeg',data:b64}});}
+        parts.push({type:'text',text:`Extract all ${state.month} ${document.getElementById('yearInput').value} prayer times. Return only JSON.`});
+        setProg(35,'Calling Claude AI...');addLog('🤖 Sending to AI...','linf');
+        const resp=await fetch(proxyUrl,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-opus-4-5',max_tokens:4000,system:buildPrompt(),messages:[{role:'user',content:parts}]})});
+        if(!resp.ok){const e=await resp.json().catch(()=>({}));throw new Error(e.error?.message||`Error ${resp.status} — check Worker and API key`);}
+        const data=await resp.json();
+        const raw=data.content?.find(b=>b.type==='text')?.text||'';
+        setProg(80,'Parsing...');
+        parseResult(raw);
+    }catch(err){
+        setProg(0,'');document.getElementById('progWrap').style.display='none';
+        addLog(`❌ ${err.message}`,'lerr');showErr(err.message);setStep(1);
+    }finally{btn.disabled=false;checkReady();}
 }
 
-// ── START EXTRACT ────────────────────────────────────────────────────────────
-async function startExtract(){
-    hideErr();
-    state.year=parseInt(document.getElementById('yearInput').value);
-    // Always use manual mode (CORS blocks direct API calls from GitHub Pages)
-    showManualPanel();
+function parseResult(raw){
+    let jt=raw.replace(/```json\s*/g,'').replace(/```\s*/g,'').trim();
+    const si=jt.indexOf('{'),ei=jt.lastIndexOf('}');
+    if(si===-1||ei===-1)throw new Error('No JSON in response');
+    const parsed=JSON.parse(jt.substring(si,ei+1));
+    if(!parsed.days?.length)throw new Error('No days found');
+    state.rows=parsed.days;
+    addLog(`✅ ${parsed.days.length} days extracted`,'lok');
+    setProg(100,`✅ ${parsed.days.length} days ready`);
+    setTimeout(()=>{buildPreview();document.getElementById('manualPanel').classList.add('hidden');document.getElementById('previewCard').classList.remove('hidden');document.getElementById('previewCard').scrollIntoView({behavior:'smooth',block:'start'});setStep(3);},500);
 }
 
-// ── MANUAL MODE ──────────────────────────────────────────────────────────────
-function showManualPanel(){
-    document.getElementById('manualPanel').classList.remove('hidden');
-    document.getElementById('manualPrompt').textContent=buildPrompt();
-    document.getElementById('jsonPaste').value='';
-    document.getElementById('parseBtn').disabled=true;
-    document.getElementById('jsonErrBox').style.display='none';
-    document.getElementById('manualPanel').scrollIntoView({behavior:'smooth',block:'start'});
-    setStep(2);
-    // Update workflow
-    document.getElementById('wfStep1').classList.add('done');
-}
-
-function copyPrompt(){
-    navigator.clipboard.writeText(document.getElementById('manualPrompt').textContent)
-        .then(()=>showToast('✅ Prompt copied! Now open Claude.ai'));
-}
-
-function checkJsonPaste(){
-    document.getElementById('parseBtn').disabled=document.getElementById('jsonPaste').value.trim().length<10;
-}
-
+function showManualPanel(){document.getElementById('manualPanel').classList.remove('hidden');document.getElementById('manualPrompt').textContent=buildPrompt();document.getElementById('jsonPaste').value='';document.getElementById('parseBtn').disabled=true;document.getElementById('jsonErrBox').style.display='none';document.getElementById('manualPanel').scrollIntoView({behavior:'smooth',block:'start'});setStep(2);}
+function copyPrompt(){navigator.clipboard.writeText(document.getElementById('manualPrompt').textContent).then(()=>showToast('✅ Prompt copied!'));}
+function checkJsonPaste(){document.getElementById('parseBtn').disabled=document.getElementById('jsonPaste').value.trim().length<10;}
 function parseManualJson(){
     const raw=document.getElementById('jsonPaste').value.trim();
-    const errBox=document.getElementById('jsonErrBox');
+    const eb=document.getElementById('jsonErrBox');
     try{
         let jt=raw.replace(/```json\s*/g,'').replace(/```\s*/g,'').trim();
         const si=jt.indexOf('{'),ei=jt.lastIndexOf('}');
-        if(si===-1||ei===-1)throw new Error('No JSON found. Copy the full response from Claude.ai.');
+        if(si===-1||ei===-1)throw new Error('No JSON found. Copy the full response.');
         const parsed=JSON.parse(jt.substring(si,ei+1));
-        if(!parsed.days?.length)throw new Error('No days array found in JSON.');
-        state.rows=parsed.days;
-        errBox.style.display='none';
+        if(!parsed.days?.length)throw new Error('No days in JSON.');
+        state.rows=parsed.days;eb.style.display='none';
         document.getElementById('manualPanel').classList.add('hidden');
-        buildPreview();
-        document.getElementById('previewCard').classList.remove('hidden');
-        document.getElementById('previewCard').scrollIntoView({behavior:'smooth',block:'start'});
-        setStep(3);
-        document.getElementById('wfStep2').classList.add('done');
+        buildPreview();document.getElementById('previewCard').classList.remove('hidden');document.getElementById('previewCard').scrollIntoView({behavior:'smooth',block:'start'});setStep(3);
         showToast(`✅ ${parsed.days.length} days parsed!`);
-    }catch(err){
-        errBox.textContent='⚠️ '+err.message;errBox.style.display='block';
-    }
+    }catch(err){eb.textContent='⚠️ '+err.message;eb.style.display='block';}
 }
 
-// ── PREVIEW TABLE ────────────────────────────────────────────────────────────
 function buildPreview(){
     const hasRam=state.isRamadan||state.rows.some(r=>r.isRamadan);
     const ms=MSHORT[MONTHS.indexOf(state.month)];
-    document.getElementById('prevHead').innerHTML=`<tr>
-        <th>Date</th><th>Fajr</th><th style="color:var(--gold)">Fajr Iq.</th>
-        <th>Dhuhr</th><th style="color:var(--gold)">Dhuhr Iq.</th>
-        <th>Asr</th><th style="color:var(--gold)">Asr Iq.</th>
-        <th>Maghrib</th><th style="color:var(--gold)">Maghr.Iq.</th>
-        <th>Isha</th><th style="color:var(--gold)">Isha Iq.</th>
-        ${hasRam?'<th style="color:#6aacde">Suhoor</th><th style="color:#e8826a">Iftar</th>':''}
-    </tr>`;
-    const fields=[
-        {k:'fajrAdhan',c:''},{k:'fajrIqama',c:'iq'},{k:'dhuhrAdhan',c:''},{k:'dhuhrIqama',c:'iq'},
-        {k:'asrAdhan',c:''},{k:'asrIqama',c:'iq'},{k:'maghribAdhan',c:''},{k:'maghribIqama',c:'iq'},
-        {k:'ishaAdhan',c:''},{k:'ishaIqama',c:'iq'},
-        ...(hasRam?[{k:'suhoorEnds',c:''},{k:'iftar',c:''}]:[])
-    ];
+    document.getElementById('prevHead').innerHTML=`<tr><th>Date</th><th>Fajr</th><th style="color:var(--gold)">Fajr Iq.</th><th>Dhuhr</th><th style="color:var(--gold)">Dhuhr Iq.</th><th>Asr</th><th style="color:var(--gold)">Asr Iq.</th><th>Maghrib</th><th style="color:var(--gold)">Maghr.Iq.</th><th>Isha</th><th style="color:var(--gold)">Isha Iq.</th>${hasRam?'<th style="color:#6aacde">Suhoor</th><th style="color:#e8826a">Iftar</th>':''}</tr>`;
+    const fields=[{k:'fajrAdhan',c:''},{k:'fajrIqama',c:'iq'},{k:'dhuhrAdhan',c:''},{k:'dhuhrIqama',c:'iq'},{k:'asrAdhan',c:''},{k:'asrIqama',c:'iq'},{k:'maghribAdhan',c:''},{k:'maghribIqama',c:'iq'},{k:'ishaAdhan',c:''},{k:'ishaIqama',c:'iq'},...(hasRam?[{k:'suhoorEnds',c:''},{k:'iftar',c:''}]:[])];
     const tbody=document.getElementById('prevBody');tbody.innerHTML='';
-    state.rows.forEach((row,i)=>{
-        const tr=document.createElement('tr');
-        let html=`<td class="dt">${row.dayName||''} ${ms} ${row.date}</td>`;
-        fields.forEach(f=>{html+=`<td class="${f.c}"><input type="text" value="${row[f.k]||''}" data-r="${i}" data-f="${f.k}" oninput="updCell(this)"></td>`;});
-        tr.innerHTML=html;tbody.appendChild(tr);
-    });
+    state.rows.forEach((row,i)=>{const tr=document.createElement('tr');let html=`<td class="dt">${row.dayName||''} ${ms} ${row.date}</td>`;fields.forEach(f=>{html+=`<td class="${f.c}"><input type="text" value="${row[f.k]||''}" data-r="${i}" data-f="${f.k}" oninput="updCell(this)"></td>`;});tr.innerHTML=html;tbody.appendChild(tr);});
 }
 function updCell(inp){state.rows[parseInt(inp.dataset.r)][inp.dataset.f]=inp.value.trim();}
 
-// ── BUILD DOWNLOAD ───────────────────────────────────────────────────────────
-function buildDownload(){
+function goToPublish(){
+    const c=cfg();
+    const ms=MSHORT[MONTHS.indexOf(state.month)];
+    document.getElementById('pubMonthLbl').textContent=`${state.month} ${state.year}`;
+    document.getElementById('publishSub').textContent=`${ms} ${state.year} ready · choose publish method`;
+    if(c.token&&c.user&&c.repo)document.getElementById('ghPublishSection').classList.remove('hidden');
+    document.getElementById('previewCard').classList.add('hidden');document.getElementById('publishCard').classList.remove('hidden');document.getElementById('publishCard').scrollIntoView({behavior:'smooth',block:'start'});setStep(4);
+}
+function backToReview(){document.getElementById('publishCard').classList.add('hidden');document.getElementById('previewCard').classList.remove('hidden');setStep(3);}
+function showDlSection(){document.getElementById('dlSection').style.display='block';}
+
+function buildArr(){
     const ms=MSHORT[MONTHS.indexOf(state.month)];
     const varName=`${ms.toUpperCase()}_DATA`;
-    const f=v=>v?`"${v}"`:'null';
+    const fv=v=>v?`"${v}"`:'null';
     const lines=state.rows.map(row=>{
         let l=` {date:"${ms} ${row.date}",day:"${row.dayName||'?'}",`;
         if(row.ramadanDay)l+=`ramadanDay:${row.ramadanDay},`;
-        l+=` fajr:${f(row.fajrAdhan)},fajrIq:${f(row.fajrIqama)},shuruq:${f(row.sunrise)},`;
-        l+=` dhuhr:${f(row.dhuhrAdhan)},dhuhrIq:${f(row.dhuhrIqama)},`;
-        l+=` asr:${f(row.asrAdhan)},asrIq:${f(row.asrIqama)},`;
-        l+=` magh:${f(row.maghribAdhan)},maghIq:${f(row.maghribIqama)},`;
-        l+=` isha:${f(row.ishaAdhan)},ishaIq:${f(row.ishaIqama)},`;
-        l+=` ramadan:${row.isRamadan?'true':'false'},suhoor:${f(row.suhoorEnds)},iftar:${f(row.iftar)}},`;
+        l+=` fajr:${fv(row.fajrAdhan)},fajrIq:${fv(row.fajrIqama)},shuruq:${fv(row.sunrise)},`;
+        l+=` dhuhr:${fv(row.dhuhrAdhan)},dhuhrIq:${fv(row.dhuhrIqama)},`;
+        l+=` asr:${fv(row.asrAdhan)},asrIq:${fv(row.asrIqama)},`;
+        l+=` magh:${fv(row.maghribAdhan)},maghIq:${fv(row.maghribIqama)},`;
+        l+=` isha:${fv(row.ishaAdhan)},ishaIq:${fv(row.ishaIqama)},`;
+        l+=` ramadan:${row.isRamadan?'true':'false'},suhoor:${fv(row.suhoorEnds)},iftar:${fv(row.iftar)}},`;
         return l;
     });
     if(lines.length)lines[lines.length-1]=lines[lines.length-1].replace(/,$/,'');
+    const code=`// ═══════════════════════════════════════\n// ${state.month.toUpperCase()} ${state.year} — WMA Iqama times\n// ═══════════════════════════════════════\nconst ${varName}=[\n${lines.join('\n')}\n];`;
+    return{varName,code};
+}
 
-    const newArrayCode=`// ═══════════════════════════════════════\n// ${state.month.toUpperCase()} ${state.year} — WMA Iqama times\n// ═══════════════════════════════════════\nconst ${varName}=[\n${lines.join('\n')}\n];`;
-
-    let updatedHtml=state.appHtml;
-
-    if(updatedHtml){
-        // ── Inject into uploaded index.html ──────────────────────────────────
-        // Find the resolve comment and insert new array just before it
-        const resolveMarker='// ═══════════════════════════════════════\n// RESOLVE CARRY-FORWARD IQAMA TIMES';
-        const resolveIdx=updatedHtml.indexOf(resolveMarker);
-
-        if(resolveIdx===-1){
-            showToast('⚠️ Could not find insertion point — check index.html format');
-            return;
-        }
-
-        // Insert the new data array before the resolve comment
-        updatedHtml=updatedHtml.substring(0,resolveIdx)+newArrayCode+'\n\n'+updatedHtml.substring(resolveIdx);
-
-        // Update buildAllData to include new variable
-        // Find current resolveIqamas call and add new array
-        const buildAllMatch=updatedHtml.match(/const base=resolveIqamas\(\[(.*?)\]\)/);
-        if(buildAllMatch){
-            const currentArgs=buildAllMatch[1];
-            // Add new variable if not already there
-            if(!currentArgs.includes(`...${varName}`)){
-                const newArgs=currentArgs+`,...${varName}`;
-                updatedHtml=updatedHtml.replace(
-                    `const base=resolveIqamas([${currentArgs}])`,
-                    `const base=resolveIqamas([${newArgs}])`
-                );
-            }
-        }
-
-        downloadFilename='index.html';
-        showToast('✅ index.html updated with '+state.month+' data!');
-    } else {
-        // No index.html uploaded — just provide the code snippet
-        updatedHtml='<!-- No index.html uploaded — paste this code into index.html before the RESOLVE CARRY-FORWARD comment -->\n\n'+newArrayCode;
-        downloadFilename=`${ms}_DATA_${state.year}.txt`;
-        showToast('ℹ️ No index.html uploaded — downloading code snippet only');
-    }
-
-    downloadBlob=new Blob([updatedHtml],{type:'text/html;charset=utf-8'});
-
-    // Show download card
-    document.getElementById('previewCard').classList.add('hidden');
-    document.getElementById('downloadCard').classList.remove('hidden');
-    document.getElementById('dlTitle').textContent=state.appHtml
-        ?`✅ index.html Updated with ${state.month} ${state.year}`
-        :`📋 ${varName} Code — ${lines.length} days`;
-    document.getElementById('dlSub').textContent=state.appHtml
-        ?`${state.month} ${state.year} data injected · Ready to upload to GitHub`
-        :`Code snippet ready — upload your index.html next time for one-click download`;
-    document.getElementById('dlDesc').textContent=state.appHtml
-        ?`Your index.html has been updated with all ${state.month} prayer times. Download it and upload to GitHub — done in 30 seconds.`
-        ?`Download the code snippet and manually paste it into index.html.`:'':''
-        ;
-
-    document.getElementById('downloadCard').scrollIntoView({behavior:'smooth',block:'start'});
-    setStep(4);
-    document.getElementById('wfStep3').classList.add('done');
+function injectHtml(src,varName,code){
+    const marker='// ═══════════════════════════════════════\n// RESOLVE CARRY-FORWARD IQAMA TIMES';
+    const idx=src.indexOf(marker);
+    if(idx===-1)throw new Error('Cannot find insertion point in index.html. Make sure it is the correct file.');
+    let out=src.substring(0,idx)+code+'\n\n'+src.substring(idx);
+    const m=out.match(/const base=resolveIqamas\(\[(.*?)\]\)/);
+    if(m&&!m[1].includes(`...${varName}`)){out=out.replace(`const base=resolveIqamas([${m[1]}])`,`const base=resolveIqamas([${m[1]},...${varName}])`);}
+    return out;
 }
 
 function downloadFile(){
-    if(!downloadBlob){showToast('⚠️ Nothing to download yet');return;}
-    const url=URL.createObjectURL(downloadBlob);
-    const a=document.createElement('a');
-    a.href=url;a.download=downloadFilename;
-    document.body.appendChild(a);a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-    showToast('✅ Downloaded! Now upload to GitHub.');
+    if(!state.rows.length){showToast('No data to export');return;}
+    if(!state.appHtml){showToast('Upload index.html first');return;}
+    try{
+        const{varName,code}=buildArr();
+        const updated=injectHtml(state.appHtml,varName,code);
+        downloadBlob=new Blob([updated],{type:'text/html;charset=utf-8'});
+        const url=URL.createObjectURL(downloadBlob);
+        const a=document.createElement('a');a.href=url;a.download='index.html';document.body.appendChild(a);a.click();document.body.removeChild(a);URL.revokeObjectURL(url);
+        showToast('✅ Downloaded! Upload to GitHub → Hamilton/index.html');
+    }catch(e){showToast('⚠️ '+e.message);}
 }
 
-// ── RESET ────────────────────────────────────────────────────────────────────
+async function publishToGitHub(){
+    const c=cfg();
+    if(!c.token||!c.user||!c.repo){showToast('Configure GitHub settings first');return;}
+    const btn=document.getElementById('ghBtn');
+    btn.disabled=true;document.getElementById('pubProg').style.display='block';
+    const pp=(pct,lbl)=>{document.getElementById('pubFill').style.width=pct+'%';document.getElementById('pubLbl').textContent=lbl;};
+    try{
+        pp(20,'Fetching index.html from GitHub...');
+        const path=c.path||'Hamilton/index.html';
+        const apiBase=`https://api.github.com/repos/${c.user}/${c.repo}/contents/${path}`;
+        const headers={'Authorization':`token ${c.token}`,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'};
+        const getR=await fetch(apiBase,{headers});
+        if(!getR.ok){const e=await getR.json();throw new Error(`GitHub GET failed: ${e.message}. Check token, username, repo name.`);}
+        const fd=await getR.json();
+        const sha=fd.sha;
+        const current=decodeURIComponent(escape(atob(fd.content.replace(/\n/g,''))));
+        pp(55,'Injecting prayer times...');
+        const{varName,code}=buildArr();
+        const updated=injectHtml(current,varName,code);
+        pp(75,'Committing to GitHub...');
+        const ms=MSHORT[MONTHS.indexOf(state.month)];
+        const putR=await fetch(apiBase,{method:'PUT',headers,body:JSON.stringify({message:`Add ${state.month} ${state.year} prayer times`,content:btoa(unescape(encodeURIComponent(updated))),sha})});
+        if(!putR.ok){const e=await putR.json();throw new Error(`Commit failed: ${e.message}`);}
+        pp(100,'✅ Published!');
+        btn.textContent='✅ Published!';btn.style.background='linear-gradient(135deg,#0f9b8e,#0a7a70)';
+        showToast(`✅ ${state.month} ${state.year} published! App live in ~30 seconds.`);
+    }catch(err){
+        pp(0,'');document.getElementById('pubProg').style.display='none';
+        showToast('❌ '+err.message);btn.disabled=false;
+    }
+}
+
 function resetAll(){
-    state.rows=[];state.wmaFile=null;state.fianzFile=null;
-    // Keep appHtml loaded — user doesn't need to re-upload it
+    state.rows=[];state.wmaFile=null;state.fianzFile=null;state.appHtml=null;downloadBlob=null;
     document.getElementById('wmaFile').value='';document.getElementById('fianzFile').value='';
     document.getElementById('wmaZone').classList.remove('has');document.getElementById('fianzZone').classList.remove('has');
-    ['manualPanel','previewCard','downloadCard'].forEach(id=>document.getElementById(id).classList.add('hidden'));
+    ['manualPanel','previewCard','publishCard'].forEach(id=>document.getElementById(id).classList.add('hidden'));
+    document.getElementById('ghPublishSection').classList.add('hidden');
+    document.getElementById('pubProg').style.display='none';document.getElementById('pubLbl').textContent='';
+    document.getElementById('ghBtn').disabled=false;document.getElementById('ghBtn').textContent='🚀 Publish to GitHub';document.getElementById('ghBtn').style.background='';
     document.getElementById('progWrap').style.display='none';document.getElementById('progLbl').style.display='none';
-    clearLog();hideErr();checkReady();setStep(1);
-    // Reset workflow dots
-    ['wfStep1','wfStep2','wfStep3'].forEach(id=>document.getElementById(id).classList.remove('done'));
-    window.scrollTo({top:0,behavior:'smooth'});
+    clearLog();hideErr();checkReady();setStep(1);window.scrollTo({top:0,behavior:'smooth'});
 }
 
-function showToast(msg,dur=3000){
-    const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');
-    setTimeout(()=>t.classList.remove('show'),dur);
-}
+function showToast(msg,dur=3500){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),dur);}
+
+document.addEventListener('DOMContentLoaded',()=>{loadSettingsUI();checkReady();});
 </script>
 </body>
 </html>
