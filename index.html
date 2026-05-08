@@ -266,6 +266,21 @@
         .pr-row.current .pr-icon{background:var(--gold-dim);border-color:var(--gold-border)}
         .pr-name{font-weight:600;font-size:.9em;color:var(--text)}
         .pr-row.current .pr-name{color:var(--gold-light)}
+        /* Friday Jumu'ah pill — sits next to "Dhuhr" name */
+        .jumuah-pill{
+            display:inline-block;
+            font-size:.62em;font-weight:700;
+            background:var(--gold-dim);
+            color:var(--gold);
+            border:1px solid var(--gold-border);
+            padding:1px 7px;border-radius:10px;
+            margin-left:6px;letter-spacing:.3px;
+            vertical-align:middle;
+        }
+        .pr-row.current .jumuah-pill{
+            background:linear-gradient(135deg,var(--gold),#8b6914);
+            color:#1a0e00;border-color:transparent;
+        }
         .pr-sub{font-size:.62em;color:var(--text-3);margin-top:2px}
         .pr-right{text-align:right}
         .pr-iqama{font-family:'JetBrains Mono',monospace;font-size:1.05em;font-weight:500;color:var(--text)}
@@ -347,6 +362,8 @@
         .cal-cell{background:rgba(0,0,0,.25);border-radius:7px;padding:8px;text-align:center}
         .cal-cell-lbl{font-size:.56em;color:var(--text-3);text-transform:uppercase;letter-spacing:.4px}
         .cal-cell-val{font-family:'JetBrains Mono',monospace;font-size:.82em;color:var(--text);margin-top:2px}
+        .cal-cell.jumuah-cell{background:linear-gradient(135deg,rgba(201,168,76,.18),rgba(201,168,76,.05));border:1px solid var(--gold-border)}
+        .cal-cell.jumuah-cell .cal-cell-lbl{color:var(--gold)}
         .iftar-v{color:var(--rose)!important;font-weight:600}
         .suhoor-v{color:var(--sky)!important}
         .iqama-v{color:var(--gold)!important}
@@ -362,6 +379,21 @@
         .pt .iftar-c{color:var(--rose)!important;font-weight:600}
         .pt .suhoor-c{color:var(--sky)!important}
         .pt .iqama-c{color:var(--gold)!important;font-weight:600}
+        /* Friday Dhuhr cell — Jumu'ah indicator (subtle gold tint + small label below time) */
+        .pt .jumuah-c{
+            background:linear-gradient(135deg,rgba(201,168,76,.14),rgba(201,168,76,.04));
+            color:var(--gold-bright)!important;
+            font-weight:700;
+            position:relative;
+        }
+        .pt .jumuah-c .jumuah-tag{
+            display:block;
+            font-family:'Plus Jakarta Sans',sans-serif;
+            font-size:.62em;font-weight:600;
+            color:var(--gold);
+            letter-spacing:.5px;
+            margin-top:1px;
+        }
 
         /* ── HADITH ────────────────────────── */
         .hadith-card{background:var(--surface);border:1px solid var(--border-hi);border-radius:var(--r);padding:20px 17px;margin-bottom:10px;position:relative;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,.3),inset 0 1px 0 rgba(201,168,76,.1)}
@@ -719,6 +751,7 @@
                     <div class="info-title">📌 Important Notes</div>
                     <div class="info-body">
                         <p>• All times shown are <strong>Iqama (congregation) times</strong></p>
+                        <p>• On Fridays, <strong>Dhuhr is replaced by Jumu'ah</strong> (Khutbah at 1:40 PM)</p>
                         <p>• Iftar/Maghrib from <strong>FIANZ Hamilton calendar</strong></p>
                         <p>• 3 minutes added to Ramadan Maghrib</p>
                         <p>• Asr based on <strong>single shadow</strong> method</p>
@@ -923,6 +956,7 @@ function updateClock(){
 
 function updateHome(now){
     const rec=todayRec(),tmr=tmrRec();
+    const isFriday=rec&&rec.day==='Fri';
     const badge=document.getElementById('modeBadge');
     if(rec&&rec.ramadan){
         badge.className='mode-badge ramadan';
@@ -938,12 +972,14 @@ function updateHome(now){
         document.getElementById('ramadanRow').style.display='none';
     }
     const jn=document.getElementById('jummahNotice');
-    if(jn)jn.style.display=(rec&&rec.day==='Fri')?'block':'none';
+    if(jn)jn.style.display=isFriday?'block':'none';
     if(!rec)return;
 
+    // Note: on Fridays, "Dhuhr" is replaced by "Jumu'ah" prayer at the same iqama time.
+    // We tag it with isJumuah so the UI can render the Jumu'ah pill.
     const prayers=[
         {name:'Fajr',   emoji:'🌅',iqama:rec.fajrIqR, pm:false},
-        {name:'Dhuhr',  emoji:'☀️', iqama:rec.dhuhrIqR,pm:true},
+        {name:'Dhuhr',  emoji:'☀️', iqama:rec.dhuhrIqR,pm:true, isJumuah:isFriday},
         {name:'Asr',    emoji:'🌤️', iqama:rec.asrIqR,  pm:true},
         {name:'Maghrib',emoji:'🌆',iqama:rec.maghIqR, pm:true,isIftar:rec.ramadan},
         {name:'Isha',   emoji:'🌃',iqama:rec.ishaIqR, pm:true},
@@ -959,7 +995,11 @@ function updateHome(now){
         if(t){const pd=makeDate(t.h,t.m,1);nextP={name:'Fajr',emoji:'🌅',iqama:tmr.fajrIqR,pm:false,date:pd};}
     }
     if(nextP){
-        document.getElementById('nextName').textContent=nextP.name+(nextP.isIftar?' / Iftar':'');
+        // Build display name: append "(Jumu'ah)" for Friday Dhuhr, or " / Iftar" for Maghrib in Ramadan
+        let displayName=nextP.name;
+        if(nextP.isJumuah)displayName=`Dhuhr <span style="color:var(--gold);font-size:.7em;font-weight:600">(Jumu'ah)</span>`;
+        else if(nextP.isIftar)displayName=`${nextP.name} / Iftar`;
+        document.getElementById('nextName').innerHTML=displayName;
         document.getElementById('nextIqamaTime').textContent=`${nextP.iqama} ${nextP.pm?'PM':'AM'}`;
         document.getElementById('nextCountdown').textContent=fmtCd(nextP.date-now);
     }
@@ -983,13 +1023,19 @@ function updateHome(now){
         const pd=makeDate(t.h,t.m);
         const passed=pd<=now,isCur=!passed&&!nSet;
         if(isCur)nSet=true;
-        const extra=p.isIftar?' / Iftar':'';
-        const tw=(p.name==='Isha'&&rec.ramadan)?' + Taraweeh':'';
+        // Build the prayer name with optional Jumu'ah pill / Iftar / Taraweeh tags
+        let nameHtml=p.name;
+        if(p.isJumuah)nameHtml+=`<span class="jumuah-pill">Jumu'ah</span>`;
+        if(p.isIftar)nameHtml+=' / Iftar';
+        if(p.name==='Isha'&&rec.ramadan)nameHtml+=' + Taraweeh';
+        // Sub-line: for Friday Dhuhr show Khutbah time, otherwise the standard "Congregation time"
+        const subTxt=p.isJumuah?'Khutbah at 1:40 PM · Congregation':'Congregation time';
         const row=document.createElement('div');
         row.className=`pr-row${passed?' passed':''}${isCur?' current':''}`;
+        // Track prayer-completion using the canonical name "Dhuhr" (so Friday Jumu'ah and weekday Dhuhr share the same checkbox state)
         const isPrayed=getTodayPrayed().includes(p.name);
         if(isPrayed)row.classList.add('prayed');
-        row.innerHTML=`<div class="pr-left"><div class="pr-icon">${p.emoji}</div><div><div class="pr-name">${p.name}${extra}${tw}</div><div class="pr-sub">Congregation time</div></div></div><div class="pr-right" style="display:flex;align-items:center;gap:10px"><div style="text-align:right"><div class="pr-iqama">${p.iqama} ${p.pm?'PM':'AM'}</div>${isCur&&!isPrayed?'<div class="now-pill">NEXT ›</div>':''}</div><div class="pr-check${isPrayed?' checked':''}" onclick="togglePrayer('${p.name}',this)" title="Mark as prayed"></div></div>`;
+        row.innerHTML=`<div class="pr-left"><div class="pr-icon">${p.emoji}</div><div><div class="pr-name">${nameHtml}</div><div class="pr-sub">${subTxt}</div></div></div><div class="pr-right" style="display:flex;align-items:center;gap:10px"><div style="text-align:right"><div class="pr-iqama">${p.iqama} ${p.pm?'PM':'AM'}</div>${isCur&&!isPrayed?'<div class="now-pill">NEXT ›</div>':''}</div><div class="pr-check${isPrayed?' checked':''}" onclick="togglePrayer('${p.name}',this)" title="Mark as prayed"></div></div>`;
         list.appendChild(row);
     }
     if(rec.ramadan&&rec.suhoor){
@@ -1185,16 +1231,18 @@ async function scheduleNotifications() {
     notifScheduled = true;
     const rec = todayRec(); if (!rec) return;
     const now = new Date();
+    const isFriday = rec.day === 'Fri';
 
     // Get service worker registration — REQUIRED for iOS
     const swReg = await getSWRegistration();
 
+    // On Fridays, label the Dhuhr notification as "Dhuhr (Jumu'ah)"
     const prayers = [
-        {name:'Fajr',   iqama:rec.fajrIqR, pm:false},
-        {name:'Dhuhr',  iqama:rec.dhuhrIqR,pm:true},
-        {name:'Asr',    iqama:rec.asrIqR,  pm:true},
-        {name:'Maghrib',iqama:rec.maghIqR, pm:true},
-        {name:'Isha',   iqama:rec.ishaIqR, pm:true}
+        {name:'Fajr',                                iqama:rec.fajrIqR, pm:false},
+        {name:isFriday?"Dhuhr (Jumu'ah)":'Dhuhr',    iqama:rec.dhuhrIqR,pm:true},
+        {name:'Asr',                                 iqama:rec.asrIqR,  pm:true},
+        {name:'Maghrib',                             iqama:rec.maghIqR, pm:true},
+        {name:'Isha',                                iqama:rec.ishaIqR, pm:true}
     ];
 
     // Build notification list for SW postMessage (iOS method)
@@ -1352,6 +1400,7 @@ function buildCalCards(){
     let scrollTarget=null;
     data.forEach(r=>{
         const isToday=toDate(r.date).toDateString()===nowStr;
+        const isFri=r.day==='Fri';
         const isOdd=r.ramadan&&[21,23,25,27,29].includes(r.ramadanDay);
         const isLast10=r.ramadan&&r.ramadanDay>=21;
         let badge='';
@@ -1361,12 +1410,16 @@ function buildCalCards(){
         else if(r.ramadanDay===30)badge='🎊 Last Night';
         else if(isOdd)badge='✨ Odd Night';
         else if(isLast10)badge='🌙 Last 10 Nights';
-        else if(r.day==='Fri')badge="🕌 Jumu'ah";
+        else if(isFri)badge="🕌 Jumu'ah · Khutbah 1:40 PM";
         let cls='cal-card';
         if(isToday)cls+=' today-card open';
         else if(isOdd)cls+=' odd-night';
         else if(isLast10)cls+=' last-ten';
         const dayLabel=r.ramadanDay?`Ramadan Day ${r.ramadanDay}`:'';
+        // Friday Dhuhr cell — gold-tinted Jumu'ah indicator
+        const dhuhrCell=isFri
+            ?`<div class="cal-cell jumuah-cell"><div class="cal-cell-lbl">🕌 Jumu'ah Iqama</div><div class="cal-cell-val iqama-v">${r.dhuhrIqR} PM</div></div>`
+            :`<div class="cal-cell"><div class="cal-cell-lbl">Dhuhr Iqama</div><div class="cal-cell-val iqama-v">${r.dhuhrIqR} PM</div></div>`;
         const card=document.createElement('div');
         card.className=cls;
         card.innerHTML=`<div class="cal-hdr" onclick="this.parentElement.classList.toggle('open')">
@@ -1378,7 +1431,7 @@ function buildCalCards(){
                 ${r.suhoor?`<div class="cal-cell"><div class="cal-cell-lbl">Suhoor Ends</div><div class="cal-cell-val suhoor-v">${r.suhoor} AM</div></div>`:''}
                 <div class="cal-cell"><div class="cal-cell-lbl">Fajr Iqama</div><div class="cal-cell-val iqama-v">${r.fajrIqR} AM</div></div>
                 <div class="cal-cell"><div class="cal-cell-lbl">Shuruq</div><div class="cal-cell-val">${r.shuruq} AM</div></div>
-                <div class="cal-cell"><div class="cal-cell-lbl">Dhuhr Iqama</div><div class="cal-cell-val iqama-v">${r.dhuhrIqR} PM</div></div>
+                ${dhuhrCell}
                 <div class="cal-cell"><div class="cal-cell-lbl">Asr Iqama</div><div class="cal-cell-val iqama-v">${r.asrIqR} PM</div></div>
                 <div class="cal-cell"><div class="cal-cell-lbl">Maghrib Iqama</div><div class="cal-cell-val iqama-v">${r.maghIqR} PM</div></div>
                 ${r.iftar?`<div class="cal-cell"><div class="cal-cell-lbl">Iftar</div><div class="cal-cell-val iftar-v">${r.iftar} PM</div></div>`:''}
@@ -1401,12 +1454,20 @@ function buildCalTable(){
     const tbody=document.getElementById('tableBody');tbody.innerHTML='';
     data.forEach(r=>{
         const isToday=toDate(r.date).toDateString()===nowStr;
+        const isFri=r.day==='Fri';
         const tr=document.createElement('tr');
         if(isToday)tr.className='today-row';
+        // Friday Dhuhr cell — gold-tinted Jumu'ah indicator with sub-label
+        const dhuhrCellRam=isFri
+            ?`<td class="jumuah-c">${r.dhuhrIqR} PM<span class="jumuah-tag">🕌 Jumu'ah</span></td>`
+            :`<td class="iqama-c">${r.dhuhrIqR} PM</td>`;
+        const dhuhrCellNorm=isFri
+            ?`<td class="jumuah-c">${r.dhuhrIqR} PM<span class="jumuah-tag">🕌 Jumu'ah</span></td>`
+            :`<td class="iqama-c">${r.dhuhrIqR} PM</td>`;
         if(isRam){
-            tr.innerHTML=`<td>${r.ramadanDay||'—'}</td><td style="font-family:'Plus Jakarta Sans',sans-serif;color:var(--text)">${r.day} ${r.date}</td><td class="suhoor-c">${r.suhoor||'—'}</td><td class="iqama-c">${r.fajrIqR} AM</td><td class="iqama-c">${r.dhuhrIqR} PM</td><td class="iqama-c">${r.asrIqR} PM</td><td class="iftar-c">${r.iftar||'—'}</td><td class="iqama-c">${r.maghIqR} PM</td><td class="iqama-c">${r.ishaIqR} PM</td>`;
+            tr.innerHTML=`<td>${r.ramadanDay||'—'}</td><td style="font-family:'Plus Jakarta Sans',sans-serif;color:var(--text)">${r.day} ${r.date}</td><td class="suhoor-c">${r.suhoor||'—'}</td><td class="iqama-c">${r.fajrIqR} AM</td>${dhuhrCellRam}<td class="iqama-c">${r.asrIqR} PM</td><td class="iftar-c">${r.iftar||'—'}</td><td class="iqama-c">${r.maghIqR} PM</td><td class="iqama-c">${r.ishaIqR} PM</td>`;
         }else{
-            tr.innerHTML=`<td style="font-family:'Plus Jakarta Sans',sans-serif;color:var(--text)">${r.date}</td><td style="font-family:'Plus Jakarta Sans',sans-serif">${r.day}</td><td class="iqama-c">${r.fajrIqR} AM</td><td class="iqama-c">${r.dhuhrIqR} PM</td><td class="iqama-c">${r.asrIqR} PM</td><td class="iqama-c">${r.maghIqR} PM</td><td class="iqama-c">${r.ishaIqR} PM</td>`;
+            tr.innerHTML=`<td style="font-family:'Plus Jakarta Sans',sans-serif;color:var(--text)">${r.date}</td><td style="font-family:'Plus Jakarta Sans',sans-serif">${r.day}</td><td class="iqama-c">${r.fajrIqR} AM</td>${dhuhrCellNorm}<td class="iqama-c">${r.asrIqR} PM</td><td class="iqama-c">${r.maghIqR} PM</td><td class="iqama-c">${r.ishaIqR} PM</td>`;
         }
         tbody.appendChild(tr);
     });
