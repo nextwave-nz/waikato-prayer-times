@@ -1,0 +1,12 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.hamiltonmasjid.prayertimes",
+      "sha256_cert_fingerprints": [
+        "92:73:6C:73:46:20:52:C4:A8:18:54:BE:1D:2D:CD:E8:67:74:18:82:92:02:D8:92:C8:37:59:14:32:8F:43:71"
+      ]
+    }
+  }
+]
